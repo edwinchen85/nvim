@@ -23,6 +23,7 @@ return require("packer").startup(function()
 
     -- custom
     use_with_config({ "kyazdani42/nvim-tree.lua", "nvimtree" })
+    use({ "szw/vim-maximizer" })
 
     -- text objects
     use("wellle/targets.vim")

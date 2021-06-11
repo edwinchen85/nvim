@@ -9,7 +9,6 @@ local sources = {
     b.formatting.trim_whitespace.with({ filetypes = { "tmux", "fish", "teal" } }),
     b.diagnostics.write_good,
     b.diagnostics.markdownlint,
-    b.diagnostics.teal,
     b.code_actions.gitsigns,
 }
 

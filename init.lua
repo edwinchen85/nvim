@@ -21,7 +21,8 @@ vim.opt.statusline = [[%f %y %m %= %p%% %l:%c]]
 vim.opt.tabstop = 4
 vim.opt.termguicolors = true
 vim.opt.undofile = true
-vim.opt.updatetime = 300
+vim.opt.updatetime = 250
+vim.opt.timeoutlen = 500
 vim.opt.writebackup = false
 vim.opt.swapfile = false
 vim.opt.directory = "/tmp"

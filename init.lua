@@ -87,6 +87,7 @@ u.map("n", "k", [[(v:count > 1 ? "m'" . v:count : '') . 'k'"]], { expr = true })
 u.map("n", "j", [[(v:count > 1 ? "m'" . v:count : '') . 'j'"]], { expr = true })
 
 -- load remaining lua config
+require("keymappings")
 require("commands")
 require("plugins")
 require("theme")

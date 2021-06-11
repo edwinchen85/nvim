@@ -117,7 +117,7 @@ commands.stop_recording = function()
 end
 
 commands.yank_highlight = function()
-    vim.highlight.on_yank({ higroup = "IncSearch", timeout = 500 })
+    vim.highlight.on_yank({ higroup = "IncSearch", timeout = 100 })
 end
 
 commands.edit_test_file = function(cmd)

@@ -164,7 +164,6 @@ u.lua_command("Wwipeall", "global.commands.wwipeall()")
 u.lua_command("Bdelete", "global.commands.bdelete()")
 u.lua_command("TestFile", "global.commands.edit_test_file()")
 
-u.map("n", "<Leader>cc", ":Bdelete<CR>")
 u.map("n", "<Leader>vv", ":VsplitLast<CR>")
 
 u.map("n", "<CR>", "v:lua.global.commands.save_on_cr()", { expr = true })

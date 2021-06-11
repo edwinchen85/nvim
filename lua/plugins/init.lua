@@ -49,7 +49,6 @@ return require("packer").startup(function()
     use({ "nvim-telescope/telescope-fzf-native.nvim", run = "make" }) -- better algorithm
 
     -- integrations
-    use_with_config({ "numToStr/Navigator.nvim", "navigator" }) -- tmux / vim pane navigation
     use_with_config({ "mcchrish/nnn.vim", "nnn" }) -- file manager integration
     use_with_config({ "christoomey/vim-tmux-runner", "vtr" }) -- run commands in a linked tmux pane
 

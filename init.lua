@@ -1,6 +1,6 @@
 local u = require("utils")
 
-vim.g.mapleader = ","
+vim.g.mapleader = " "
 
 vim.opt.clipboard = "unnamedplus"
 vim.opt.completeopt = { "menuone", "noinsert" }
@@ -70,9 +70,6 @@ u.map("i", "<C-l>", "<Right>")
 
 u.map("n", "<Leader>T", ":term<CR>")
 u.map("t", "<C-o>", "<C-\\><C-n>")
-
-u.map("n", "<Space>", ":", { silent = false })
-u.map("v", "<Space>", ":", { silent = false })
 
 u.map("n", "<Tab>", "%", { noremap = false })
 u.map("x", "<Tab>", "%", { noremap = false })

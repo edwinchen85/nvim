@@ -69,10 +69,10 @@ return require("packer").startup(function()
     use_with_config({ "RRethy/vim-illuminate", "illuminate" }) -- highlight and jump between references
 
     -- local
-    use_with_config({ "~/git/buftabline.nvim", "buftabline" })
-    use("~/git/nvim-lsp-ts-utils")
-    use("~/git/null-ls")
-    use_with_config({ "~/git/minsnip.nvim", "minsnip" })
+    use_with_config({ "jose-elias-alvarez/buftabline.nvim", "buftabline" })
+    use("jose-elias-alvarez/nvim-lsp-ts-utils")
+    use("jose-elias-alvarez/null-ls.nvim")
+    use_with_config({ "jose-elias-alvarez/minsnip.nvim", "minsnip" })
 
     -- misc
     use("blankname/vim-fish")

@@ -37,8 +37,6 @@ return require("packer").startup(function()
     -- additional functionality
     use_with_config({ "phaazon/hop.nvim", "hop" }) -- motion
     use_with_config({ "windwp/nvim-autopairs", "autopairs" }) -- autocomplete pairs
-    use_with_config({ "svermeulen/vim-subversive", "subversive" }) -- adds substitute operator
-    use_with_config({ "svermeulen/vim-cutlass", "cutlass" }) -- makes registers less annoying
     use({
         "nvim-telescope/telescope.nvim",
         requires = { "nvim-lua/popup.nvim" },

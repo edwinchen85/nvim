@@ -3,7 +3,7 @@ local ts_utils = require("nvim-lsp-ts-utils")
 
 local u = require("utils")
 
-local cmd = { "typescript-language-server", "--stdio", "--tsserver-path", "/usr/local/bin/tsserver-wrapper" }
+local cmd = { "typescript-language-server", "--stdio", "--tsserver-path", "/usr/local/bin/tsserver" }
 
 local ts_utils_settings = {
     -- debug = true,

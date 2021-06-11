@@ -67,6 +67,7 @@ return require("packer").startup(function()
 
     -- visual
     use("folke/tokyonight.nvim")
+    use("kyazdani42/nvim-web-devicons")
     use_with_config({ "RRethy/vim-illuminate", "illuminate" }) -- highlight and jump between references
 
     -- local

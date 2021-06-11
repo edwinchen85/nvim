@@ -77,7 +77,6 @@ return require("packer").startup(function()
     use_with_config({ "jose-elias-alvarez/minsnip.nvim", "minsnip" })
 
     -- misc
-    use("blankname/vim-fish")
     use({
         "iamcco/markdown-preview.nvim",
         ft = { "markdown" },

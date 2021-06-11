@@ -65,7 +65,7 @@ return require("packer").startup(function()
     use("windwp/nvim-ts-autotag") -- autocomplete jsx tags
 
     -- visual
-    use("sainnhe/sonokai")
+    use("folke/tokyonight.nvim")
     use_with_config({ "RRethy/vim-illuminate", "illuminate" }) -- highlight and jump between references
 
     -- local

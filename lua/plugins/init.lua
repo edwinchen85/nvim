@@ -21,6 +21,9 @@ return require("packer").startup(function()
     })
     use_with_config({ "lewis6991/gitsigns.nvim", "gitsigns" })
 
+    -- custom
+    use_with_config({ "kyazdani42/nvim-tree.lua", "nvimtree" })
+
     -- text objects
     use("wellle/targets.vim")
     use({

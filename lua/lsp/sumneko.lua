@@ -1,6 +1,6 @@
 local lspconfig = require("lspconfig")
 
-local root = vim.fn.getenv("HOME") .. "/git/lua-language-server/"
+local root = vim.fn.getenv("HOME") .. "/.local/share/nvim/lspinstall/lua/sumneko-lua-language-server/"
 local binary = root .. "bin/macOS/lua-language-server"
 local settings = {
     Lua = {

@@ -11,5 +11,7 @@ _G.global.illuminate = {
     end,
 }
 
+vim.g.Illuminate_ftblacklist = { 'NvimTree' }
+
 u.map("n", "<A-n>", "<cmd> lua global.illuminate.next_ref()<CR>")
 u.map("n", "<A-p>", "<cmd> lua global.illuminate.prev_ref()<CR>")

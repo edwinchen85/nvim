@@ -77,8 +77,9 @@ u.map("x", "<Tab>", "%", { noremap = false })
 u.map("o", "<Tab>", "%", { noremap = false })
 
 u.map("n", "<BS>", "<C-^>")
+u.map("n", "D", "d$")
 u.map("n", "Y", "y$")
-u.map("n", "<Esc>", ":nohl<CR>")
+u.map("n", "<Leader>/", ":let @/ = \"\"<CR>")
 
 -- automatically add jumps > 1 to jump list
 u.map("n", "k", [[(v:count > 1 ? "m'" . v:count : '') . 'k'"]], { expr = true })

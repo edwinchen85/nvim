@@ -64,6 +64,7 @@ return require("packer").startup(function()
     use("RRethy/nvim-treesitter-textsubjects") -- adds smart . text object
     use("JoosepAlviste/nvim-ts-context-commentstring") -- makes jsx comments actually work
     use("windwp/nvim-ts-autotag") -- autocomplete jsx tags
+    use_with_config({ "ahmedkhalf/lsp-rooter.nvim", "rooter" }) -- automagically change working directory
 
     -- visual
     use("folke/tokyonight.nvim")

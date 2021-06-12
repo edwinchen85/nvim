@@ -67,6 +67,9 @@ u.map('n', 'C', '"_C')
 u.map('n', 's', '"_s')
 u.map('n', 'S', '"_S')
 
+-- Place cursor at the end of yank in visual mode
+u.map('v', 'y', 'ygv<ESC>')
+
 -- Use . in visual mode to execute the dot command on each selected line
 u.map('x', '.', ':normal .<CR>')
 

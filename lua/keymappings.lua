@@ -30,6 +30,12 @@ u.map('n', '>', '>>')
 u.map('v', '<', '<gv')
 u.map('v', '>', '>gv')
 
+-- Move selected line / block of text
+u.map('n', '<C-j>', ':m .+1<CR>==')
+u.map('n', '<C-k>', ':m .-2<CR>==')
+u.map('v', '<C-j>', ":m '>+1<CR>gv=gv")
+u.map('v', '<C-k>', ":m '<-2<CR>gv=gv")
+
 -- Better nav for omnicomplete
 vim.cmd('inoremap <expr> <c-j> (\"\\<C-n>\")')
 vim.cmd('inoremap <expr> <c-k> (\"\\<C-p>\")')

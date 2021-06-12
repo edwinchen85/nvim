@@ -186,6 +186,83 @@ commands.blame_line = function()
     return require('gitsigns').blame_line()
 end
 
+-- lsp
+commands.add_to_workspace_folder = function()
+    vim.lsp.buf.add_workspace_folder()
+end
+
+commands.clear_references = function()
+    vim.lsp.buf.clear_references()
+end
+
+commands.code_action = function()
+    vim.lsp.buf.code_action()
+end
+
+commands.declaration = function()
+    vim.lsp.buf.declaration()
+end
+
+commands.definition = function()
+    vim.lsp.buf.definition()
+end
+
+commands.document_symbol = function()
+    vim.lsp.buf.document_symbol()
+end
+
+commands.formatting = function()
+    vim.lsp.buf.formatting()
+end
+
+commands.formatting_sync = function()
+    vim.lsp.buf.formattin_sync()
+end
+
+commands.hover = function()
+    vim.lsp.buf.hover()
+end
+
+commands.implementation = function()
+    vim.lsp.buf.implementation()
+end
+
+commands.range_code_action = function()
+    vim.lsp.buf.range_code_action()
+end
+
+commands.range_formatting = function()
+    vim.lsp.buf.range_formatting()
+end
+
+commands.references = function()
+    vim.lsp.buf.range_formatting()
+end
+
+commands.rename = function()
+    vim.lsp.buf.rename()
+end
+
+commands.type_definition = function()
+    vim.lsp.buf.type_definition()
+end
+
+commands.workspace_symbol = function()
+    vim.lsp.buf.workspace_symbol()
+end
+
+commands.goto_next = function()
+    vim.lsp.buf.goto_next()
+end
+
+commands.goto_prev = function()
+    vim.lsp.buf.goto_prev()
+end
+
+commands.show_line_diagnostics = function()
+    vim.lsp.buf.show_line_diagnostics()
+end
+
 u.command("Remove", "call delete(expand('%')) | lua global.commands.bdelete()")
 u.command("VsplitLast", "vsplit #")
 u.command("Lazygit", "term lazygit")
@@ -206,6 +283,27 @@ u.lua_command("ResetHunk", "global.commands.reset_hunk()")
 u.lua_command("ResetBuffer", "global.commands.reset_buffer()")
 u.lua_command("PreviewHunk", "global.commands.preview_hunk()")
 u.lua_command("BlameLine", "global.commands.blame_line()")
+
+-- lsp
+u.lua_command("LspAddToWorkspaceFolder", "global.commands.add_to_workspace_folder()")
+u.lua_command("LspClearReferences", "global.commands.clear_references()")
+u.lua_command("LspCodeAction", "global.commands.code_action()")
+u.lua_command("LspDeclaration", "global.commands.declaration()")
+u.lua_command("LspDefintion", "global.commands.definition()")
+u.lua_command("LspDocumentSymbol", "global.commands.document_symbol()")
+u.lua_command("LspFormatting", "global.commands.formatting()")
+u.lua_command("LspFormattingSync", "global.commands.formatting_async()")
+u.lua_command("LspHover", "global.commands.hover()")
+u.lua_command("LspImplementation", "global.commands.implementation()")
+u.lua_command("LspRangeCodeAction", "global.commands.range_code_action()")
+u.lua_command("LspRangeFormatting", "global.commands.range_code_formatting()")
+u.lua_command("LspReferences", "global.commands.references()")
+u.lua_command("LspRename", "global.commands.rename()")
+u.lua_command("LspTypeDefintion", "global.commands.type_definition()")
+u.lua_command("LspWorkspaceSymbol", "global.commands.workspace_symbol()")
+u.lua_command("LspGotoNext", "global.commands.goto_next()")
+u.lua_command("LspGotoPrev", "global.commands.goto_prev()")
+u.lua_command("LspShowLineDiagnostics", "global.commands.show_line_diagnostics()")
 
 u.map("n", "<CR>", "v:lua.global.commands.save_on_cr()", { expr = true })
 

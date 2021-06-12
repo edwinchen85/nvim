@@ -27,6 +27,7 @@ return require("packer").startup(function()
     use_with_config({ "cappyzawa/trim.nvim", "trim" })
     use({ "jeffkreeftmeijer/vim-numbertoggle" })
     use({ "bkad/CamelCaseMotion" })
+    use({ "lambdalisue/suda.vim" })
     use({ "szw/vim-maximizer" })
 
     -- text objects

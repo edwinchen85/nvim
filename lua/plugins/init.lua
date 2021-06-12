@@ -73,6 +73,8 @@ return require("packer").startup(function()
 
     -- autocomplete
     use_with_config({ "hrsh7th/nvim-compe", "compe" })
+    use({ "hrsh7th/vim-vsnip" })
+    use({ "rafamadriz/friendly-snippets" })
 
     -- visual
     use("folke/tokyonight.nvim")

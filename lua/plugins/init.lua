@@ -86,7 +86,6 @@ return require("packer").startup(function()
     use_with_config({ "jose-elias-alvarez/buftabline.nvim", "buftabline" })
     use("jose-elias-alvarez/nvim-lsp-ts-utils")
     use("jose-elias-alvarez/null-ls.nvim")
-    use_with_config({ "jose-elias-alvarez/minsnip.nvim", "minsnip" })
 
     -- misc
     use({

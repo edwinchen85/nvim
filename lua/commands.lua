@@ -153,6 +153,39 @@ commands.edit_test_file = function(cmd)
     })
 end
 
+-- gitsigns
+commands.next_hunk = function()
+    return require('gitsigns').next_hunk()
+end
+
+commands.prev_hunk = function()
+    return require('gitsigns').prev_hunk()
+end
+
+commands.stage_hunk = function()
+    return require('gitsigns').stage_hunk()
+end
+
+commands.undo_stage_hunk = function()
+    return require('gitsigns').undo_stage_hunk()
+end
+
+commands.reset_hunk = function()
+    return require('gitsigns').reset_hunk()
+end
+
+commands.reset_buffer = function()
+    return require('gitsigns').reset_buffer()
+end
+
+commands.preview_hunk = function()
+    return require('gitsigns').preview_hunk()
+end
+
+commands.blame_line = function()
+    return require('gitsigns').blame_line()
+end
+
 u.command("Remove", "call delete(expand('%')) | lua global.commands.bdelete()")
 u.command("VsplitLast", "vsplit #")
 u.command("Lazygit", "term lazygit")
@@ -164,7 +197,15 @@ u.lua_command("Wwipeall", "global.commands.wwipeall()")
 u.lua_command("Bdelete", "global.commands.bdelete()")
 u.lua_command("TestFile", "global.commands.edit_test_file()")
 
-u.map("n", "<Leader>vv", ":VsplitLast<CR>")
+-- gitsigns
+u.lua_command("NextHunk", "global.commands.next_hunk()")
+u.lua_command("PrevHunk", "global.commands.prev_hunk()")
+u.lua_command("StageHunk", "global.commands.stage_hunk()")
+u.lua_command("UndoStageHunk", "global.commands.undo_stage_hunk()")
+u.lua_command("ResetHunk", "global.commands.reset_hunk()")
+u.lua_command("ResetBuffer", "global.commands.reset_buffer()")
+u.lua_command("PreviewHunk", "global.commands.preview_hunk()")
+u.lua_command("BlameLine", "global.commands.blame_line()")
 
 u.map("n", "<CR>", "v:lua.global.commands.save_on_cr()", { expr = true })
 

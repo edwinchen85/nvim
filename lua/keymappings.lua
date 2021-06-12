@@ -6,6 +6,8 @@ u.map('n', 'go', ':NvimTreeFindFile<CR>')
 
 -- Buffer
 u.map('n', 'X', ':Bdelete<CR>')
+u.map('n', '<C-h>', ':BufPrev<CR>')
+u.map('n', '<C-l>', ':BufNext<CR>')
 
 -- Maximizer
 u.map('n', '<C-w>m', ':MaximizerToggle!<cr>')

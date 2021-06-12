@@ -71,6 +71,9 @@ return require("packer").startup(function()
     use("windwp/nvim-ts-autotag") -- autocomplete jsx tags
     use_with_config({ "ahmedkhalf/lsp-rooter.nvim", "rooter" }) -- automagically change working directory
 
+    -- autocomplete
+    use_with_config({ "hrsh7th/nvim-compe", "compe" })
+
     -- visual
     use("folke/tokyonight.nvim")
     use("kyazdani42/nvim-web-devicons")

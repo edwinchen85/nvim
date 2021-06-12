@@ -28,6 +28,7 @@ return require("packer").startup(function()
     use({ "jeffkreeftmeijer/vim-numbertoggle" })
     use({ "bkad/CamelCaseMotion" })
     use({ "lambdalisue/suda.vim" })
+    use({ "andymass/vim-matchup" })
     use({ "szw/vim-maximizer" })
 
     -- text objects

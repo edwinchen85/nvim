@@ -13,6 +13,7 @@ return require("packer").startup(function()
     -- basic
     use("tpope/vim-repeat")
     use("tpope/vim-sleuth")
+    use("tpope/vim-capslock")
     use("tpope/vim-surround")
     use("tpope/vim-unimpaired")
     use("tpope/vim-commentary")

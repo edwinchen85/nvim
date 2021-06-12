@@ -25,6 +25,7 @@ return require("packer").startup(function()
     -- custom
     use_with_config({ "kyazdani42/nvim-tree.lua", "nvimtree" })
     use_with_config({ "cappyzawa/trim.nvim", "trim" })
+    use({ "jeffkreeftmeijer/vim-numbertoggle" })
     use({ "bkad/CamelCaseMotion" })
     use({ "szw/vim-maximizer" })
 

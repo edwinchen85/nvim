@@ -3,7 +3,6 @@ local builtin = require("telescope.builtin")
 local actions = require("telescope.actions")
 local set = require("telescope.actions.set")
 
-local u = require("utils")
 local commands = require("commands")
 
 local api = vim.api
@@ -114,29 +113,3 @@ _G.global.telescope = {
         end
     end,
 }
-
-u.lua_command("Files", "global.telescope.find_files()")
-u.lua_command("Rg", "global.telescope.live_grep()")
-u.lua_command("GrepPrompt", "global.telescope.grep_prompt()")
-u.command("BLines", "Telescope current_buffer_fuzzy_find")
-u.command("History", "Telescope oldfiles")
-u.command("Buffers", "Telescope buffers")
-u.command("BCommits", "Telescope git_bcommits")
-u.command("Commits", "Telescope git_commits")
-u.command("HelpTags", "Telescope help_tags")
-u.command("ManPages", "Telescope man_pages")
-
-u.map("n", "<Leader>H", ":HelpTags<CR>")
-
-u.map("n", "<Leader>ff", "<cmd>Files<CR>")
-u.map("n", "<Leader>fg", "<cmd>Rg<CR>")
-u.map("n", "<Leader>fb", "<cmd>Buffers<CR>")
-u.map("n", "<Leader>fh", "<cmd>History<CR>")
-u.map("n", "<Leader>fl", "<cmd>BLines<CR>")
-u.map("n", "<Leader>fs", "<cmd>LspSym<CR>")
-
--- lsp
-u.command("LspRef", "Telescope lsp_references")
-u.command("LspDef", "Telescope lsp_definitions")
-u.command("LspSym", "Telescope lsp_workspace_symbols")
-u.command("LspAct", "Telescope lsp_code_actions")

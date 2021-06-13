@@ -1,5 +1,8 @@
 local u = require("utils")
 
+-- Dashboard
+u.map('n', '<Leader>;', ':Dashboard<CR>')
+
 -- Explorer
 u.map('n', '<C-n>', ':NvimTreeToggle<CR>')
 u.map('n', 'go', ':NvimTreeFindFile<CR>')

@@ -83,6 +83,7 @@ return require("packer").startup(function()
     use("kyazdani42/nvim-web-devicons")
     use_with_config({ "RRethy/vim-illuminate", "illuminate" }) -- highlight and jump between references
     use_with_config({"glepnir/dashboard-nvim", "dashboard"})
+    use_with_config({"glepnir/galaxyline.nvim", "galaxyline"})
 
     -- local
     use_with_config({ "jose-elias-alvarez/buftabline.nvim", "buftabline" })

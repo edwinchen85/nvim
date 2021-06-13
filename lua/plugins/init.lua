@@ -84,6 +84,7 @@ return require("packer").startup(function()
     use_with_config({ "RRethy/vim-illuminate", "illuminate" }) -- highlight and jump between references
     use_with_config({"glepnir/dashboard-nvim", "dashboard"})
     use_with_config({"glepnir/galaxyline.nvim", "galaxyline"})
+    use_with_config({"norcalli/nvim-colorizer.lua", "colorizer"})
 
     -- local
     use_with_config({ "jose-elias-alvarez/buftabline.nvim", "buftabline" })

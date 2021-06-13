@@ -25,6 +25,9 @@ require("nvim-treesitter.configs").setup({
     query_linter = {
         enable = true,
     },
+    matchup = {
+        enable = true,
+    },
 })
 
 vim.wo.foldmethod = "expr"

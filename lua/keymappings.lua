@@ -7,6 +7,9 @@ u.map('n', '<Leader>;', ':Dashboard<CR>')
 u.map('n', '<C-n>', ':NvimTreeToggle<CR>')
 u.map('n', '<Leader>n', ':NvimTreeFindFile<CR>')
 
+-- Remove file
+u.map('n', '<Leader>R', ':Remove<CR>')
+
 -- Buffer
 u.map('n', 'X', ':Bdelete<CR>')
 u.map('n', '<C-h>', ':BufPrev<CR>')

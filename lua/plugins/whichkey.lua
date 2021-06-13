@@ -52,6 +52,7 @@ local mappings = {
     [";"] = "Dashboard",
     ["i"] = "Jump Forward",
     ["n"] = "Follow File",
+    ["R"] = "Remove File",
     ["T"] = "Terminal",
     ["X"] = "Delete Buffer",
     ["b"] = "which_key_ignore",

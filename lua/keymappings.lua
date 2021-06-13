@@ -86,5 +86,5 @@ u.map('n', 'dge', 'EdgE')
 u.map('n', 'Q', '<NOP>')
 
 -- Can use <space> or <cr> to terminate wildmenu
-vim.cmd('cnoremap <expr> <space> wildmenumode() ? \"\\<C-y>\" : \"\\<space>\"')
-vim.cmd('cnoremap <expr> <cr> wildmenumode() ? \"\\<C-y>\" : \"\\<cr>\"')
+u.map('c', '<Space>', [[wildmenumode() ? '<C-y>' : '<Space>']], { expr = true, silent = false })
+u.map('c', '<CR>', [[wildmenumode() ? '<C-y>' : '<CR>']], { expr = true, silent = false })

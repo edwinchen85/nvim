@@ -5,7 +5,7 @@ u.map('n', '<Leader>;', ':Dashboard<CR>')
 
 -- Explorer
 u.map('n', '<C-n>', ':NvimTreeToggle<CR>')
-u.map('n', 'go', ':NvimTreeFindFile<CR>')
+u.map('n', '<Leader>n', ':NvimTreeFindFile<CR>')
 
 -- Buffer
 u.map('n', 'X', ':Bdelete<CR>')

@@ -12,4 +12,4 @@ require("nnn").setup({
 })
 
 u.map("n", "-", ":NnnPicker %:p:h<CR>")
-u.map("n", "<Leader>n", ":NnnPicker")
+u.map("n", "<Leader>-", ":NnnPicker ~/", { silent = false })

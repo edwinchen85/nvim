@@ -47,6 +47,7 @@ local opts = {
 
 local mappings = {
     ["<CR>"] = "Buffers",
+    ["-"] = "Nnn Picker",
     ["/"] = "No Highlight",
     [";"] = "Dashboard",
     ["i"] = "Jump Forward",

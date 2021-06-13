@@ -75,7 +75,7 @@ local on_attach = function(client, bufnr)
     -- bindings
     u.buf_map("n", "gh", ":LspPeekDef<CR>", nil, bufnr)
     u.buf_map("n", "gy", ":LspTypeDef<CR>", nil, bufnr)
-    u.buf_map("n", "gi", ":LspRename<CR>", nil, bufnr)
+    u.buf_map("n", "gR", ":LspRename<CR>", nil, bufnr)
     u.buf_map("n", "K", ":LspHover<CR>", nil, bufnr)
     u.buf_map("n", "[a", ":LspDiagPrev<CR>", nil, bufnr)
     u.buf_map("n", "]a", ":LspDiagNext<CR>", nil, bufnr)

@@ -79,6 +79,7 @@ local on_attach = function(client, bufnr)
     u.buf_map("n", "K", ":LspHover<CR>", nil, bufnr)
     u.buf_map("n", "[a", ":LspDiagPrev<CR>", nil, bufnr)
     u.buf_map("n", "]a", ":LspDiagNext<CR>", nil, bufnr)
+    u.buf_map("n", "gs", ":LspSignatureHelp<CR>", nil, bufnr)
     u.buf_map("i", "<C-x><C-x>", "<cmd> LspSignatureHelp<CR>", nil, bufnr)
 
     u.buf_augroup("LspAutocommands", "CursorHold", "LspDiagLine")

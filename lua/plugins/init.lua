@@ -11,6 +11,7 @@ return require("packer").startup(function()
     end
 
     -- basic
+    use("tpope/vim-rsi")
     use("tpope/vim-repeat")
     use("tpope/vim-sleuth")
     use("tpope/vim-capslock")

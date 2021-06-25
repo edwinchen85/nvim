@@ -125,29 +125,32 @@ commands.edit_test_file = function(cmd)
     local scandir = require("plenary.scandir")
 
     local root, ft = vim.fn.expand("%:t:r"), vim.bo.filetype
-    local pattern
+    local patterns = {}
     if ft == "lua" then
-        pattern = "_spec"
+        table.insert(patterns, "_spec")
     elseif ft == "typescript" or ft == "typescriptreact" then
-        pattern = ".test"
+        table.insert(patterns, ".test")
+        table.insert(patterns, ".spec")
     end
-    assert(pattern, "pattern not defined for " .. ft)
 
-    -- go from test file to non-test file
-    if root:match(pattern) then
-        pattern = u.replace(root, pattern, "")
-    else
-        pattern = root .. pattern
+    local final_patterns = {}
+    for _, pattern in ipairs(patterns) do
+        -- go from test file to non-test file
+        if root:match(pattern) then
+            pattern = u.replace(root, pattern, "")
+        else
+            pattern = root .. pattern
+        end
+        -- make sure extension matches
+        pattern = pattern .. "." .. vim.fn.expand("%:e") .. "$"
+        table.insert(final_patterns, pattern)
     end
-    -- make sure extension matches
-    pattern = pattern .. "." .. vim.fn.expand("%:e") .. "$"
 
     scandir.scan_dir_async(vim.fn.getcwd(), {
         depth = 5,
-        search_pattern = pattern,
+        search_pattern = final_patterns,
         on_exit = vim.schedule_wrap(function(files)
-            assert(files[1], "file not found for pattern " .. pattern)
-
+            assert(files[1], "test file not found")
             vim.cmd(cmd .. " " .. files[1])
         end),
     })
@@ -310,7 +313,7 @@ u.map("n", "<CR>", "v:lua.global.commands.save_on_cr()", { expr = true })
 u.map("n", "q", "v:lua.global.commands.stop_recording()", { expr = true })
 u.map("n", "<Leader>q", "q", { silent = false })
 
-u.augroup("Autocomplete", "InsertCharPre", "lua global.commands.complete()")
+-- u.augroup("Autocomplete", "InsertCharPre", "lua global.commands.complete()")
 u.augroup("YankHighlight", "TextYankPost", "lua global.commands.yank_highlight()")
 
 _G.global.commands = commands

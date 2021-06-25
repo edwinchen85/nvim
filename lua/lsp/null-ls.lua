@@ -7,8 +7,10 @@ local sources = {
     }),
     b.formatting.stylua.with({ args = { "--config-path", vim.fn.stdpath("config") .. "/lua/stylua.toml", "-" } }),
     b.formatting.trim_whitespace.with({ filetypes = { "tmux" } }),
+    b.formatting.shfmt,
     b.diagnostics.write_good,
     b.diagnostics.markdownlint,
+    b.diagnostics.shellcheck,
     b.code_actions.gitsigns,
 }
 

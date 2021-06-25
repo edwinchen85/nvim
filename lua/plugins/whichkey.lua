@@ -70,6 +70,7 @@ local mappings = {
         M = {"<cmd>Telescope man_pages<cr>", "Man Pages"},
         p = {"<cmd>Telescope find_files<cr>", "Files"},
         r = {"<cmd>Telescope registers<cr>", "Registers"},
+        t = {"<cmd>TodoTelescope<cr>", "Todo"},
     },
     g = {
         name = "+Git",

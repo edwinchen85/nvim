@@ -92,8 +92,6 @@ local on_attach = function(client, bufnr)
     u.buf_map("n", "ga", ":Telescope lsp_code_actions<CR>", nil, bufnr)
     u.buf_map("n", "gr", ":Telescope lsp_references<CR>", nil, bufnr)
     u.buf_map("n", "gd", ":Telescope lsp_definitions<CR>", nil, bufnr)
-
-    require("illuminate").on_attach(client)
 end
 
 tsserver.setup(on_attach)

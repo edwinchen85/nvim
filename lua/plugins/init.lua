@@ -68,7 +68,6 @@ return require("packer").startup(function()
         "nvim-treesitter/nvim-treesitter",
         run = ":TSUpdate",
         config = config("treesitter"),
-        { "nvim-treesitter/playground" },
     })
     use("RRethy/nvim-treesitter-textsubjects") -- adds smart . text object
     use("JoosepAlviste/nvim-ts-context-commentstring") -- makes jsx comments actually work

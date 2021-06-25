@@ -9,7 +9,6 @@ require("nvim-treesitter.configs").setup({
         "json",
         "jsonc",
         "yaml",
-        "query",
     },
     textsubjects = {
         enable = true,
@@ -19,12 +18,6 @@ require("nvim-treesitter.configs").setup({
     },
     highlight = { enable = true },
     autotag = { enable = true },
-    playground = {
-        enable = true,
-    },
-    query_linter = {
-        enable = true,
-    },
     matchup = {
         enable = true,
     },

@@ -26,10 +26,6 @@ M.for_each = function(tbl, cb)
     end
 end
 
-M.start_case = function(str)
-    return string.upper(string.sub(str, 1, 1)) .. string.sub(str, 2)
-end
-
 M.replace = function(str, original, replacement)
     local found, found_end = string.find(str, original, nil, true)
     if not found then
@@ -49,25 +45,6 @@ end
 _G.inspect = function(...)
     print(vim.inspect(...))
 end
-
-M.timer = {
-    start_time = nil,
-    start = function()
-        M.timer.start_time = uv.now()
-    end,
-    stop = function()
-        print(uv.now() - M.timer.start_time .. " ms")
-        M.timer.start_time = nil
-    end,
-
-    start_nano = function()
-        M.timer.start_time = uv.hrtime()
-    end,
-    stop_nano = function()
-        print(uv.hrtime() - M.timer.start_time .. " ns")
-        M.timer.start_time = nil
-    end,
-}
 
 M.command = function(name, fn)
     vim.cmd(format("command! %s %s", name, fn))

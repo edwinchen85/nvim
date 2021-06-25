@@ -3,6 +3,7 @@ local builtin = require("telescope.builtin")
 local actions = require("telescope.actions")
 local set = require("telescope.actions.set")
 
+local u = require("utils")
 local commands = require("commands")
 
 local api = vim.api
@@ -113,3 +114,5 @@ _G.global.telescope = {
         end
     end,
 }
+
+u.lua_command("Rg", "global.telescope.grep_prompt()")

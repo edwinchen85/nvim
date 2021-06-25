@@ -72,42 +72,6 @@ commands.bdelete = function(bufnr)
     vim.cmd("bdelete " .. bufnr)
 end
 
-commands.complete = (function()
-    local complete_timer
-    local banned_filetypes = { "TelescopePrompt" }
-    local trigger_chars = "[.]"
-
-    return function()
-        local filetype = vim.bo.filetype
-        if not filetype or vim.tbl_contains(banned_filetypes, filetype) then
-            return
-        end
-
-        if complete_timer then
-            complete_timer.restart()
-            return
-        end
-
-        complete_timer = u.timer(100, nil, true, function()
-            complete_timer = nil
-
-            if vim.fn.pumvisible() == 1 or vim.fn.mode() ~= "i" then
-                return
-            end
-
-            local col = api.nvim_win_get_cursor(0)[2]
-            local prev_char = string.sub(api.nvim_get_current_line(), col, col)
-            if not (string.match(prev_char, "%w") or string.match(prev_char, trigger_chars)) then
-                return
-            end
-
-            local seq = vim.bo.omnifunc ~= "" and "<C-x><C-o>" or "<C-n>"
-            -- prefer nvim_input, since it's non-blocking
-            api.nvim_input(seq)
-        end)
-    end
-end)()
-
 commands.save_on_cr = function()
     return vim.bo.buftype == "quickfix" and u.t("<CR>") or u.t(":w<CR>")
 end
@@ -313,7 +277,6 @@ u.map("n", "<CR>", "v:lua.global.commands.save_on_cr()", { expr = true })
 u.map("n", "q", "v:lua.global.commands.stop_recording()", { expr = true })
 u.map("n", "<Leader>q", "q", { silent = false })
 
--- u.augroup("Autocomplete", "InsertCharPre", "lua global.commands.complete()")
 u.augroup("YankHighlight", "TextYankPost", "lua global.commands.yank_highlight()")
 
 _G.global.commands = commands

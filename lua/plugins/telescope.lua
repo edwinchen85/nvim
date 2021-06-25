@@ -10,7 +10,7 @@ local api = vim.api
 
 telescope.setup({
     extensions = {
-        fzf = { override_generic_sorter = true, override_file_sorter = true },
+        fzf = { fuzzy = true, override_generic_sorter = true, override_file_sorter = true },
     },
     defaults = {
         find_command = {'rg', '--no-heading', '--with-filename', '--line-number', '--column', '--smart-case'},
@@ -60,23 +60,10 @@ telescope.setup({
     },
 })
 
-_G.global.telescope = {
-    -- live grep in project (slow)
-    live_grep = function()
-        builtin.grep_string({
-            shorten_path = true,
-            word_match = "-w",
-            only_sort_text = true,
-            search = "",
-            vimgrep_arguments = vim.list_extend(require("telescope.config").values.vimgrep_arguments, {
-                "--hidden",
-                "-g",
-                "!{node_modules,.git}",
-            }),
-        })
-    end,
+telescope.load_extension("fzf")
 
-    -- grep string from prompt (fast, but less convenient)
+_G.global.telescope = {
+    -- grep string from prompt
     grep_prompt = function()
         builtin.grep_string({
             shorten_path = true,

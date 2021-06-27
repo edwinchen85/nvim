@@ -88,7 +88,9 @@ _G.global.telescope = {
                     set.edit(prompt_bufnr, "edit")
 
                     commands.wwipeall()
-                    commands.edit_test_file("vsplit")
+                    commands.edit_test_file("vsplit", function()
+                        vim.cmd("wincmd w")
+                    end)
                 end)
 
                 return true

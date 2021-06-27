@@ -84,7 +84,7 @@ commands.yank_highlight = function()
     vim.highlight.on_yank({ higroup = "IncSearch", timeout = 100 })
 end
 
-commands.edit_test_file = function(cmd)
+commands.edit_test_file = function(cmd, post)
     cmd = cmd or "e"
     local scandir = require("plenary.scandir")
 
@@ -116,6 +116,9 @@ commands.edit_test_file = function(cmd)
         on_exit = vim.schedule_wrap(function(files)
             assert(files[1], "test file not found")
             vim.cmd(cmd .. " " .. files[1])
+            if post then
+                post()
+            end
         end),
     })
 end

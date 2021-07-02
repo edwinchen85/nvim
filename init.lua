@@ -35,25 +35,8 @@ vim.opt.relativenumber = true
 vim.opt.signcolumn = "yes"
 
 vim.g.backupcopy = "yes"
+
 _G.global = {}
-
--- terminal
-_G.global.terminal = {
-    on_open = function()
-        vim.cmd("startinsert")
-        vim.cmd("setlocal nonumber norelativenumber")
-    end,
-
-    -- suppress exit code message
-    on_close = function()
-        if not string.match(vim.fn.expand("<afile>"), "nnn") then
-            vim.api.nvim_input("<CR>")
-        end
-    end,
-}
-
-u.augroup("OnTermOpen", "TermOpen", "lua global.terminal.on_open()")
-u.augroup("OnTermClose", "TermClose", "lua global.terminal.on_close()")
 
 -- maps
 u.map("i", "<S-Tab>", "<Esc>A")

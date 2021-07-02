@@ -139,6 +139,24 @@ end
 
 u.lua_command("TestFile", "global.commands.edit_test_file()")
 
+commands.terminal = {
+    on_open = function()
+        -- start in insert mode and turn off line numbers
+        vim.cmd("startinsert")
+        vim.cmd("setlocal nonumber norelativenumber")
+    end,
+
+    -- suppress exit code message
+    on_close = function()
+        if not string.match(vim.fn.expand("<afile>"), "nnn") then
+            vim.api.nvim_input("<CR>")
+        end
+    end,
+}
+
+u.augroup("OnTermOpen", "TermOpen", "lua global.commands.terminal.on_open()")
+u.augroup("OnTermClose", "TermClose", "lua global.commands.terminal.on_close()")
+
 -- gitsigns
 commands.next_hunk = function()
     return require('gitsigns').next_hunk()

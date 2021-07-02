@@ -79,6 +79,9 @@ u.map('n', 'C', '"_C')
 u.map('n', 's', '"_s')
 u.map('n', 'S', '"_S')
 
+-- Search for visually selected text
+u.map('v', '/', 'y/\\V<C-r>=escape(@",\'/\\\')<CR><CR>N', { noremap = false })
+
 -- Place cursor at the end of yank in visual mode
 u.map('v', 'y', 'ygv<ESC>')
 

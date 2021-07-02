@@ -34,6 +34,7 @@ vim.opt.number = true
 vim.opt.relativenumber = true
 vim.opt.signcolumn = "yes"
 
+vim.g.backupcopy = "yes"
 _G.global = {}
 
 -- terminal

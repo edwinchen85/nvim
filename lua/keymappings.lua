@@ -1,5 +1,35 @@
 local u = require("utils")
 
+-- \ to go to previous match
+u.map("n", "\\", ",")
+
+-- Traverse start and end of line
+u.map("n", "H", "^")
+u.map("o", "H", "^")
+u.map("x", "H", "^")
+u.map("n", "L", "$")
+u.map("o", "L", "$")
+u.map("x", "L", "$")
+
+-- Automatically add jumps > 1 to jump list
+u.map("n", "k", [[(v:count > 1 ? "m'" . v:count : '') . 'k'"]], { expr = true })
+u.map("n", "j", [[(v:count > 1 ? "m'" . v:count : '') . 'j'"]], { expr = true })
+
+-- Tab to jump to match
+u.map("n", "<Tab>", "%", { noremap = false })
+u.map("x", "<Tab>", "%", { noremap = false })
+u.map("o", "<Tab>", "%", { noremap = false })
+
+-- Terminal
+u.map("n", "<Leader>T", ":term<CR>")
+u.map("t", "<C-o>", "<C-\\><C-n>")
+
+-- Useful remaps
+u.map("n", "<BS>", "<C-^>")
+u.map("n", "D", "d$")
+u.map("n", "Y", "y$")
+u.map("n", "<Leader>/", ":noh<CR>")
+
 -- Dashboard
 u.map('n', '<Leader>;', ':Dashboard<CR>')
 
@@ -104,3 +134,17 @@ u.map('c', '<Esc>', [[wildmenumode() ? '<C-e>' : '<Esc>']], { expr = true, silen
 -- EOL semicolon
 u.map('n', '<C-s>', 'm`A;<Esc>``')
 u.map('i', '<C-s>', '<Esc>A;<Esc>')
+
+-- Select pasted text in visual mode
+u.map('n', 'gp', '\'`[\' . strpart(getregtype(), 0, 1) . \'`]\'', { expr = true })
+
+-- Paste without overwriting current registry
+u.map('v', 'p', 'pgvy<Esc>')
+
+-- Paste and indent
+u.map('n', 'p', 'pm`V`]=<Esc>``')
+u.map('n', 'P', 'Pm`V`]=<Esc>``')
+
+-- Paste and indent and without overriding current register
+u.map('x', 'p', 'pgvygp=<Esc>')
+u.map('x', 'P', 'Pgvygp=<Esc>')

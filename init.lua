@@ -1,5 +1,3 @@
-local u = require("utils")
-
 vim.g.mapleader = " "
 
 vim.opt.clipboard = "unnamedplus"
@@ -38,32 +36,6 @@ vim.g.markdown_fenced_languages = { "lua", "typescript", "typescriptreact" }
 vim.g.backupcopy = "yes"
 
 _G.global = {}
-
--- maps
-u.map("i", "<S-Tab>", "<Esc>A")
-
-u.map("n", "H", "^")
-u.map("o", "H", "^")
-u.map("x", "H", "^")
-u.map("n", "L", "$")
-u.map("o", "L", "$")
-u.map("x", "L", "$")
-
-u.map("n", "<Leader>T", ":term<CR>")
-u.map("t", "<C-o>", "<C-\\><C-n>")
-
-u.map("n", "<Tab>", "%", { noremap = false })
-u.map("x", "<Tab>", "%", { noremap = false })
-u.map("o", "<Tab>", "%", { noremap = false })
-
-u.map("n", "<BS>", "<C-^>")
-u.map("n", "D", "d$")
-u.map("n", "Y", "y$")
-u.map("n", "<Leader>/", ":noh<CR>")
-
--- automatically add jumps > 1 to jump list
-u.map("n", "k", [[(v:count > 1 ? "m'" . v:count : '') . 'k'"]], { expr = true })
-u.map("n", "j", [[(v:count > 1 ? "m'" . v:count : '') . 'j'"]], { expr = true })
 
 -- source remaining lua config
 require("keymappings")

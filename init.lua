@@ -1,4 +1,5 @@
 vim.g.mapleader = " "
+vim.g.markdown_fenced_languages = { "lua", "typescript", "typescriptreact" }
 
 vim.opt.clipboard = "unnamedplus"
 vim.opt.completeopt = { "menuone", "noinsert", "noselect" }
@@ -31,9 +32,7 @@ vim.opt.cursorline = true
 vim.opt.number = true
 vim.opt.relativenumber = true
 vim.opt.signcolumn = "yes"
-
-vim.g.markdown_fenced_languages = { "lua", "typescript", "typescriptreact" }
-vim.g.backupcopy = "yes"
+vim.opt.backupcopy = "yes"
 
 _G.global = {}
 

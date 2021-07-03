@@ -72,6 +72,12 @@ u.map('n', '<C-k>', ':m .-2<CR>==')
 u.map('v', '<C-j>', ":m '>+1<CR>gv=gv")
 u.map('v', '<C-k>', ":m '<-2<CR>gv=gv")
 
+-- Resize window
+u.map('n', '<C-Up>', ':resize +2<CR>')
+u.map('n', '<C-Down>', ':resize -2<CR>')
+u.map('n', '<C-Left>', ':vertical resize +2<CR>')
+u.map('n', '<C-Right>', ':vertical resize -2<CR>')
+
 -- Better nav for omnicomplete
 vim.cmd('inoremap <expr> <c-j> (\"\\<C-n>\")')
 vim.cmd('inoremap <expr> <c-k> (\"\\<C-p>\")')

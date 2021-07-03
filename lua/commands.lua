@@ -132,12 +132,16 @@ commands.edit_test_file = function(cmd, post)
     local scandir = require("plenary.scandir")
 
     local root, ft = vim.fn.expand("%:t:r"), vim.bo.filetype
+    -- escape potentially conflicting characters in filename
+    root = root:gsub("%-", "%%-")
+    root = root:gsub("%.", "%%.")
+
     local patterns = {}
     if ft == "lua" then
         table.insert(patterns, "_spec")
     elseif ft == "typescript" or ft == "typescriptreact" then
-        table.insert(patterns, ".test")
-        table.insert(patterns, ".spec")
+        table.insert(patterns, "%.test")
+        table.insert(patterns, "%.spec")
     end
 
     local final_patterns = {}
@@ -149,7 +153,7 @@ commands.edit_test_file = function(cmd, post)
             pattern = root .. pattern
         end
         -- make sure extension matches
-        pattern = pattern .. "." .. vim.fn.expand("%:e") .. "$"
+        pattern = pattern .. "%." .. vim.fn.expand("%:e") .. "$"
         table.insert(final_patterns, pattern)
     end
 
@@ -166,7 +170,8 @@ commands.edit_test_file = function(cmd, post)
     })
 end
 
-u.lua_command("TestFile", "global.commands.edit_test_file()")
+vim.cmd("command! -complete=command -nargs=* TestFile lua global.commands.edit_test_file(<f-args>)")
+u.map("n", "<Leader>tv", ":TestFile Vsplit<CR>")
 
 commands.terminal = {
     on_open = function()

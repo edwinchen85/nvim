@@ -81,7 +81,7 @@ end
 u.lua_command("Bdelete", "global.commands.bdelete()")
 
 commands.save_on_cr = function()
-    return vim.bo.buftype == "quickfix" and u.t("<CR>") or u.t(":w<CR>")
+    return vim.bo.buftype ~= "" and u.t("<CR>") or u.t(":w<CR>")
 end
 
 u.map("n", "<CR>", "v:lua.global.commands.save_on_cr()", { expr = true })

@@ -12,6 +12,35 @@ end
 
 local commands = {}
 
+commands.vsplit = function(args)
+    if not args then
+        vim.cmd("vsplit")
+        return
+    end
+
+    local edit_in_win = function(winnr)
+        vim.cmd(winnr .. "windo edit " .. args)
+    end
+
+    local current = vim.fn.winnr()
+    local right_split = vim.fn.winnr("l")
+    local left_split = vim.fn.winnr("h")
+    if left_split < current then
+        edit_in_win(left_split)
+        return
+    end
+    if right_split > current then
+        edit_in_win(right_split)
+        return
+    end
+
+    vim.cmd("vsplit " .. args)
+end
+
+vim.cmd("command! -complete=file -nargs=* Vsplit lua global.commands.vsplit(<f-args>)")
+u.command("VsplitLast", "Vsplit #")
+u.map("n", "<Leader>vv", ":VsplitLast<CR>")
+
 commands.bonly = function(bufnr)
     bufnr = bufnr or api.nvim_get_current_buf()
     for_each_buffer(function(b)
@@ -322,7 +351,6 @@ end
 u.lua_command("LspShowLineDiagnostics", "global.commands.show_line_diagnostics()")
 
 u.command("Remove", "call delete(expand('%')) | lua global.commands.bdelete()")
-u.command("VsplitLast", "vsplit #")
 u.command("R", "w | :e")
 
 _G.global.commands = commands

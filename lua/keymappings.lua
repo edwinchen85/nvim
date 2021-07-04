@@ -158,3 +158,7 @@ u.map('n', 'P', 'Pm`V`]=<Esc>``')
 -- Paste and indent and without overriding current register
 u.map('x', 'p', 'pgvygp=<Esc>', { noremap = false })
 u.map('x', 'P', 'Pgvygp=<Esc>', { noremap = false })
+
+-- Toggle comment
+u.map('n', '<Leader>/', ':Commentary<CR>')
+u.map('v', '<Leader>/', ':Commentary<CR>')

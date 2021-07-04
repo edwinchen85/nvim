@@ -137,6 +137,10 @@ u.map('c', '<CR>', [[wildmenumode() ? '<C-y>' : '<CR>']], { expr = true, silent 
 -- Can use <Esc> to cancel wildmenu selection
 u.map('c', '<Esc>', [[wildmenumode() ? '<C-e>' : '<C-c>']], { expr = true, silent = false })
 
+-- Can use <C-j> and <C-k> to move up and down in wild menu
+u.map('c', '<C-j>', [[wildmenumode() ? '<Right>' : '<Down>']], { expr = true, silent = false })
+u.map('c', '<C-k>', [[wildmenumode() ? '<Left>' : '<Up>']], { expr = true, silent = false })
+
 -- EOL semicolon
 u.map('n', '<C-s>', 'm`A;<Esc>``')
 u.map('i', '<C-s>', '<Esc>A;<Esc>')

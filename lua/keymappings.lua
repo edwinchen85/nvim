@@ -28,7 +28,7 @@ u.map("t", "<C-o>", "<C-\\><C-n>")
 u.map("n", "<BS>", "<C-^>")
 u.map("n", "D", "d$")
 u.map("n", "Y", "y$")
-u.map("n", "<Leader>/", ":noh<CR>")
+u.map("n", "<Leader>h", ":noh<CR>")
 
 -- Dashboard
 u.map('n', '<Leader>;', ':Dashboard<CR>')

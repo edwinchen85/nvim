@@ -156,5 +156,5 @@ u.map('n', 'p', 'pm`V`]=<Esc>``')
 u.map('n', 'P', 'Pm`V`]=<Esc>``')
 
 -- Paste and indent and without overriding current register
-u.map('x', 'p', 'pgvygp=<Esc>')
-u.map('x', 'P', 'Pgvygp=<Esc>')
+u.map('x', 'p', 'pgvygp=<Esc>', { noremap = false })
+u.map('x', 'P', 'Pgvygp=<Esc>', { noremap = false })

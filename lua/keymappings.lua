@@ -160,5 +160,5 @@ u.map('x', 'p', 'pgvygp=<Esc>', { noremap = false })
 u.map('x', 'P', 'Pgvygp=<Esc>', { noremap = false })
 
 -- Toggle comment
-u.map('n', '<Leader>/', ':Commentary<CR>')
-u.map('v', '<Leader>/', ':Commentary<CR>')
+u.map('n', '<Leader>/', 'gcc', { noremap = false })
+u.map('x', '<Leader>/', 'gc', { noremap = false })

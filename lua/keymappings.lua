@@ -88,19 +88,19 @@ u.map('n', '<Leader>gg', ':G<CR><C-w>o')
 -- Toggle Caps
 u.map('i', '<C-u>', '<Esc>m`viw~``a')
 
--- Centering
-u.map('n', 'G', 'Gzz')
-u.map('n', 'n', 'nzz')
-u.map('n', 'N', 'Nzz')
-u.map('n', '}', '}zz')
-u.map('n', '{', '{zz')
+-- Centering and open folds
+u.map('n', 'G', 'Gzzzv')
+u.map('n', 'n', 'nzzzv')
+u.map('n', 'N', 'Nzzzv')
+u.map('n', '}', '}zzzv')
+u.map('n', '{', '{zzzv')
 
 -- Retrace previous movement in files
-u.map('n', '``', '``zz')
+u.map('n', '``', '``zzzv')
 -- Jump to last modification line
-u.map('n', '\'.', '\'.zz')
+u.map('n', '\'.', '\'.zzzv')
 -- Jump to exact spot in last modification line
-u.map('n', '`.', '`.zz')
+u.map('n', '`.', '`.zzzv')
 
 -- Traversal
 u.map('n', '<Down>', 'gj')
@@ -165,8 +165,8 @@ u.map('n', '<Leader>/', 'gcc', { noremap = false })
 u.map('x', '<Leader>/', 'gc', { noremap = false })
 
 -- is.vim + Asterisk
-u.map('n', 'n', '<Plug>(is-n)zz', { noremap = false })
-u.map('n', 'N', '<Plug>(is-N)zz', { noremap = false })
+u.map('n', 'n', '<Plug>(is-n)zzzv', { noremap = false })
+u.map('n', 'N', '<Plug>(is-N)zzzv', { noremap = false })
 u.map('n', '*', '<Plug>(asterisk-z*)<Plug>(is-nohl-1)', { noremap = false })
 u.map('n', 'g*', '<Plug>(asterisk-gz*)<Plug>(is-nohl-1)', { noremap = false })
 u.map('n', '#', '<Plug>(asterisk-z#)<Plug>(is-nohl-1)', { noremap = false })

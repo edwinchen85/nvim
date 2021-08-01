@@ -185,3 +185,9 @@ u.map('n', '<Leader>s', ':ISwap<CR>')
 
 -- Quit
 u.map('n', '<Leader>q', ':q<CR>')
+
+-- Undo break points
+u.map('i', ',', ',<C-g>u')
+u.map('i', '.', '.<C-g>u')
+u.map('i', '!', '!<C-g>u')
+u.map('i', '?', '?<C-g>u')

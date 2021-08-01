@@ -54,6 +54,7 @@ local mappings = {
     ["i"] = "Jump Forward",
     ["n"] = "Follow File",
     ["q"] = "Quit",
+    ["w"] = "Save",
     ["R"] = "Remove File",
     ["T"] = "Terminal",
     ["X"] = "Delete Buffer",

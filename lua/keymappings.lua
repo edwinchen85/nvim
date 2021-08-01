@@ -183,6 +183,9 @@ u.map('n', 'zs', ':set foldmethod=syntax<CR>')
 -- ISwap
 u.map('n', '<Leader>s', ':ISwap<CR>')
 
+-- Save
+u.map('n', '<Leader>w', ':w<CR>')
+
 -- Quit
 u.map('n', '<Leader>q', ':q<CR>')
 

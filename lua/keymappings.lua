@@ -60,6 +60,9 @@ u.map('n', '<Leader><Leader>', '<C-^>')
 -- Jump forward
 u.map('n', '<Leader>i', '<C-i>')
 
+-- Better join
+u.map('n', 'J', 'mzJ`z')
+
 -- Better indenting
 u.map('n', '<', '<<')
 u.map('n', '>', '>>')

@@ -53,6 +53,7 @@ local mappings = {
     [";"] = "Dashboard",
     ["i"] = "Jump Forward",
     ["n"] = "Follow File",
+    ["q"] = "Quit",
     ["R"] = "Remove File",
     ["T"] = "Terminal",
     ["X"] = "Delete Buffer",
@@ -112,7 +113,7 @@ local mappings = {
         o = {"<cmd>NnnPicker ~/Projects<cr>", "Documents"},
         p = {"<cmd>NnnPicker ~/Projects<cr>", "Project"},
     },
-    s = {
+    S = {
         name = "+Session",
         s = {"<cmd>SessionSave<cr>", "Save Session"},
         l = {"<cmd>SessionLoad<cr>", "Load Session"}

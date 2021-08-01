@@ -162,3 +162,6 @@ u.map('x', 'P', 'Pgvygp=<Esc>', { noremap = false })
 -- Toggle comment
 u.map('n', '<Leader>/', 'gcc', { noremap = false })
 u.map('x', '<Leader>/', 'gc', { noremap = false })
+
+-- Quit
+u.map('n', '<Leader>q', ':q<CR>')

@@ -128,8 +128,14 @@ end
 u.augroup("YankHighlight", "TextYankPost", "lua global.commands.yank_highlight()")
 
 commands.edit_test_file = function(cmd, post)
-    cmd = cmd or "e"
-    local scandir = require("plenary.scandir")
+    cmd = cmd or "edit"
+
+    local done = function(file)
+        vim.cmd(cmd .. " " .. file)
+        if post then
+            post()
+        end
+    end
 
     local root, ft = vim.fn.expand("%:t:r"), vim.bo.filetype
     -- escape potentially conflicting characters in filename
@@ -157,17 +163,35 @@ commands.edit_test_file = function(cmd, post)
         table.insert(final_patterns, pattern)
     end
 
-    scandir.scan_dir_async(vim.fn.getcwd(), {
-        depth = 5,
-        search_pattern = final_patterns,
-        on_exit = vim.schedule_wrap(function(files)
-            assert(files[1], "test file not found")
-            vim.cmd(cmd .. " " .. files[1])
-            if post then
-                post()
+    -- check buffers first
+    for _, b in ipairs(vim.fn.getbufinfo({ buflisted = 1 })) do
+        for _, pattern in ipairs(final_patterns) do
+            if b.name:match(pattern) then
+                vim.cmd(cmd .. " #" .. b.bufnr)
+                return
             end
-        end),
-    })
+        end
+    end
+
+    local scandir = function(path, depth, next)
+        require("plenary.scandir").scan_dir_async(
+            path,
+            { depth = depth, search_pattern = final_patterns, on_exit = vim.schedule_wrap(function(found)
+                if found[1] then
+                    done(found[1])
+                    return
+                end
+
+                assert(next, "test file not found")
+                next()
+            end) }
+        )
+    end
+
+    -- check same dir files first, then cwd
+    scandir(vim.fn.expand("%:p:h"), 1, function()
+        scandir(vim.fn.getcwd(), 5)
+    end)
 end
 
 vim.cmd("command! -complete=command -nargs=* TestFile lua global.commands.edit_test_file(<f-args>)")

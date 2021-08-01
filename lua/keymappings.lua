@@ -172,5 +172,8 @@ u.map('n', 'g*', '<Plug>(asterisk-gz*)<Plug>(is-nohl-1)', { noremap = false })
 u.map('n', '#', '<Plug>(asterisk-z#)<Plug>(is-nohl-1)', { noremap = false })
 u.map('n', 'g#', '<Plug>(asterisk-gz#)<Plug>(is-nohl-1)', { noremap = false })
 
+-- ISwap
+u.map('n', '<Leader>s', ':ISwap<CR>')
+
 -- Quit
 u.map('n', '<Leader>q', ':q<CR>')

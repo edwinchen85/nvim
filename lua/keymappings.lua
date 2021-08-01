@@ -164,5 +164,13 @@ u.map('x', 'P', 'Pgvygp=<Esc>', { noremap = false })
 u.map('n', '<Leader>/', 'gcc', { noremap = false })
 u.map('x', '<Leader>/', 'gc', { noremap = false })
 
+-- is.vim + Asterisk
+u.map('n', 'n', '<Plug>(is-n)zz', { noremap = false })
+u.map('n', 'N', '<Plug>(is-N)zz', { noremap = false })
+u.map('n', '*', '<Plug>(asterisk-z*)<Plug>(is-nohl-1)', { noremap = false })
+u.map('n', 'g*', '<Plug>(asterisk-gz*)<Plug>(is-nohl-1)', { noremap = false })
+u.map('n', '#', '<Plug>(asterisk-z#)<Plug>(is-nohl-1)', { noremap = false })
+u.map('n', 'g#', '<Plug>(asterisk-gz#)<Plug>(is-nohl-1)', { noremap = false })
+
 -- Quit
 u.map('n', '<Leader>q', ':q<CR>')

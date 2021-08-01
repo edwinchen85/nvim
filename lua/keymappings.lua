@@ -172,6 +172,11 @@ u.map('n', 'g*', '<Plug>(asterisk-gz*)<Plug>(is-nohl-1)', { noremap = false })
 u.map('n', '#', '<Plug>(asterisk-z#)<Plug>(is-nohl-1)', { noremap = false })
 u.map('n', 'g#', '<Plug>(asterisk-gz#)<Plug>(is-nohl-1)', { noremap = false })
 
+-- Fold
+u.map('n', 'zn', ':set foldenable!<CR>')
+u.map('n', 'zi', ':set foldmethod=indent<CR>')
+u.map('n', 'zs', ':set foldmethod=syntax<CR>')
+
 -- ISwap
 u.map('n', '<Leader>s', ':ISwap<CR>')
 

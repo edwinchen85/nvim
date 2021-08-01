@@ -1,5 +1,4 @@
 vim.g.mapleader = " "
-vim.g.markdown_fenced_languages = { "lua", "typescript", "typescriptreact" }
 
 vim.opt.clipboard = "unnamedplus"
 vim.opt.completeopt = { "menuone", "noinsert", "noselect" }
@@ -10,7 +9,6 @@ vim.opt.ignorecase = true
 vim.opt.mouse = "a"
 vim.opt.pumheight = 10
 vim.opt.shiftwidth = 4
-vim.opt.shortmess:append("cA")
 vim.opt.showcmd = false
 vim.opt.showtabline = 2
 vim.opt.smartcase = true
@@ -27,12 +25,17 @@ vim.opt.swapfile = false
 vim.opt.directory = "/tmp"
 vim.opt.scrolloff = 4
 vim.opt.sidescrolloff = 2
+vim.opt.shell = "/bin/sh"
+vim.opt.shortmess:append("cA")
 
 vim.opt.cursorline = true
 vim.opt.number = true
 vim.opt.relativenumber = true
 vim.opt.signcolumn = "yes"
 vim.opt.backupcopy = "yes"
+
+-- the only way I've found to make this persistent
+vim.cmd("autocmd BufEnter * setlocal formatoptions-=cro")
 
 _G.global = {}
 

@@ -31,7 +31,7 @@ telescope.setup({
         file_sorter = require'telescope.sorters'.get_fzy_sorter,
         file_ignore_patterns = { "*.d.ts", "node_modules/**.*" },
         generic_sorter = require'telescope.sorters'.get_generic_fuzzy_sorter,
-        shorten_path = true,
+        path_display = { shorten = 5 },
         winblend = 0,
         border = {},
         borderchars = {'─', '│', '─', '│', '╭', '╮', '╯', '╰'},
@@ -46,6 +46,8 @@ telescope.setup({
         buffer_previewer_maker = require'telescope.previewers'.buffer_previewer_maker,
         mappings = {
             i = {
+                ["<C-n>"] = actions.cycle_history_next,
+                ["<C-p>"] = actions.cycle_history_prev,
                 ["<C-c>"] = actions.close,
                 ["<C-j>"] = actions.move_selection_next,
                 ["<C-k>"] = actions.move_selection_previous,

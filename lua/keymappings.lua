@@ -125,7 +125,8 @@ u.map('v', 'y', 'ygv<ESC>')
 u.map('x', '.', ':normal .<CR>')
 
 -- Delete last argument in comma separated list
-u.map('n', 'dge', 'EdgE')
+u.map('n', 'dge', 'edgE')
+u.map('n', 'dgE', 'EdgE')
 
 -- Avoid unintentional switches to Ex mode
 u.map('n', 'Q', '<NOP>')

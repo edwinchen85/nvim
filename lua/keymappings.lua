@@ -86,7 +86,7 @@ vim.cmd('inoremap <expr> <c-j> (\"\\<C-n>\")')
 vim.cmd('inoremap <expr> <c-k> (\"\\<C-p>\")')
 
 -- Fugitive
-u.map('n', '<Leader>gg', ':G<CR><C-w>o')
+u.map('n', '<Leader>gg', ':G<CR><C-w>o:e<CR>')
 
 -- Toggle Caps
 u.map('i', '<C-u>', '<Esc>m`viw~``a')

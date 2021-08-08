@@ -11,6 +11,10 @@ u.map("n", "L", "$")
 u.map("o", "L", "$")
 u.map("x", "L", "$")
 
+-- Vertical Traversal
+u.map('n', '<Down>', 'gj')
+u.map('n', '<Up>', 'gk')
+
 -- Automatically add jumps > 1 to jump list
 u.map("n", "k", [[(v:count > 1 ? "m'" . v:count : '') . 'k'"]], { expr = true })
 u.map("n", "j", [[(v:count > 1 ? "m'" . v:count : '') . 'j'"]], { expr = true })

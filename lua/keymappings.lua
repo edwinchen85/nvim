@@ -82,8 +82,8 @@ u.map('n', '<C-Left>', ':vertical resize +2<CR>')
 u.map('n', '<C-Right>', ':vertical resize -2<CR>')
 
 -- Better nav for omnicomplete
-vim.cmd('inoremap <expr> <c-j> (\"\\<C-n>\")')
-vim.cmd('inoremap <expr> <c-k> (\"\\<C-p>\")')
+u.map('i', '<C-j>', '(\"\\<C-n>\")', { expr = true })
+u.map('i', '<C-k>', '(\"\\<C-p>\")', { expr = true })
 
 -- Fugitive
 u.map('n', '<Leader>gg', ':G<CR><C-w>o:e<CR>')

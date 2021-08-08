@@ -150,18 +150,18 @@ u.map('n', '<C-s>', 'm`A;<Esc>``')
 u.map('i', '<C-s>', '<Esc>A;<Esc>')
 
 -- Select pasted text in visual mode
-u.map('n', 'gp', '\'`[\' . strpart(getregtype(), 0, 1) . \'`]\'', { expr = true })
+-- u.map('n', 'gp', '\'`[\' . strpart(getregtype(), 0, 1) . \'`]\'', { expr = true })
 
 -- Paste without overwriting current registry
-u.map('v', 'p', 'pgvy<Esc>')
+-- u.map('v', 'p', 'pgvy<Esc>')
 
 -- Paste and indent
-u.map('n', 'p', 'pm`V`]=<Esc>``')
-u.map('n', 'P', 'Pm`V`]=<Esc>``')
+-- u.map('n', 'p', 'pm`V`]=<Esc>``')
+-- u.map('n', 'P', 'Pm`V`]=<Esc>``')
 
 -- Paste and indent and without overriding current register
-u.map('x', 'p', 'pgvygp=<Esc>', { noremap = false })
-u.map('x', 'P', 'Pgvygp=<Esc>', { noremap = false })
+-- u.map('x', 'p', 'pgvygp=<Esc>', { noremap = false })
+-- u.map('x', 'P', 'Pgvygp=<Esc>', { noremap = false })
 
 -- Toggle comment
 u.map('n', '<Leader>/', 'gcc', { noremap = false })

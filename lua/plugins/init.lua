@@ -39,6 +39,7 @@ return require("packer").startup(function()
     use({ "lambdalisue/suda.vim" })
     use({ "andymass/vim-matchup" })
     use({ "szw/vim-maximizer" })
+    use({ "sickill/vim-pasta" })
 
     -- text objects
     use("wellle/targets.vim") -- many useful additional text objects

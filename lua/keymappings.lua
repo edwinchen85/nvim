@@ -38,14 +38,14 @@ u.map("n", "<Leader>h", ":noh<CR>")
 u.map('n', '<Leader>;', ':Dashboard<CR>')
 
 -- Explorer
-u.map('n', '<C-n>', ':NvimTreeToggle<CR>')
+u.map('n', '<Leader>e', ':NvimTreeToggle<CR>')
 u.map('n', '<Leader>n', ':NvimTreeFindFile<CR>')
 
 -- Remove file
 u.map('n', '<Leader>R', ':Remove<CR>')
 
 -- Buffer
-u.map('n', 'X', ':Bdelete<CR>')
+u.map('n', '<Leader>c', ':Bdelete<CR>')
 u.map('n', '<C-h>', ':BufPrev<CR>')
 u.map('n', '<C-l>', ':BufNext<CR>')
 

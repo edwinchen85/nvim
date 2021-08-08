@@ -109,10 +109,6 @@ u.map('n', '\'.', '\'.zzzv')
 -- Jump to exact spot in last modification line
 u.map('n', '`.', '`.zzzv')
 
--- Traversal
-u.map('n', '<Down>', 'gj')
-u.map('n', '<Up>', 'gk')
-
 -- Sent to black hole register
 u.map('n', 'cc', '"_cc')
 u.map('n', 'cl', '"_cl')

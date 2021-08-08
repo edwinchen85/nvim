@@ -12,6 +12,7 @@ vim.opt.shiftwidth = 4
 vim.opt.showcmd = false
 vim.opt.showtabline = 2
 vim.opt.smartcase = true
+vim.opt.smartindent = true
 vim.opt.splitbelow = true
 vim.opt.splitright = true
 vim.opt.statusline = [[%f %y %m %= %p%% %l:%c]]

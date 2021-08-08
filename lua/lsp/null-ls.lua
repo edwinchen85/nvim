@@ -5,7 +5,11 @@ local sources = {
     b.formatting.prettierd.with({
         filetypes = { "html", "json", "yaml", "markdown" },
     }),
-    b.formatting.stylua.with({ args = { "--config-path", vim.fn.stdpath("config") .. "/lua/stylua.toml", "-" } }),
+    b.formatting.stylua.with({
+        condition = function(utils)
+            return utils.root_has_file("stylua.toml")
+        end,
+    }),
     b.formatting.trim_whitespace.with({ filetypes = { "tmux" } }),
     b.formatting.shfmt,
     b.diagnostics.shellcheck,

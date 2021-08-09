@@ -23,10 +23,10 @@ vim.g.nvim_tree_icons = {
     symlink = "",
     git = {
         unstaged = "",
-        staged = "S",
+        staged = "✓",
         unmerged = "",
         renamed = "➜",
-        untracked = "U",
+        untracked = "★",
         deleted = "",
         ignored = "◌"
     },

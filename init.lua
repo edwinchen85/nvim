@@ -15,6 +15,7 @@ vim.opt.smartcase = true
 vim.opt.smartindent = true
 vim.opt.splitbelow = true
 vim.opt.splitright = true
+vim.opt.diffopt = "vertical,filler"
 vim.opt.statusline = [[%f %y %m %= %p%% %l:%c]]
 vim.opt.tabstop = 4
 vim.opt.termguicolors = true

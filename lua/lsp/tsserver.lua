@@ -23,6 +23,7 @@ M.setup = function(on_attach)
         cmd = cmd,
         on_attach = function(client, bufnr)
             client.resolved_capabilities.document_formatting = false
+            client.resolved_capabilities.document_range_formatting = false
             on_attach(client)
 
             ts_utils.setup(ts_utils_settings)

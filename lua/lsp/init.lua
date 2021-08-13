@@ -85,7 +85,7 @@ local on_attach = function(client, bufnr)
     u.buf_augroup("LspAutocommands", "CursorHold", "LspDiagLine")
 
     if client.resolved_capabilities.document_formatting then
-        u.buf_augroup("LspFormatOnSave", "BufWritePost", "lua vim.lsp.buf.formatting()")
+        u.buf_augroup("LspFormatOnSave", "BufWritePre", "lua vim.lsp.buf.formatting_sync()")
     end
 
     -- telescope

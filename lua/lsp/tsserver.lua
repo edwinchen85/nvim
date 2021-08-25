@@ -12,9 +12,13 @@ local ts_utils_settings = {
     signature_help_in_parens = true,
     eslint_bin = "eslint_d",
     eslint_enable_diagnostics = true,
+    eslint_show_rule_id = true,
+    eslint_disable_if_no_config = true,
     enable_formatting = true,
     formatter = "eslint_d",
     update_imports_on_move = true,
+    -- filter out dumb module warning
+    filter_out_diagnostics_by_code = { 80001 },
 }
 
 local M = {}

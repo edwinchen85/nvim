@@ -1,5 +1,4 @@
 local lspconfig = require("lspconfig")
-local ts_utils = require("nvim-lsp-ts-utils")
 
 local u = require("utils")
 
@@ -8,12 +7,15 @@ local cmd = { "typescript-language-server", "--stdio", "--tsserver-path", "/usr/
 local ts_utils_settings = {
     -- debug = true,
     enable_import_on_completion = true,
-    complete_parens = true,
-    signature_help_in_parens = true,
+    import_all_scan_buffers = 100,
     eslint_bin = "eslint_d",
     eslint_enable_diagnostics = true,
-    eslint_show_rule_id = true,
-    eslint_disable_if_no_config = true,
+    eslint_opts = {
+        condition = function(utils)
+            return utils.root_has_file(".eslintrc.js")
+        end,
+        diagnostic_format = "#{m} [#{c}]",
+    },
     enable_formatting = true,
     formatter = "eslint_d",
     update_imports_on_move = true,
@@ -30,6 +32,7 @@ M.setup = function(on_attach)
             client.resolved_capabilities.document_range_formatting = false
             on_attach(client)
 
+            local ts_utils = require("nvim-lsp-ts-utils")
             ts_utils.setup(ts_utils_settings)
             ts_utils.setup_client(client)
 

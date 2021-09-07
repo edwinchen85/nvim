@@ -12,7 +12,7 @@ local sources = {
     }),
     b.formatting.trim_whitespace.with({ filetypes = { "tmux" } }),
     b.formatting.shfmt,
-    b.diagnostics.shellcheck,
+    b.diagnostics.shellcheck.with({ diagnostic_format = "#{m} [#{c}]" }),
     b.code_actions.gitsigns,
 }
 

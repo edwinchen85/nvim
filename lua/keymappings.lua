@@ -132,7 +132,7 @@ u.map('n', 'dge', 'edgE')
 u.map('n', 'dgE', 'EdgE')
 
 -- Avoid unintentional switches to Ex mode
-u.map('n', 'Q', '<NOP>')
+u.map('n', 'Q', ':Wwipeall<CR>')
 
 -- Can use <space> or <cr> to terminate wildmenu
 u.map('c', '<Space>', [[wildmenumode() ? '<C-y>' : '<Space>']], { expr = true, silent = false })

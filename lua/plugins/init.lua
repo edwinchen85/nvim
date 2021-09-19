@@ -20,8 +20,7 @@ return require("packer").startup(function()
     use("tpope/vim-commentary")
     use({
         "tpope/vim-fugitive",
-        required = { "tpope/vim-rhubarb", "junegunn/gv.vim", "tommcdo/vim-fugitive-blame-ext" },
-        cmd = "Git",
+        { "junegunn/gv.vim", "tommcdo/vim-fugitive-blame-ext" }
     })
     use_with_config("lewis6991/gitsigns.nvim", "gitsigns")
 

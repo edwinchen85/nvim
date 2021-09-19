@@ -49,6 +49,7 @@ local mappings = {
     ["<CR>"] = "Buffers",
     ["/"] = "Comment",
     ["-"] = "Nnn Picker",
+    ["a"] = "Show Diagnostic",
     ["h"] = "No Highlight",
     [";"] = "Dashboard",
     ["c"] = "Close Buffer",

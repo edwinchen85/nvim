@@ -96,11 +96,13 @@ u.map('n', '<Leader>gg', ':G<CR><C-w>o:e<CR>')
 u.map('i', '<C-u>', '<Esc>m`viw~``a')
 
 -- Centering and open folds
-u.map('n', 'G', 'Gzzzv')
 u.map('n', 'n', 'nzzzv')
 u.map('n', 'N', 'Nzzzv')
-u.map('n', '}', '}zzzv')
-u.map('n', '{', '{zzzv')
+
+-- Centering only
+u.map('n', 'G', 'Gzz')
+u.map('n', '}', '}zz')
+u.map('n', '{', '{zz')
 
 -- Retrace previous movement in files
 u.map('n', '``', '``zzzv')

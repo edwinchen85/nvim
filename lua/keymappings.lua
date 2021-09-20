@@ -1,8 +1,5 @@
 local u = require("utils")
 
--- \ to go to previous match
-u.map("n", "\\", ",")
-
 -- Traverse start and end of line
 u.map("n", "H", "^")
 u.map("o", "H", "^")

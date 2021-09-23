@@ -11,13 +11,6 @@ require("nvim-treesitter.configs").setup({
         "jsonc",
         "yaml",
     },
-    textsubjects = {
-        enable = true,
-        keymaps = {
-            ["."] = "textsubjects-smart",
-            [";"] = "textsubjects-container-outer",
-        },
-    },
     highlight = { enable = true },
     autotag = { enable = true },
     matchup = {

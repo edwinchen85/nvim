@@ -51,6 +51,22 @@ vim.opt.relativenumber = true
 vim.opt.signcolumn = "yes:1" -- Always show signcolumn
 vim.opt.backupcopy = "yes"
 
+-- Disable various builtin plugins in Vim that bog down speed
+vim.g.loaded_matchparen        = 1
+vim.g.loaded_matchit           = 1
+vim.g.loaded_logiPat           = 1
+vim.g.loaded_rrhelper          = 1
+vim.g.loaded_tarPlugin         = 1
+vim.g.loaded_gzip              = 1
+vim.g.loaded_zipPlugin         = 1
+vim.g.loaded_2html_plugin      = 1
+vim.g.loaded_shada_plugin      = 1
+vim.g.loaded_spellfile_plugin  = 1
+vim.g.loaded_netrw             = 1
+vim.g.loaded_netrwPlugin       = 1
+vim.g.loaded_tutor_mode_plugin = 1
+vim.g.loaded_remote_plugins    = 1
+
 -- the only way I've found to make this persistent
 vim.cmd("autocmd BufEnter * setlocal formatoptions-=cro")
 

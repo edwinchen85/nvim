@@ -117,7 +117,6 @@ table.insert(gls.right, {
 
 table.insert(gls.right, {DiagnosticWarn = {provider = 'DiagnosticWarn', icon = '  ', highlight = {colors.orange, colors.bg}}})
 
-
 table.insert(gls.right, {
     DiagnosticHint = {provider = 'DiagnosticHint', icon = '  ', highlight = {colors.vivid_blue, colors.bg}}
 })

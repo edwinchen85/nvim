@@ -65,8 +65,6 @@ u.map('n', '<Leader>i', '<C-i>')
 u.map('n', 'J', 'mzJ`z')
 
 -- Better indenting
-u.map('n', '<', '<<')
-u.map('n', '>', '>>')
 u.map('v', '<', '<gv')
 u.map('v', '>', '>gv')
 

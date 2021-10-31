@@ -70,6 +70,19 @@ vim.g.loaded_remote_plugins    = 1
 -- the only way I've found to make this persistent
 vim.cmd("autocmd BufEnter * setlocal formatoptions-=cro")
 
+-- Use spelling for markdown files ]s to find next, [s for previous, z= for suggestions when on one.
+-- Source: http:--thejakeharding.com/tutorial/2012/06/13/using-spell-check-in-vim.html
+vim.api.nvim_exec(
+  [[
+augroup markdownSpell
+    autocmd!
+    autocmd FileType markdown,md,txt setlocal spell
+    autocmd BufRead,BufNewFile *.md,*.txt,*.markdown setlocal spell
+augroup END
+]],
+  false
+)
+
 _G.global = {}
 
 -- source remaining lua config

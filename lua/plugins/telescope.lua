@@ -22,11 +22,17 @@ telescope.setup({
         sorting_strategy = "descending",
         layout_strategy = "horizontal",
         layout_config = {
-            width = 0.75,
             prompt_position = "bottom",
-            preview_cutoff = 120,
-            horizontal = {mirror = false},
-            vertical = {mirror = false}
+            horizontal = {
+                width_padding = 0.04,
+                height_padding = 0.1,
+                preview_width = 0.6,
+            },
+            vertical = {
+                width_padding = 0.05,
+                height_padding = 1,
+                preview_height = 0.5,
+            },
         },
         file_sorter = require'telescope.sorters'.get_fzy_sorter,
         file_ignore_patterns = { "*.d.ts", "node_modules/**.*" },

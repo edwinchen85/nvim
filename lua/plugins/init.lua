@@ -73,7 +73,6 @@ return require("packer").startup(function()
 
     -- integrations
     use_with_config("mcchrish/nnn.vim", "nnn") -- file manager integration
-    use_with_config("christoomey/vim-tmux-runner", "vtr") -- run commands in a linked tmux pane
 
     -- development
     use("neovim/nvim-lspconfig")

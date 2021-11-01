@@ -105,6 +105,7 @@ return require("packer").startup(function()
     use("jose-elias-alvarez/null-ls.nvim")
 
     -- misc
+    use_with_config("nathom/filetype.nvim", "filetype") -- greatly reduce startup time
     use({
         "iamcco/markdown-preview.nvim",
         ft = { "markdown" },

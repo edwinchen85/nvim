@@ -88,7 +88,6 @@ return require("packer").startup(function()
     use("folke/tokyonight.nvim")
     use("kyazdani42/nvim-web-devicons")
     use_with_config("glepnir/dashboard-nvim", "dashboard")
-    use_with_config("glepnir/galaxyline.nvim", "galaxyline")
     use_with_config("norcalli/nvim-colorizer.lua", "colorizer")
 
     -- local

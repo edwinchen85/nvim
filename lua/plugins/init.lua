@@ -1,9 +1,9 @@
 vim.cmd("packadd packer.nvim")
 return require("packer").startup(function()
-    use("wbthomason/packer.nvim")
+    use({ "wbthomason/packer.nvim", opt = true })
 
     local config = function(name)
-        pcall(require, "plugins." .. name)
+        return string.format("require('plugins.%s')", name)
     end
 
     local use_with_config = function(path, name)
@@ -73,9 +73,21 @@ return require("packer").startup(function()
 
     -- integrations
     use_with_config("mcchrish/nnn.vim", "nnn") -- file manager integration
+    use({
+        "nvim-telescope/telescope.nvim",
+        config = config("telescope"),
+        requires = { {
+            "nvim-lua/popup.nvim",
+            "nvim-telescope/telescope-fzf-native.nvim", -- better algorithm
+            run = "make",
+        } },
+    })
+
+    -- lsp
+    use("neovim/nvim-lspconfig")
+    use("jose-elias-alvarez/null-ls.nvim")
 
     -- development
-    use("neovim/nvim-lspconfig")
     use("nvim-lua/plenary.nvim")
     use({
         "nvim-treesitter/nvim-treesitter",
@@ -97,7 +109,6 @@ return require("packer").startup(function()
     -- local
     use_with_config("jose-elias-alvarez/buftabline.nvim", "buftabline")
     use("jose-elias-alvarez/nvim-lsp-ts-utils")
-    use("jose-elias-alvarez/null-ls.nvim")
 
     -- misc
     use_with_config("nathom/filetype.nvim", "filetype") -- greatly reduce startup time

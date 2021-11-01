@@ -14,6 +14,19 @@ telescope.setup({
     },
     defaults = {
         find_command = {'rg', '--no-heading', '--with-filename', '--line-number', '--column', '--smart-case'},
+        vimgrep_arguments = {
+            "rg",
+            "--color=never",
+            "--no-heading",
+            "--with-filename",
+            "--line-number",
+            "--column",
+            "--smart-case",
+            "--ignore",
+            "--hidden",
+            "-g",
+            "!.git",
+        },
         prompt_prefix = " ",
         selection_caret = " ",
         entry_prefix = "  ",
@@ -35,7 +48,7 @@ telescope.setup({
             },
         },
         file_sorter = require'telescope.sorters'.get_fzy_sorter,
-        file_ignore_patterns = { "*.d.ts", "node_modules/**.*" },
+        file_ignore_patterns = { "*.d.ts", "node_modules/**.*", "package-lock.json", "yarn.lock", ".git" },
         generic_sorter = require'telescope.sorters'.get_generic_fuzzy_sorter,
         path_display = { shorten = 5 },
         winblend = 0,
@@ -111,6 +124,17 @@ _G.global.telescope = {
             builtin.find_files(opts)
         end
     end,
+    file_browser = function()
+        require("telescope.builtin").file_browser({
+            dir_icon = "",
+            hidden = true,
+            cwd = require("telescope.utils").buffer_dir(),
+        })
+    end,
 }
 
-u.lua_command("Rg", "global.telescope.grep_prompt()")
+-- lsp
+u.command("LspRef", "Telescope lsp_references")
+u.command("LspDef", "Telescope lsp_definitions")
+u.command("LspSym", "Telescope lsp_workspace_symbols")
+u.command("LspAct", "Telescope lsp_code_actions")

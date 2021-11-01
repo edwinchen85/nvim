@@ -17,12 +17,12 @@ return require("packer").startup(function()
     use("tpope/vim-capslock")
     use("tpope/vim-surround")
     use("tpope/vim-unimpaired")
-    use("tpope/vim-commentary")
     use({
         "tpope/vim-fugitive",
         { "junegunn/gv.vim", "tommcdo/vim-fugitive-blame-ext" }
     })
     use_with_config("lewis6991/gitsigns.nvim", "gitsigns")
+    use_with_config("numToStr/Comment.nvim", "comment")
 
     -- custom
     use_with_config("kyazdani42/nvim-tree.lua", "nvimtree")

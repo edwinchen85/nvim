@@ -43,16 +43,6 @@ return require("packer").startup(function()
 
     -- text objects
     use("wellle/targets.vim") -- many useful additional text objects
-    use({
-        "kana/vim-textobj-user",
-        {
-            "thinca/vim-textobj-between", -- af/if for region between characters
-            "Julian/vim-textobj-variable-segment", -- av/iv for variable segment
-            "kana/vim-textobj-entire", -- ae/ie for entire buffer
-            "beloglazov/vim-textobj-punctuation", -- au/iu for punctuation
-            "preservim/vim-textobj-sentence", -- better sentences
-        },
-    })
 
     -- additional functionality
     use({

@@ -55,13 +55,21 @@ return require("packer").startup(function()
     })
 
     -- additional functionality
-    use_with_config("windwp/nvim-autopairs", "autopairs") -- autocomplete pairs
     use({
-        "nvim-telescope/telescope.nvim",
-        requires = { "nvim-lua/popup.nvim" },
-        config = config("telescope"),
+        "hrsh7th/nvim-cmp", -- completion
+        requires = {
+            "hrsh7th/cmp-nvim-lsp",
+            "hrsh7th/cmp-nvim-lua",
+            "hrsh7th/cmp-buffer",
+            "hrsh7th/cmp-path",
+        },
+        config = config("cmp"),
     })
-    use({ "nvim-telescope/telescope-fzf-native.nvim", run = "make" }) -- better search algorithm
+    use({
+        "windwp/nvim-autopairs", -- autocomplete pairs
+        config = config("autopairs"),
+        wants = "nvim-cmp",
+    })
 
     -- integrations
     use_with_config("mcchrish/nnn.vim", "nnn") -- file manager integration
@@ -87,6 +95,7 @@ return require("packer").startup(function()
     -- visual
     use("folke/tokyonight.nvim")
     use("kyazdani42/nvim-web-devicons")
+    use("onsails/lspkind-nvim")
     use_with_config("glepnir/dashboard-nvim", "dashboard")
     use_with_config("norcalli/nvim-colorizer.lua", "colorizer")
 

@@ -3,7 +3,6 @@ vim.g.mapleader = " "
 vim.opt.backspace = { "indent", "eol", "start" }
 vim.opt.clipboard = "unnamedplus"
 vim.opt.encoding = 'utf-8' -- Set default encoding to UTF-8
-vim.opt.completeopt = { "menuone", "noselect" }
 vim.opt.expandtab = true -- Uses spaces instead of tabs
 vim.opt.foldenable = true
 vim.opt.foldmethod = "indent"

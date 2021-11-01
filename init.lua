@@ -82,7 +82,8 @@ augroup END
   false
 )
 
-_G.global = {}
+-- Initialize global object for config
+global = {}
 
 -- source remaining lua config
 require("keymappings")

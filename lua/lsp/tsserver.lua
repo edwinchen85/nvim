@@ -5,26 +5,23 @@ local u = require("utils")
 local cmd = { "typescript-language-server", "--stdio", "--tsserver-path", "/usr/local/bin/tsserver" }
 
 local ts_utils_settings = {
-    -- debug = true,
-    enable_import_on_completion = true,
     import_all_scan_buffers = 100,
     eslint_bin = "eslint_d",
     eslint_enable_diagnostics = true,
     eslint_opts = {
         condition = function(utils)
-            return utils.root_has_file(".eslintrc.js")
+            return utils.root_has_file("tsconfig.json")
         end,
-        diagnostic_format = "#{m} [#{c}]",
     },
     enable_formatting = true,
     formatter = "eslint_d",
     update_imports_on_move = true,
     -- filter out dumb module warning
-    filter_out_diagnostics_by_code = { 80001 },
+    filter_out_diagnostics_by_code = { 80001, 80006 },
 }
 
 local M = {}
-M.setup = function(on_attach)
+M.setup = function(on_attach, capabilities)
     lspconfig.tsserver.setup({
         cmd = cmd,
         on_attach = function(client, bufnr)
@@ -41,13 +38,11 @@ M.setup = function(on_attach)
             u.buf_map("n", "gI", ":TSLspRenameFile<CR>", nil, bufnr)
             u.buf_map("n", "gt", ":TSLspImportAll<CR>", nil, bufnr)
             u.buf_map("n", "qq", ":TSLspFixCurrent<CR>", nil, bufnr)
-            u.buf_map("i", ".", ".<C-x><C-o>", nil, bufnr)
-
-            vim.opt_local.omnifunc = "v:lua.vim.lsp.omnifunc"
         end,
         flags = {
             debounce_text_changes = 150,
         },
+        capabilities = capabilities,
     })
 end
 

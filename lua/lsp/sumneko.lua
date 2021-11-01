@@ -1,15 +1,21 @@
 local lspconfig = require("lspconfig")
 
-local u = require("utils")
+local runtime_path = vim.split(package.path, ";")
+table.insert(runtime_path, "lua/?.lua")
+table.insert(runtime_path, "lua/?/init.lua")
 
-local root = vim.fn.getenv("HOME") .. "/.local/share/nvim/lspinstall/lua/sumneko-lua-language-server/"
+local root = vim.fn.getenv("HOME") .. "/git/lua-language-server/"
 local binary = root .. "bin/macOS/lua-language-server"
 local settings = {
     Lua = {
-        runtime = { version = "LuaJIT" },
+        runtime = { version = "LuaJIT", path = runtime_path },
+        workspace = {
+            library = vim.api.nvim_get_runtime_file("", true),
+        },
         diagnostics = {
             enable = true,
             globals = {
+                "global",
                 "vim",
                 "use",
                 "describe",
@@ -23,18 +29,15 @@ local settings = {
 }
 
 local M = {}
-M.setup = function(on_attach)
+M.setup = function(on_attach, capabilities)
     lspconfig.sumneko_lua.setup({
-        on_attach = function(client, bufnr)
-            on_attach(client)
-            vim.opt_local.omnifunc = "v:lua.vim.lsp.omnifunc"
-            u.buf_map("i", ".", ".<C-x><C-o>", nil, bufnr)
-        end,
+        on_attach = on_attach,
         cmd = { binary, "-E", root .. "main.lua" },
         settings = settings,
         flags = {
             debounce_text_changes = 150,
         },
+        capabilities = capabilities,
     })
 end
 

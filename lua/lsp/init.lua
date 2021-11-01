@@ -16,7 +16,7 @@ local popup_opts = { border = "single", focusable = false }
 lsp.handlers["textDocument/signatureHelp"] = lsp.with(lsp.handlers.signature_help, popup_opts)
 lsp.handlers["textDocument/hover"] = lsp.with(lsp.handlers.hover, popup_opts)
 
-_G.global.lsp = {
+global.lsp = {
     popup_opts = popup_opts,
 }
 
@@ -48,10 +48,13 @@ local on_attach = function(client, bufnr)
     u.buf_map("n", "gd", ":LspDef<CR>", nil, bufnr)
 
     if client.resolved_capabilities.document_formatting then
-        u.buf_augroup("LspFormatOnSave", "BufWritePre", "lua vim.lsp.buf.formatting_sync()")
+        vim.cmd("autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_sync()")
     end
 end
 
-tsserver.setup(on_attach)
-sumneko.setup(on_attach)
+local capabilities = vim.lsp.protocol.make_client_capabilities()
+capabilities = require("cmp_nvim_lsp").update_capabilities(capabilities)
+
+tsserver.setup(on_attach, capabilities)
+sumneko.setup(on_attach, capabilities)
 null_ls.setup(on_attach)

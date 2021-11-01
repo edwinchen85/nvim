@@ -100,6 +100,7 @@ return require("packer").startup(function()
 
     -- visual
     use("folke/tokyonight.nvim")
+    use("lifepillar/vim-solarized8")
     use("kyazdani42/nvim-web-devicons")
     use("onsails/lspkind-nvim")
     use_with_config("glepnir/dashboard-nvim", "dashboard")

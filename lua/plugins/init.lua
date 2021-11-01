@@ -86,11 +86,6 @@ return require("packer").startup(function()
     use({ "windwp/nvim-ts-autotag", ft = { "typescript", "typescriptreact", "javascript", "javascriptreact" } }) -- autocomplete close jsx tags
     use_with_config("ahmedkhalf/lsp-rooter.nvim", "rooter") -- automagically change working directory
 
-    -- autocomplete
-    use_with_config("hrsh7th/nvim-compe", "compe")
-    use({ "hrsh7th/vim-vsnip" })
-    use({ "rafamadriz/friendly-snippets" })
-
     -- visual
     use("folke/tokyonight.nvim")
     use("kyazdani42/nvim-web-devicons")

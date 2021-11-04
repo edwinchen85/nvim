@@ -43,9 +43,10 @@ local on_attach = function(client, bufnr)
     u.buf_map("i", "<C-x><C-x>", "<cmd> LspSignatureHelp<CR>", nil, bufnr)
 
     -- telescope
-    u.buf_map("n", "ga", ":LspAct<CR>", nil, bufnr)
     u.buf_map("n", "gr", ":LspRef<CR>", nil, bufnr)
     u.buf_map("n", "gd", ":LspDef<CR>", nil, bufnr)
+    u.buf_map("n", "ga", ":LspAct<CR>", nil, bufnr)
+    u.buf_map("v", "ga", "<Esc><cmd> LspRangeAct<CR>", nil, bufnr)
 
     if client.resolved_capabilities.document_formatting then
         vim.cmd("autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_sync()")

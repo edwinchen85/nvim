@@ -1,6 +1,9 @@
 require("nvim-treesitter.configs").setup({
     indent = { enable = true },
-    context_commentstring = { enable = true },
+    context_commentstring = {
+        enable = true,
+        enable_autocmd = false,
+    },
     autopairs = { enable = true },
     ensure_installed = {
         "javascript",

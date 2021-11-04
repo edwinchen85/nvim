@@ -62,7 +62,6 @@ return require("packer").startup(function()
     })
 
     -- integrations
-    use_with_config("mcchrish/nnn.vim", "nnn") -- file manager integration
     use({
         "nvim-telescope/telescope.nvim",
         config = config("telescope"),

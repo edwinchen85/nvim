@@ -10,7 +10,7 @@ local sources = {
             return utils.root_has_file("stylua.toml")
         end,
     }),
-    b.formatting.trim_whitespace.with({ filetypes = { "tmux" } }),
+    b.formatting.trim_whitespace.with({ filetypes = { "tmux", "zsh" } }),
     b.formatting.shfmt,
     b.diagnostics.shellcheck.with({ diagnostic_format = "#{m} [#{c}]" }),
     b.code_actions.gitsigns,

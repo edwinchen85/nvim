@@ -45,12 +45,14 @@ return require("packer").startup(function()
     use("wellle/targets.vim") -- many useful additional text objects
 
     -- additional functionality
+    use_with_config("hrsh7th/vim-vsnip", "vsnip") -- snippets
     use({
         "hrsh7th/nvim-cmp", -- completion
         requires = {
             "hrsh7th/cmp-nvim-lsp",
             "hrsh7th/cmp-nvim-lua",
             "hrsh7th/cmp-buffer",
+            "hrsh7th/cmp-vsnip",
             "hrsh7th/cmp-path",
         },
         config = config("cmp"),

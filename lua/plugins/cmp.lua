@@ -32,6 +32,8 @@ cmp.setup({
         ["<Tab>"] = function(fallback)
             if cmp.visible() then
                 cmp.select_next_item()
+            elseif vim.fn.call("vsnip#available", { 1 }) == 1 then
+                u.input("<Plug>(vsnip-expand-or-jump)")
             else
                 fallback()
             end
@@ -39,6 +41,8 @@ cmp.setup({
         ["<S-Tab>"] = function(fallback)
             if cmp.visible() then
                 cmp.select_prev_item()
+            elseif vim.fn.call("vsnip#jumpable", { -1 }) == 1 then
+                u.input("<Plug>(vsnip-jump-prev)")
             else
                 fallback()
             end
@@ -55,6 +59,7 @@ cmp.setup({
         { name = "nvim_lsp" },
         { name = "nvim_lua" },
         { name = "vsnip" },
+        { name = "vsnip", priority = 9999 },
         { name = "path" },
         {
             name = "buffer",

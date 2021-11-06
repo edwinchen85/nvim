@@ -1,7 +1,4 @@
 local u = require("utils")
-local sumneko = require("lsp.sumneko")
-local null_ls = require("lsp.null-ls")
-local tsserver = require("lsp.tsserver")
 
 local lsp = vim.lsp
 
@@ -56,6 +53,6 @@ end
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities = require("cmp_nvim_lsp").update_capabilities(capabilities)
 
-tsserver.setup(on_attach, capabilities)
-sumneko.setup(on_attach, capabilities)
-null_ls.setup(on_attach)
+require("lsp.tsserver").setup(on_attach, capabilities)
+require("lsp.sumneko").setup(on_attach, capabilities)
+require("lsp.null-ls").setup(on_attach)

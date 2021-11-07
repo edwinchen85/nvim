@@ -51,8 +51,8 @@ require'nvim-tree'.setup {
         }
     },
     update_focused_file = {
-        enable      = false,
-        update_cwd  = true
+        enable      = true,
+        update_cwd  = false
     },
     system_open = {
         cmd  = nil,

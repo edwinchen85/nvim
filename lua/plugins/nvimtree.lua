@@ -60,7 +60,7 @@ require'nvim-tree'.setup {
     },
     filters = {
         dotfiles = true,
-        custom = { ".git", "node_modules", "backend", ".cache", "tags", ".DS_Store" }
+        custom = { ".git", "node_modules", ".cache", "tags", ".DS_Store" }
     },
     view = {
         width = 40,

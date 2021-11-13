@@ -375,6 +375,10 @@ u.augroup("WipeRegisters", "VimEnter", "WipeReg")
 -- delete current file and buffer
 u.command("Remove", "call delete(expand('%')) | bdelete")
 
+-- get help for word under cursor
+u.command("Help", 'execute ":help" expand("<cword>")')
+
+-- reset treesitter and lsp diagnostics
 u.command("R", "w | :e")
 
 _G.global.commands = commands

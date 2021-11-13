@@ -77,6 +77,7 @@ return require("packer").startup(function()
     -- lsp
     use("neovim/nvim-lspconfig")
     use("jose-elias-alvarez/null-ls.nvim")
+    use("b0o/schemastore.nvim") -- simple access to json schema
 
     -- development
     use("nvim-lua/plenary.nvim")

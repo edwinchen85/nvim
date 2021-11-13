@@ -368,7 +368,9 @@ u.lua_command("LspShowLineDiagnostics", "global.commands.show_line_diagnostics()
 u.command("WipeReg", "for i in range(34,122) | silent! call setreg(nr2char(i), []) | endfor")
 u.augroup("WipeRegisters", "VimEnter", "WipeReg")
 
-u.command("Remove", "call delete(expand('%')) | lua global.commands.bdelete()")
+-- delete current file and buffer
+u.command("Remove", "call delete(expand('%')) | bdelete")
+
 u.command("R", "w | :e")
 
 _G.global.commands = commands

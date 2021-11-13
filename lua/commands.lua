@@ -127,20 +127,19 @@ end
 
 u.augroup("YankHighlight", "TextYankPost", "lua global.commands.yank_highlight()")
 
-commands.edit_test_file = function(cmd, post)
+-- cmd should be in the form of "edit $FILE",
+-- where $FILE is replaced with the found file's name
+commands.edit_test_file = function(cmd)
     cmd = cmd or "edit"
-
-    local done = function(file)
-        vim.cmd(cmd .. " " .. file)
-        if post then
-            post()
-        end
+    if not cmd:find("$FILE") then
+        cmd = cmd .. " $FILE"
     end
 
-    local root, ft = vim.fn.expand("%:t:r"), vim.bo.filetype
-    -- escape potentially conflicting characters in filename
-    root = root:gsub("%-", "%%-")
-    root = root:gsub("%.", "%%.")
+    local done = function(file)
+        vim.cmd(cmd:gsub("$FILE", file))
+    end
+
+    local root, ft = vim.pesc(vim.fn.expand("%:t:r")), vim.bo.filetype
 
     local patterns = {}
     if ft == "lua" then
@@ -154,7 +153,7 @@ commands.edit_test_file = function(cmd, post)
     for _, pattern in ipairs(patterns) do
         -- go from test file to non-test file
         if root:match(pattern) then
-            pattern = u.replace(root, pattern, "")
+            pattern = root:gsub(vim.pesc(pattern), "")
         else
             pattern = root .. pattern
         end
@@ -167,25 +166,30 @@ commands.edit_test_file = function(cmd, post)
     for _, b in ipairs(vim.fn.getbufinfo({ buflisted = 1 })) do
         for _, pattern in ipairs(final_patterns) do
             if b.name:match(pattern) then
-                vim.cmd(cmd .. " #" .. b.bufnr)
+                done(b.name)
                 return
             end
         end
     end
 
     local scandir = function(path, depth, next)
-        require("plenary.scandir").scan_dir_async(
-            path,
-            { depth = depth, search_pattern = final_patterns, on_exit = vim.schedule_wrap(function(found)
+        require("plenary.scandir").scan_dir_async(path, {
+            depth = depth,
+            search_pattern = final_patterns,
+            on_exit = vim.schedule_wrap(function(found)
                 if found[1] then
                     done(found[1])
                     return
                 end
 
-                assert(next, "test file not found")
+                if not next then
+                    u.warn("test_file: corresponding file not found for file " .. vim.fn.expand("%:t"))
+                    return
+                end
+
                 next()
-            end) }
-        )
+            end),
+        })
     end
 
     -- check same dir files first, then cwd

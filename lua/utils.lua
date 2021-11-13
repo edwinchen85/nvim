@@ -138,4 +138,8 @@ M.timer = function(timeout, interval, should_start, callback)
     }
 end
 
+M.warn = function(msg)
+    api.nvim_echo({ { msg, "WarningMsg" } }, true, {})
+end
+
 return M

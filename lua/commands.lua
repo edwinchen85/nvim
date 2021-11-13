@@ -365,7 +365,11 @@ end
 
 u.lua_command("LspShowLineDiagnostics", "global.commands.show_line_diagnostics()")
 
+-- misc
+-- wipe all registers
 u.command("WipeReg", "for i in range(34,122) | silent! call setreg(nr2char(i), []) | endfor")
+
+-- start vim with clean registers
 u.augroup("WipeRegisters", "VimEnter", "WipeReg")
 
 -- delete current file and buffer

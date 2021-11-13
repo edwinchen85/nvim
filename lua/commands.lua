@@ -12,6 +12,11 @@ end
 
 local commands = {}
 
+-- make global to make ex commands easier
+_G.inspect = function(...)
+    print(vim.inspect(...))
+end
+
 commands.vsplit = function(args)
     if not args then
         vim.cmd("vsplit")

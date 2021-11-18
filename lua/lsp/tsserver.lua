@@ -40,7 +40,6 @@ M.setup = function(on_attach, capabilities)
             u.buf_map("n", "gs", ":TSLspOrganize<CR>", nil, bufnr)
             u.buf_map("n", "gI", ":TSLspRenameFile<CR>", nil, bufnr)
             u.buf_map("n", "gt", ":TSLspImportAll<CR>", nil, bufnr)
-            u.buf_map("n", "qq", ":TSLspFixCurrent<CR>", nil, bufnr)
         end,
         flags = {
             debounce_text_changes = 150,

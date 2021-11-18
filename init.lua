@@ -29,7 +29,6 @@ vim.opt.spelllang = "en"
 vim.opt.splitbelow = true -- Put new windows below current
 vim.opt.splitright = true -- Put new windows right of current
 vim.opt.diffopt = "vertical,filler"
-vim.opt.statusline = [[%f %y %m %= %p%% %l:%c]]
 vim.opt.tabstop = 4
 vim.opt.termguicolors = true -- You will have bad experience for diagnostic messages when it's default 4000.
 vim.opt.wrap = true

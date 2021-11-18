@@ -3,7 +3,7 @@ local b = null_ls.builtins
 
 local sources = {
     b.formatting.prettier.with({
-        filetypes = { "html", "json", "yaml", "markdown" },
+        disabled_filetypes = { "typescript", "typescriptreact" },
     }),
     b.formatting.stylua.with({
         condition = function(utils)

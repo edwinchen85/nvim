@@ -67,11 +67,12 @@ return require("packer").startup(function()
     use({
         "nvim-telescope/telescope.nvim",
         config = config("telescope"),
-        requires = { {
-            "nvim-lua/popup.nvim",
+        requires = {
+            {
             "nvim-telescope/telescope-fzf-native.nvim", -- better algorithm
             run = "make",
-        } },
+            }
+        },
     })
 
     -- lsp

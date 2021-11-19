@@ -42,7 +42,7 @@ u.nmap('<Leader>n', ':NvimTreeRefresh<CR>:NvimTreeFindFile<CR>')
 u.nmap('<Leader>R', ':Remove<CR>')
 
 -- Buffer
-u.nmap('<Leader>c', ':Bdelete<CR>')
+u.nmap('<Leader>c', ':BufDel<CR>')
 u.nmap('<C-h>', ':BufPrev<CR>')
 u.nmap('<C-l>', ':BufNext<CR>')
 

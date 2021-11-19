@@ -45,6 +45,7 @@ return require("packer").startup(function()
     use("wellle/targets.vim") -- many useful additional text objects
 
     -- additional functionality
+    use_with_config("ojroques/nvim-bufdel", "bufdel") -- better buffer deletion
     use_with_config("abecodes/tabout.nvim", "tabout") -- tab out of pairs
     use_with_config("hrsh7th/vim-vsnip", "vsnip") -- snippets
     use({
@@ -82,7 +83,6 @@ return require("packer").startup(function()
     use("b0o/schemastore.nvim") -- simple access to json schema
 
     -- development
-    use("nvim-lua/plenary.nvim")
     use({
         "nvim-treesitter/nvim-treesitter",
         run = ":TSUpdate",
@@ -107,6 +107,7 @@ return require("packer").startup(function()
 
     -- misc
     use_with_config("nathom/filetype.nvim", "filetype") -- greatly reduce startup time
+    use("nvim-lua/plenary.nvim")
     use({
         "iamcco/markdown-preview.nvim",
         ft = { "markdown" },

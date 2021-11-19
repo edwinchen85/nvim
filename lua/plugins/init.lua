@@ -45,6 +45,7 @@ return require("packer").startup(function()
     use("wellle/targets.vim") -- many useful additional text objects
 
     -- additional functionality
+    use_with_config("abecodes/tabout.nvim", "tabout") -- tab out of pairs
     use_with_config("hrsh7th/vim-vsnip", "vsnip") -- snippets
     use({
         "hrsh7th/nvim-cmp", -- completion

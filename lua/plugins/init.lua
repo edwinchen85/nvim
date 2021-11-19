@@ -89,6 +89,7 @@ return require("packer").startup(function()
     })
     use({ "JoosepAlviste/nvim-ts-context-commentstring", ft = { "typescript", "typescriptreact", "javascript", "javascriptreact" } }) -- makes jsx comments actually work
     use({ "windwp/nvim-ts-autotag", ft = { "typescript", "typescriptreact", "javascript", "javascriptreact" } }) -- autocomplete close jsx tags
+    use_with_config("ahmedkhalf/project.nvim", "project")
 
     -- visual
     use("folke/tokyonight.nvim")

@@ -44,7 +44,7 @@ end
 
 vim.cmd("command! -complete=file -nargs=* Vsplit lua global.commands.vsplit(<f-args>)")
 u.command("VsplitLast", "Vsplit #")
-u.map("n", "<Leader>vv", ":VsplitLast<CR>")
+u.nmap("<Leader>vv", ":VsplitLast<CR>")
 
 commands.bonly = function(bufnr)
     bufnr = bufnr or api.nvim_get_current_buf()
@@ -118,13 +118,13 @@ commands.save_on_cr = function()
     return vim.bo.buftype ~= "" and u.t("<CR>") or u.t(":w<CR>")
 end
 
-u.map("n", "<CR>", "v:lua.global.commands.save_on_cr()", { expr = true })
+u.nmap("<CR>", "v:lua.global.commands.save_on_cr()", { expr = true })
 
 commands.stop_recording = function()
     return vim.fn.reg_recording() ~= "" and u.t("q") or ""
 end
 
-u.map("n", "q", "v:lua.global.commands.stop_recording()", { expr = true })
+u.nmap("q", "v:lua.global.commands.stop_recording()", { expr = true })
 
 commands.yank_highlight = function()
     vim.highlight.on_yank({ higroup = "IncSearch", timeout = 100 })
@@ -204,7 +204,7 @@ commands.edit_test_file = function(cmd)
 end
 
 vim.cmd("command! -complete=command -nargs=* TestFile lua global.commands.edit_test_file(<f-args>)")
-u.map("n", "<Leader>tv", ":TestFile Vsplit<CR>")
+u.nmap("<Leader>tv", ":TestFile Vsplit<CR>")
 
 -- gitsigns
 commands.next_hunk = function()

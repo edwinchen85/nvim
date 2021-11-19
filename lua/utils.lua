@@ -16,6 +16,12 @@ M.map = function(mode, target, source, opts)
     api.nvim_set_keymap(mode, target, source, get_map_options(opts))
 end
 
+for _, mode in ipairs({ "c", "i", "n", "o", "t", "u", "x" }) do
+    M[mode .. "map"] = function(...)
+        M.map(mode, ...)
+    end
+end
+
 M.buf_map = function(mode, target, source, opts, bufnr)
     api.nvim_buf_set_keymap(bufnr, mode, target, source, get_map_options(opts))
 end

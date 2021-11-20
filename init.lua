@@ -2,6 +2,7 @@ vim.g.mapleader = " "
 
 vim.opt.backspace = { "indent", "eol", "start" }
 vim.opt.clipboard = "unnamedplus"
+vim.opt.colorcolumn = "9999" -- Hide color column
 vim.opt.encoding = 'utf-8' -- Set default encoding to UTF-8
 vim.opt.expandtab = true -- Uses spaces instead of tabs
 vim.opt.foldenable = true
@@ -15,7 +16,6 @@ vim.opt.inccommand = "split" -- Shows the match while typing
 vim.opt.joinspaces = false -- No double spaces with join
 vim.opt.linebreak = true -- Stop words being broken on wrap
 vim.opt.list = false -- Show some invisible characters
-vim.opt.cc = "120"
 vim.opt.mouse = "a"
 vim.opt.pumheight = 10
 vim.opt.shiftwidth = 4 -- Size of indent

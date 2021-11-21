@@ -2,14 +2,6 @@ local u = require("utils")
 
 local api = vim.api
 
-local for_each_buffer = function(cb, force)
-    u.for_each(vim.fn.getbufinfo({ buflisted = true }), function(b)
-        if b.changed == 0 and not force then
-            cb(b)
-        end
-    end)
-end
-
 local commands = {}
 
 -- make global to make ex commands easier

@@ -4,7 +4,7 @@ local runtime_path = vim.split(package.path, ";")
 table.insert(runtime_path, "lua/?.lua")
 table.insert(runtime_path, "lua/?/init.lua")
 
-local root = vim.fn.getenv("HOME") .. "/git/lua-language-server/"
+local root = vim.fn.getenv("HOME") .. "/tools/lua-language-server/"
 local binary = root .. "bin/macOS/lua-language-server"
 local settings = {
     Lua = {
@@ -24,6 +24,9 @@ local settings = {
                 "before_each",
                 "after_each",
             },
+        },
+        completion = {
+            showWord = "Disable",
         },
     },
 }

@@ -70,6 +70,8 @@ vim.g.loaded_vimballPlugin     = 1
 vim.g.loaded_getscriptPlugin   = 1
 vim.g.loaded_remote_plugins    = 1
 
+vim.cmd([[filetype plugin indent on]])
+
 -- the only way I've found to make this persistent
 vim.cmd("autocmd BufEnter * setlocal formatoptions-=cro")
 

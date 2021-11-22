@@ -70,6 +70,10 @@ vim.g.loaded_vimballPlugin     = 1
 vim.g.loaded_getscriptPlugin   = 1
 vim.g.loaded_remote_plugins    = 1
 
+vim.cmd([[
+    au VimEnter * highlight VertSplit guibg=bg guifg=bg
+]])
+
 vim.cmd([[filetype plugin indent on]])
 
 -- the only way I've found to make this persistent

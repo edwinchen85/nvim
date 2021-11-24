@@ -1,5 +1,4 @@
 local cmp = require("cmp")
-local lspkind = require ("lspkind")
 
 local formatting = {
   kind_icons = {

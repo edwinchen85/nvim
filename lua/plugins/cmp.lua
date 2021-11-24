@@ -1,4 +1,5 @@
 local cmp = require("cmp")
+local u = require("utils")
 
 local formatting = {
   kind_icons = {

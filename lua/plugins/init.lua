@@ -101,6 +101,7 @@ return require("packer").startup(function()
 
     -- local
     use("jose-elias-alvarez/nvim-lsp-ts-utils")
+    use_with_config("romgrk/barbar.nvim", "bufferline")
 
     -- misc
     use_with_config("nathom/filetype.nvim", "filetype") -- greatly reduce startup time

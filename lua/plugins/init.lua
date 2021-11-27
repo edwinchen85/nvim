@@ -45,7 +45,6 @@ return require("packer").startup(function()
     use("wellle/targets.vim") -- many useful additional text objects
 
     -- additional functionality
-    use_with_config("ojroques/nvim-bufdel", "bufdel") -- better buffer deletion
     use_with_config("abecodes/tabout.nvim", "tabout") -- tab out of pairs
     use_with_config("hrsh7th/vim-vsnip", "vsnip") -- snippets
     use({
@@ -101,7 +100,6 @@ return require("packer").startup(function()
     use_with_config("norcalli/nvim-colorizer.lua", "colorizer")
 
     -- local
-    use_with_config("jose-elias-alvarez/buftabline.nvim", "buftabline")
     use("jose-elias-alvarez/nvim-lsp-ts-utils")
 
     -- misc

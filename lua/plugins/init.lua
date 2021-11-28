@@ -93,7 +93,6 @@ return require("packer").startup(function()
 
     -- visual
     use("folke/tokyonight.nvim")
-    use("lifepillar/vim-solarized8")
     use("kyazdani42/nvim-web-devicons")
     use_with_config("glepnir/dashboard-nvim", "dashboard")
     use_with_config("nvim-lualine/lualine.nvim", "lualine") -- statusline and tabline

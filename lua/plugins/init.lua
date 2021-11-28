@@ -82,6 +82,7 @@ return require("packer").startup(function()
     use("b0o/schemastore.nvim") -- simple access to json schema
 
     -- development
+    use("nvim-lua/plenary.nvim")
     use({
         "nvim-treesitter/nvim-treesitter",
         run = ":TSUpdate",
@@ -104,8 +105,6 @@ return require("packer").startup(function()
     use_with_config("romgrk/barbar.nvim", "bufferline")
 
     -- misc
-    use_with_config("nathom/filetype.nvim", "filetype") -- greatly reduce startup time
-    use("nvim-lua/plenary.nvim")
     use({
         "iamcco/markdown-preview.nvim",
         ft = { "markdown" },

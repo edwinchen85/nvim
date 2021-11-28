@@ -1,7 +1,5 @@
-vim.g.nvim_tree_gitignore = 1
 vim.g.nvim_tree_quit_on_open = 1 -- "0 by default, closes the tree when you open a file
 vim.g.nvim_tree_indent_markers = 0 -- "0 by default, this option shows indent markers when folders are open
-vim.g.nvim_tree_auto_ignore_ft = {"startify", "dashboard"} -- empty by default, don't auto open tree on specific filetypes.
 vim.g.nvim_tree_root_folder_modifier = ":t" -- :~ by default, root folder display format
 vim.g.nvim_tree_refresh_wait = 500 -- "1000 by default, control how often the tree can be refreshed
 vim.g.nvim_tree_respect_buf_cwd = 1 -- "0 by default, will change cwd of nvim-tree to that of new buffer's when opening nvim-tree.
@@ -33,7 +31,7 @@ require'nvim-tree'.setup {
     disable_netrw       = true,
     hijack_netrw        = true,
     open_on_setup       = false,
-    ignore_ft_on_setup  = {},
+    ignore_ft_on_setup  = {"startify", "dashboard"},
     auto_close          = false,
     open_on_tab         = false,
     hijack_cursor       = false,
@@ -62,6 +60,11 @@ require'nvim-tree'.setup {
     filters = {
         dotfiles = true,
         custom = { ".git", "node_modules", ".cache", "tags", ".DS_Store" }
+    },
+    git = {
+        enable = true,
+        ignore = true,
+        timeout = 500,
     },
     view = {
         width = 40,

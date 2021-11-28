@@ -94,6 +94,7 @@ return require("packer").startup(function()
     -- visual
     use("folke/tokyonight.nvim")
     use("kyazdani42/nvim-web-devicons")
+    use_with_config("ishan9299/nvim-solarized-lua", "solarized")
     use_with_config("glepnir/dashboard-nvim", "dashboard")
     use_with_config("nvim-lualine/lualine.nvim", "lualine") -- statusline and tabline
     use_with_config("norcalli/nvim-colorizer.lua", "colorizer")

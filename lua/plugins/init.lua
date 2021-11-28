@@ -79,6 +79,7 @@ return require("packer").startup(function()
     -- lsp
     use("neovim/nvim-lspconfig")
     use("jose-elias-alvarez/null-ls.nvim")
+    use("jose-elias-alvarez/nvim-lsp-ts-utils")
     use("b0o/schemastore.nvim") -- simple access to json schema
 
     -- development
@@ -99,9 +100,6 @@ return require("packer").startup(function()
     use_with_config("glepnir/dashboard-nvim", "dashboard")
     use_with_config("nvim-lualine/lualine.nvim", "lualine") -- statusline and tabline
     use_with_config("norcalli/nvim-colorizer.lua", "colorizer")
-
-    -- local
-    use("jose-elias-alvarez/nvim-lsp-ts-utils")
     use_with_config("romgrk/barbar.nvim", "bufferline")
 
     -- misc

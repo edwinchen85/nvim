@@ -35,6 +35,7 @@ vim.opt.wrap = true
 vim.opt.undofile = true
 vim.opt.updatetime = 250
 vim.opt.timeoutlen = 500
+vim.opt.ttimeoutlen = 0
 vim.opt.writebackup = false
 vim.opt.swapfile = false
 vim.opt.directory = "/tmp"

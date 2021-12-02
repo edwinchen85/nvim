@@ -206,3 +206,6 @@ u.imap(":", ":<c-g>u")
 -- Shortcut to command mode
 u.nmap(';', ':', { silent = false })
 u.xmap(';', ':', { silent = false })
+
+-- Swap interactive
+u.nmap('gS', '<Plug>(swap-interactive)', { noremap = false })

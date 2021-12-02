@@ -43,6 +43,7 @@ return require("packer").startup(function()
 
     -- text objects
     use("wellle/targets.vim") -- many useful additional text objects
+    use("machakann/vim-swap") -- swap delimited items
 
     -- additional functionality
     use_with_config("abecodes/tabout.nvim", "tabout") -- tab out of pairs

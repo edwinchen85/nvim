@@ -3,6 +3,7 @@ vim.g.nvim_tree_indent_markers = 0 -- "0 by default, this option shows indent ma
 vim.g.nvim_tree_root_folder_modifier = ":t" -- :~ by default, root folder display format
 vim.g.nvim_tree_refresh_wait = 500 -- "1000 by default, control how often the tree can be refreshed
 vim.g.nvim_tree_respect_buf_cwd = 1 -- "0 by default, will change cwd of nvim-tree to that of new buffer's when opening nvim-tree.
+vim.g.nvim_tree_special_files = {} -- List of filenames that gets highlighted with NvimTreeSpecialFile
 
 local tree_cb = require"nvim-tree.config".nvim_tree_callback
 

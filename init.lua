@@ -78,7 +78,7 @@ vim.cmd([[
 vim.cmd([[filetype plugin indent on]])
 
 -- the only way I've found to make this persistent
-vim.cmd("autocmd BufEnter * setlocal formatoptions-=cro")
+vim.cmd("autocmd BufEnter * setlocal formatoptions-=cro indentkeys-=:")
 
 -- Use spelling for markdown files ]s to find next, [s for previous, z= for suggestions when on one.
 -- Source: http:--thejakeharding.com/tutorial/2012/06/13/using-spell-check-in-vim.html

@@ -24,4 +24,13 @@ require("nvim-treesitter.configs").setup({
     matchup = {
         enable = true,
     },
+    refactor = {
+        navigation = {
+            enable = true,
+            keymaps = {
+                goto_next_usage = "<M-n>",
+                goto_previous_usage = "<M-p>",
+            },
+        },
+    },
 })

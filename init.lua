@@ -1,5 +1,6 @@
 vim.g.mapleader = " "
 
+vim.opt.autoread = true -- Read again when file has changed outside of vim
 vim.opt.backspace = { "indent", "eol", "start" }
 vim.opt.clipboard = "unnamedplus"
 vim.opt.colorcolumn = "9999" -- Hide color column

@@ -93,8 +93,8 @@ local mappings = {
     },
     l = {
         name = "+LSP",
-        d = {"<cmd>Telescope lsp_document_diagnostics<cr>", "Document Diagnostics"},
-        w = {"<cmd>Telescope lsp_workspace_diagnostics<cr>", "Workspace Diagnostics"},
+        d = {"<cmd>Telescope diagnostics bufnr=0<cr>", "Document Diagnostics"},
+        w = {"<cmd>Telescope diagnostics<cr>", "Workspace Diagnostics"},
         l = {"<cmd>Telescope loclist<cr>", "Loclist"},
         q = {"<cmd>Telescope quickfix<cr>", "Quickfix"},
         f = {"<cmd>LspFormatting<cr>", "Format"},

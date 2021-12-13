@@ -2,7 +2,7 @@ local function clock()
   return " " .. os.date("%H:%M")
 end
 
-local function lsp_progress(self, is_active)
+local function lsp_progress(_, is_active)
   if not is_active then
     return ""
   end
@@ -34,7 +34,7 @@ local config = {
   sections = {
     lualine_a = { "mode" },
     lualine_b = { "branch" },
-    lualine_c = { { "diagnostics", sources = { "nvim_lsp" } }, "filename" },
+    lualine_c = { { "diagnostics", sources = { "nvim_diagnostic" } }, "filename" },
     lualine_x = { "filetype", lsp_progress },
     lualine_y = { "progress" },
     lualine_z = { clock },

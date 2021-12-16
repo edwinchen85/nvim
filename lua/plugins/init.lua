@@ -47,7 +47,6 @@ return require("packer").startup(function()
     use("machakann/vim-swap") -- swap delimited items
 
     -- additional functionality
-    use_with_config("abecodes/tabout.nvim", "tabout") -- tab out of pairs
     use_with_config("hrsh7th/vim-vsnip", "vsnip") -- snippets
     use("rafamadriz/friendly-snippets")
     use({

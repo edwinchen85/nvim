@@ -209,3 +209,6 @@ u.xmap(';', ':', { silent = false })
 
 -- Swap interactive
 u.nmap('gS', '<Plug>(swap-interactive)', { noremap = false })
+
+-- Source luafile
+u.nmap('<Leader>sv', ":luafile %<CR>")

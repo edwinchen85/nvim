@@ -51,6 +51,5 @@ capabilities = require("cmp_nvim_lsp").update_capabilities(capabilities)
 
 require("lsp.tsserver").setup(on_attach, capabilities)
 require("lsp.sumneko").setup(on_attach, capabilities)
-require("lsp.jsonls").setup(on_attach, capabilities)
 require("lsp.bashls").setup(on_attach, capabilities)
 require("lsp.null-ls").setup(on_attach)

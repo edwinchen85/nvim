@@ -1,4 +1,5 @@
 vim.cmd("packadd packer.nvim")
+
 return require("packer").startup(function()
     use({ "wbthomason/packer.nvim", opt = true })
 
@@ -19,7 +20,7 @@ return require("packer").startup(function()
     use("tpope/vim-unimpaired")
     use({
         "tpope/vim-fugitive",
-        { "junegunn/gv.vim", "tommcdo/vim-fugitive-blame-ext" }
+        { "junegunn/gv.vim", "tommcdo/vim-fugitive-blame-ext" },
     })
     use_with_config("lewis6991/gitsigns.nvim", "gitsigns")
     use_with_config("numToStr/Comment.nvim", "comment")
@@ -72,9 +73,9 @@ return require("packer").startup(function()
         config = config("telescope"),
         requires = {
             {
-            "nvim-telescope/telescope-fzf-native.nvim", -- better algorithm
-            run = "make",
-            }
+                "nvim-telescope/telescope-fzf-native.nvim", -- better algorithm
+                run = "make",
+            },
         },
     })
 
@@ -92,7 +93,10 @@ return require("packer").startup(function()
         config = config("treesitter"),
     })
     use("nvim-treesitter/nvim-treesitter-refactor")
-    use({ "JoosepAlviste/nvim-ts-context-commentstring", ft = { "typescript", "typescriptreact", "javascript", "javascriptreact" } }) -- makes jsx comments actually work
+    use({
+        "JoosepAlviste/nvim-ts-context-commentstring",
+        ft = { "typescript", "typescriptreact", "javascript", "javascriptreact" },
+    }) -- makes jsx comments actually work
     use({ "windwp/nvim-ts-autotag", ft = { "typescript", "typescriptreact", "javascript", "javascriptreact" } }) -- autocomplete close jsx tags
     use_with_config("ahmedkhalf/project.nvim", "project")
 

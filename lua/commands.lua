@@ -149,49 +149,49 @@ u.nmap("<Leader>tv", ":TestFile Vsplit<CR>")
 
 -- gitsigns
 commands.next_hunk = function()
-    return require('gitsigns').next_hunk()
+    return require("gitsigns").next_hunk()
 end
 
 u.lua_command("NextHunk", "global.commands.next_hunk()")
 
 commands.prev_hunk = function()
-    return require('gitsigns').prev_hunk()
+    return require("gitsigns").prev_hunk()
 end
 
 u.lua_command("PrevHunk", "global.commands.prev_hunk()")
 
 commands.stage_hunk = function()
-    return require('gitsigns').stage_hunk()
+    return require("gitsigns").stage_hunk()
 end
 
 u.lua_command("StageHunk", "global.commands.stage_hunk()")
 
 commands.undo_stage_hunk = function()
-    return require('gitsigns').undo_stage_hunk()
+    return require("gitsigns").undo_stage_hunk()
 end
 
 u.lua_command("UndoStageHunk", "global.commands.undo_stage_hunk()")
 
 commands.reset_hunk = function()
-    return require('gitsigns').reset_hunk()
+    return require("gitsigns").reset_hunk()
 end
 
 u.lua_command("ResetHunk", "global.commands.reset_hunk()")
 
 commands.reset_buffer = function()
-    return require('gitsigns').reset_buffer()
+    return require("gitsigns").reset_buffer()
 end
 
 u.lua_command("ResetBuffer", "global.commands.reset_buffer()")
 
 commands.preview_hunk = function()
-    return require('gitsigns').preview_hunk()
+    return require("gitsigns").preview_hunk()
 end
 
 u.lua_command("PreviewHunk", "global.commands.preview_hunk()")
 
 commands.blame_line = function()
-    return require('gitsigns').blame_line()
+    return require("gitsigns").blame_line()
 end
 
 u.lua_command("BlameLine", "global.commands.blame_line()")

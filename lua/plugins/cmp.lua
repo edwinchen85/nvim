@@ -2,50 +2,49 @@ local cmp = require("cmp")
 local u = require("utils")
 
 local formatting = {
-  kind_icons = {
-    Class = " ",
-    Color = " ",
-    Constant = "ﲀ ",
-    Constructor = " ",
-    Enum = "練",
-    EnumMember = " ",
-    Event = " ",
-    Field = " ",
-    File = "",
-    Folder = " ",
-    Function = " ",
-    Interface = "ﰮ ",
-    Keyword = " ",
-    Method = " ",
-    Module = " ",
-    Operator = "",
-    Property = " ",
-    Reference = " ",
-    Snippet = " ",
-    Struct = " ",
-    Text = " ",
-    TypeParameter = " ",
-    Unit = "塞",
-    Value = " ",
-    Variable = " ",
-  },
-  source_names = {
-    nvim_lsp = "(LSP)",
-    emoji = "(Emoji)",
-    path = "(Path)",
-    calc = "(Calc)",
-    cmp_tabnine = "(Tabnine)",
-    vsnip = "(Snippet)",
-    luasnip = "(Snippet)",
-    buffer = "(Buffer)",
-  },
-  duplicates = {
-    buffer = 1,
-    path = 1,
-    nvim_lsp = 0,
-    luasnip = 1,
-  },
-  duplicates_default = 0
+    kind_icons = {
+        Class = " ",
+        Color = " ",
+        Constant = "ﲀ ",
+        Constructor = " ",
+        Enum = "練",
+        EnumMember = " ",
+        Event = " ",
+        Field = " ",
+        File = "",
+        Folder = " ",
+        Function = " ",
+        Interface = "ﰮ ",
+        Keyword = " ",
+        Method = " ",
+        Module = " ",
+        Operator = "",
+        Property = " ",
+        Reference = " ",
+        Snippet = " ",
+        Struct = " ",
+        Text = " ",
+        TypeParameter = " ",
+        Unit = "塞",
+        Value = " ",
+        Variable = " ",
+    },
+    source_names = {
+        nvim_lsp = "(LSP)",
+        emoji = "(Emoji)",
+        path = "(Path)",
+        calc = "(Calc)",
+        cmp_tabnine = "(Tabnine)",
+        vsnip = "(Snippet)",
+        buffer = "(Buffer)",
+    },
+    duplicates = {
+        buffer = 1,
+        path = 1,
+        nvim_lsp = 0,
+        vsnip = 1,
+    },
+    duplicates_default = 0,
 }
 
 cmp.setup({
@@ -110,20 +109,19 @@ cmp.setup({
         {
             name = "buffer",
             options = {
-            get_bufnrs = function()
-                return vim.api.nvim_list_bufs()
-            end,
+                get_bufnrs = function()
+                    return vim.api.nvim_list_bufs()
+                end,
             },
         },
     },
     formatting = {
-      fields = { "kind", "abbr", "menu" },
-      format = function(entry, vim_item)
-        vim_item.kind = formatting.kind_icons[vim_item.kind]
-        vim_item.menu = formatting.source_names[entry.source.name]
-        vim_item.dup = formatting.duplicates[entry.source.name]
-          or formatting.duplicates_default
-        return vim_item
-      end,
+        fields = { "kind", "abbr", "menu" },
+        format = function(entry, vim_item)
+            vim_item.kind = formatting.kind_icons[vim_item.kind]
+            vim_item.menu = formatting.source_names[entry.source.name]
+            vim_item.dup = formatting.duplicates[entry.source.name] or formatting.duplicates_default
+            return vim_item
+        end,
     },
 })

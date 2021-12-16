@@ -16,9 +16,7 @@ local sources = {
     b.formatting.eslint_d.with(eslint_opts),
     b.code_actions.eslint_d.with(eslint_opts),
     b.formatting.stylua.with({
-        condition = function(utils)
-            return utils.root_has_file("stylua.toml")
-        end,
+        args = { "--indent-width", "4", "--indent-type", "Spaces", "-" },
     }),
     b.formatting.trim_whitespace.with({ filetypes = { "tmux", "zsh" } }),
     b.formatting.shfmt,

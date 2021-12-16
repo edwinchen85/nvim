@@ -22,7 +22,6 @@ local sources = {
     b.formatting.shfmt,
     b.diagnostics.shellcheck.with({ diagnostic_format = "#{m} [#{c}]" }),
     b.code_actions.gitsigns,
-    b.completion.vsnip,
 }
 
 local M = {}

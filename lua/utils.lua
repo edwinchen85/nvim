@@ -1,5 +1,3 @@
-local format = string.format
-local uv = vim.loop
 local api = vim.api
 
 local get_map_options = function(custom_options)
@@ -53,7 +51,7 @@ _G.inspect = function(...)
 end
 
 M.command = function(name, fn)
-    vim.cmd(format("command! %s %s", name, fn))
+    vim.cmd(string.format("command! %s %s", name, fn))
 end
 
 M.lua_command = function(name, fn)
@@ -62,7 +60,7 @@ end
 
 M.augroup = function(name, event, fn, ft)
     api.nvim_exec(
-        format(
+        string.format(
             [[
     augroup %s
         autocmd!
@@ -84,11 +82,12 @@ end
 
 M.input = function(keys, mode)
     vim.api.nvim_feedkeys(M.t(keys), mode or "i", true)
+    -- api.nvim_feedkeys(M.t(keys), mode or "m", true)
 end
 
 M.buf_augroup = function(name, event, fn)
     api.nvim_exec(
-        format(
+        string.format(
             [[
     augroup %s
         autocmd! * <buffer>
@@ -112,7 +111,7 @@ M.timer = function(timeout, interval, should_start, callback)
 
     interval = interval or 0
 
-    local timer = uv.new_timer()
+    local timer = vim.loop.new_timer()
     local wrapped = vim.schedule_wrap(callback)
 
     local start = function()
@@ -146,6 +145,41 @@ end
 
 M.warn = function(msg)
     api.nvim_echo({ { msg, "WarningMsg" } }, true, {})
+end
+
+M.is_file = function(path)
+    if path == "" then
+        return false
+    end
+
+    local stat = vim.loop.fs_stat(path)
+    return stat and stat.type == "file"
+end
+
+M.make_floating_window = function(custom_window_config, height_ratio, width_ratio)
+    height_ratio = height_ratio or 0.8
+    width_ratio = width_ratio or 0.8
+
+    local height = math.ceil(vim.opt.lines:get() * height_ratio)
+    local width = math.ceil(vim.opt.columns:get() * width_ratio)
+    local window_config = {
+        relative = "editor",
+        style = "minimal",
+        border = "double",
+        width = width,
+        height = height,
+        row = width / 2,
+        col = height / 2,
+    }
+    window_config = vim.tbl_extend("force", window_config, custom_window_config or {})
+
+    local bufnr = api.nvim_create_buf(false, true)
+    local winnr = api.nvim_open_win(bufnr, true, window_config)
+    return winnr, bufnr
+end
+
+M.get_system_output = function(cmd)
+    return vim.split(vim.fn.system(cmd), "\n")
 end
 
 return M

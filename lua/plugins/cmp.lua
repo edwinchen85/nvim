@@ -54,7 +54,7 @@ cmp.setup({
         end,
     },
     completion = {
-        completeopt = "menu, menuone, noinsert, noselect",
+        completeopt = "menu, menuone, noinsert, noselect, preview",
         get_trigger_characters = function(trigger_characters)
             return vim.tbl_filter(function(char)
                 return char ~= " " and char ~= "\t" and char ~= "\n"

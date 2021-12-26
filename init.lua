@@ -73,15 +73,6 @@ vim.g.loaded_vimballPlugin = 1
 vim.g.loaded_getscriptPlugin = 1
 vim.g.loaded_remote_plugins = 1
 
-vim.cmd([[
-    au VimEnter * highlight VertSplit guibg=bg guifg=bg
-]])
-
-vim.cmd([[filetype plugin indent on]])
-
--- the only way I've found to make this persistent
-vim.cmd("autocmd BufEnter * setlocal formatoptions-=cro indentkeys-=:")
-
 -- Use spelling for markdown files ]s to find next, [s for previous, z= for suggestions when on one.
 -- Source: http:--thejakeharding.com/tutorial/2012/06/13/using-spell-check-in-vim.html
 vim.api.nvim_exec(
@@ -101,6 +92,7 @@ global = {}
 -- source remaining lua config
 require("keymappings")
 require("commands")
+require("settings")
 require("plugins")
 require("theme")
 require("lsp")

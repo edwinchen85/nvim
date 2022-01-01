@@ -8,4 +8,5 @@ vim.cmd("autocmd BufEnter * setlocal formatoptions-=cro indentkeys-=:")
 
 -- vimdows to close with 'q'
 vim.cmd([[autocmd FileType help,qf,fugitiveblame,netrw nnoremap <buffer><silent> q :close<CR>]])
+vim.cmd([[autocmd FileType git nnoremap <buffer><silent> q :BufferClose<CR>]])
 vim.cmd([[autocmd FileType fugitive nmap <buffer><silent> q gq]])

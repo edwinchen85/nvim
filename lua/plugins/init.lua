@@ -83,6 +83,7 @@ return require("packer").startup(function()
     use("neovim/nvim-lspconfig")
     use("jose-elias-alvarez/null-ls.nvim")
     use("jose-elias-alvarez/nvim-lsp-ts-utils")
+    use("williamboman/nvim-lsp-installer")
 
     -- development
     use("nvim-lua/plenary.nvim")

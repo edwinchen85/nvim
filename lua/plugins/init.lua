@@ -42,7 +42,7 @@ return require("packer").startup(function()
     use({ "haya14busa/is.vim" })
     use({ "lambdalisue/suda.vim" })
     use({ "szw/vim-maximizer" })
-    use({ "sickill/vim-pasta" })
+    use({ "edwinchen85/vim-pasta" })
 
     -- text objects
     use("wellle/targets.vim") -- many useful additional text objects

@@ -1,5 +1,12 @@
-local function clock()
-    return " " .. os.date("%H:%M")
+local function diff_source()
+    local gitsigns = vim.b.gitsigns_status_dict
+    if gitsigns then
+        return {
+            added = gitsigns.added,
+            modified = gitsigns.changed,
+            removed = gitsigns.removed,
+        }
+    end
 end
 
 local function lsp_progress(_, is_active)
@@ -25,19 +32,22 @@ vim.cmd([[autocmd User LspProgressUpdate let &ro = &ro]])
 local config = {
     options = {
         theme = "auto",
-        section_separators = { left = "", right = "" },
-        component_separators = { left = "", right = "" },
-        -- section_separators = { "", "" },
-        -- component_separators = { "", "" },
+        section_separators = { left = "", right = "" },
+        component_separators = { left = "", right = "" },
+        always_divide_middle = false,
         icons_enabled = true,
     },
     sections = {
         lualine_a = { "mode" },
-        lualine_b = { "branch" },
-        lualine_c = { { "diagnostics", sources = { "nvim_diagnostic" } }, "filename" },
+        lualine_b = {
+            { "b:gitsigns_head", icon = "" },
+            { "diff", source = diff_source },
+            { "diagnostics", sources = { "nvim_diagnostic" } },
+        },
+        lualine_c = { { "filename", path = 1, symbols = { modified = "[]", readonly = " " } } },
         lualine_x = { "filetype", lsp_progress },
         lualine_y = { "progress" },
-        lualine_z = { clock },
+        lualine_z = { "location" },
     },
     inactive_sections = {
         lualine_a = {},
@@ -49,8 +59,6 @@ local config = {
     },
     extensions = { "nvim-tree" },
 }
-
--- try to load matching lualine theme
 
 local M = {}
 
@@ -64,9 +72,5 @@ function M.load()
 end
 
 M.load()
-
--- vim.api.nvim_exec([[
---   autocmd ColorScheme * lua require("config.lualine").load();
--- ]], false)
 
 return M

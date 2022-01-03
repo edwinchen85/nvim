@@ -13,8 +13,8 @@ u.nmap("<Down>", "gj")
 u.nmap("<Up>", "gk")
 
 -- Automatically add jumps > 1 to jump list
-u.nmap("k", [[(v:count > 1 ? "m'" . v:count : '') . 'k'"]], { expr = true })
-u.nmap("j", [[(v:count > 1 ? "m'" . v:count : '') . 'j'"]], { expr = true })
+u.nmap("k", [[(v:count > 1 ? "m'" . v:count : '') . 'gk'"]], { expr = true })
+u.nmap("j", [[(v:count > 1 ? "m'" . v:count : '') . 'gj'"]], { expr = true })
 
 -- Tab to jump to match
 u.nmap("<Tab>", "%", { noremap = false })

@@ -1,13 +1,5 @@
 local u = require("utils")
 
--- Traverse start and end of line
-u.nmap("H", "^")
-u.omap("H", "^")
-u.xmap("H", "^")
-u.nmap("L", "$")
-u.omap("L", "$")
-u.xmap("L", "$")
-
 -- Vertical Traversal
 u.nmap("<Down>", "gj")
 u.nmap("<Up>", "gk")
@@ -42,8 +34,8 @@ u.nmap("<Leader>n", ":NvimTreeRefresh<CR>:NvimTreeFindFile<CR>")
 u.nmap("<Leader>R", ":Remove<CR>")
 
 -- Buffer
-u.nmap("<C-h>", ":BufferPrevious<CR>")
-u.nmap("<C-l>", ":BufferNext<CR>")
+u.nmap("<S-h>", ":BufferPrevious<CR>")
+u.nmap("<S-l>", ":BufferNext<CR>")
 u.nmap("<Leader>c", ":BufferClose<CR>")
 u.nmap("<Leader><", ":BufferMovePrevious<CR>")
 u.nmap("<Leader>>", ":BufferMoveNext<CR>")

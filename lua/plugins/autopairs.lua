@@ -3,11 +3,12 @@ local Rule = require("nvim-autopairs.rule")
 
 require("nvim-autopairs").setup({
     check_ts = true,
-    map_c_w = true,
-})
-
-require("nvim-treesitter.configs").setup({
-    autopairs = { enable = true },
+    ts_config = {
+        lua = { "string", "source" },
+        javascript = { "string", "template_string" },
+        java = false,
+    },
+    disable_filetype = { "TelescopePrompt", "spectre_panel" },
 })
 
 local ts_conds = require("nvim-autopairs.ts-conds")

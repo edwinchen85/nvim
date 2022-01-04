@@ -1,4 +1,9 @@
-require("Comment").setup({
+local status_ok, comment = pcall(require, "Comment")
+if not status_ok then
+    return
+end
+
+comment.setup({
     active = true,
     on_config_done = nil,
 
@@ -15,30 +20,30 @@ require("Comment").setup({
     ---Whether to create basic (operator-pending) and extra mappings for NORMAL/VISUAL mode
     ---@type table
     mappings = {
-      ---operator-pending mapping
-      ---Includes `gcc`, `gcb`, `gc[count]{motion}` and `gb[count]{motion}`
-      basic = true,
-      ---extended mapping
-      ---Includes `g>`, `g<`, `g>[count]{motion}` and `g<[count]{motion}`
-      extra = false,
+        ---operator-pending mapping
+        ---Includes `gcc`, `gcb`, `gc[count]{motion}` and `gb[count]{motion}`
+        basic = true,
+        ---extended mapping
+        ---Includes `g>`, `g<`, `g>[count]{motion}` and `g<[count]{motion}`
+        extra = false,
     },
 
     ---LHS of line and block comment toggle mapping in NORMAL/VISUAL mode
     ---@type table
     toggler = {
-      ---line-comment toggle
-      line = "gcc",
-      ---block-comment toggle
-      block = "gbc",
+        ---line-comment toggle
+        line = "gcc",
+        ---block-comment toggle
+        block = "gbc",
     },
 
     ---LHS of line and block comment operator-mode mapping in NORMAL/VISUAL mode
     ---@type table
     opleader = {
-      ---line-comment opfunc mapping
-      line = "gc",
-      ---block-comment opfunc mapping
-      block = "gb",
+        ---line-comment opfunc mapping
+        line = "gc",
+        ---block-comment opfunc mapping
+        block = "gb",
     },
 
     ---Pre-hook, called before commenting the line

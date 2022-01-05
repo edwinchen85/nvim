@@ -15,6 +15,7 @@ local settings = {
         completion = {
             showWord = "Disable",
             callSnippet = "Disable",
+            keywordSnippet = "Disable",
         },
     },
 }

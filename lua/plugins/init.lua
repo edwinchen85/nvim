@@ -96,6 +96,7 @@ return require("packer").startup(function(use)
             "hrsh7th/cmp-buffer",
             "hrsh7th/cmp-vsnip",
             "hrsh7th/cmp-path",
+            "folke/lua-dev.nvim",
         },
         config = config("cmp"),
     })

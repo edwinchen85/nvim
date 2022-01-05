@@ -12,7 +12,7 @@ lsp.handlers["textDocument/hover"] = lsp.with(lsp.handlers.hover, border_opts)
 
 -- use lsp formatting if it's available (and if it's good)
 -- otherwise, fall back to null-ls
-local preferred_formatting_clients = {}
+local preferred_formatting_clients = { "denols", "eslint" }
 local fallback_formatting_client = "null-ls"
 
 local formatting = function()
@@ -80,8 +80,8 @@ local on_attach = function(client, bufnr)
     u.buf_map("n", "ga", ":LspAct<CR>", nil, bufnr)
     u.buf_map("v", "ga", "<Esc><cmd> LspRangeAct<CR>", nil, bufnr)
 
-    if client.resolved_capabilities.document_formatting then
-        vim.cmd("autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_sync()")
+    if client.supports_method("textDocument/formatting") then
+        vim.cmd("autocmd BufWritePre <buffer> lua global.lsp.formatting()")
     end
 end
 
@@ -90,6 +90,8 @@ capabilities = require("cmp_nvim_lsp").update_capabilities(capabilities)
 
 for _, server in ipairs({
     "bashls",
+    "denols",
+    "eslint",
     "null-ls",
     "sumneko_lua",
     "tsserver",

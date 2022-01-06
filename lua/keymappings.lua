@@ -184,9 +184,6 @@ u.nmap("zs", ":set foldmethod=syntax<CR>")
 -- Save
 u.nmap("<Leader>w", ":w<CR>")
 
--- Quit
-u.nmap("<Leader>q", ":q<CR>")
-
 -- Undo break points
 u.imap(",", ",<C-g>u")
 u.imap(".", ".<C-g>u")

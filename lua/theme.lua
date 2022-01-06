@@ -3,4 +3,11 @@ vim.g.tokyonight_italic_functions = true
 vim.g.tokyonight_terminal_colors = true
 vim.g.tokyonight_sidebars = { "qf", "vista_kind", "terminal", "packer" }
 vim.g.tokyonight_colors = { hint = "orange", error = "#ff0000" }
-vim.cmd("colorscheme kanagawa")
+vim.cmd([[
+  try
+    colorscheme kanagawa
+  catch /^Vim\%((\a\+)\)\=:E185/
+    colorscheme default
+    set background=dark
+  endtry
+]])

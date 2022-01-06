@@ -103,6 +103,7 @@ for _, server in ipairs({
     "bashls",
     "denols",
     "eslint",
+    "jsonls",
     "null-ls",
     "sumneko_lua",
     "tsserver",

@@ -123,6 +123,7 @@ return require("packer").startup(function(use)
     use("jose-elias-alvarez/null-ls.nvim")
     use("jose-elias-alvarez/nvim-lsp-ts-utils")
     use("williamboman/nvim-lsp-installer")
+    use("tamago324/nlsp-settings.nvim") -- language server settings defined in json
 
     -- development
     use("nvim-lua/plenary.nvim")

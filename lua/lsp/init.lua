@@ -3,7 +3,15 @@ local u = require("utils")
 local lsp = vim.lsp
 local api = vim.api
 
-local border_opts = { border = "single", focusable = false, scope = "line" }
+local border_opts = {
+    border = "rounded",
+    focusable = false,
+    style = "minimal",
+    source = "always",
+    scope = "line",
+    header = "",
+    prefix = "",
+}
 
 vim.diagnostic.config({ virtual_text = false, float = border_opts })
 
@@ -59,8 +67,8 @@ local on_attach = function(client, bufnr)
     u.lua_command("LspRename", "vim.lsp.buf.rename()")
     u.lua_command("LspTypeDef", "vim.lsp.buf.type_definition()")
     u.lua_command("LspImplementation", "vim.lsp.buf.implementation()")
-    u.lua_command("LspDiagPrev", "vim.diagnostic.goto_prev()")
-    u.lua_command("LspDiagNext", "vim.diagnostic.goto_next()")
+    u.lua_command("LspDiagPrev", "vim.diagnostic.goto_prev({ border = 'rounded' })")
+    u.lua_command("LspDiagNext", "vim.diagnostic.goto_next({ border = 'rounded' })")
     u.lua_command("LspDiagLine", "vim.diagnostic.open_float(nil, global.lsp.border_opts)")
     u.lua_command("LspSignatureHelp", "vim.lsp.buf.signature_help()")
 

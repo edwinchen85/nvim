@@ -44,7 +44,7 @@ local config = {
             { "diff", source = diff_source },
             { "diagnostics", sources = { "nvim_diagnostic" } },
         },
-        lualine_c = { { "filename", path = 1, symbols = { modified = "[]", readonly = " " } } },
+        lualine_c = { { "filename", path = 1, symbols = { modified = " []", readonly = " " } } },
         lualine_x = { "filetype", lsp_progress },
         lualine_y = { "progress" },
         lualine_z = { "location" },

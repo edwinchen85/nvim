@@ -70,16 +70,19 @@ local on_attach = function(client, bufnr)
     u.lua_command("LspDiagPrev", "vim.diagnostic.goto_prev({ border = 'rounded' })")
     u.lua_command("LspDiagNext", "vim.diagnostic.goto_next({ border = 'rounded' })")
     u.lua_command("LspDiagLine", "vim.diagnostic.open_float(nil, global.lsp.border_opts)")
+    u.lua_command("LspDiagLocList", "lua vim.diagnostic.setloclist()")
     u.lua_command("LspSignatureHelp", "vim.lsp.buf.signature_help()")
 
     -- bindings
-    u.buf_map("n", "gy", ":LspTypeDef<CR>", nil, bufnr)
-    u.buf_map("n", "gR", ":LspRename<CR>", nil, bufnr)
     u.buf_map("n", "K", ":LspHover<CR>", nil, bufnr)
+    u.buf_map("n", "gR", ":LspRename<CR>", nil, bufnr)
+    u.buf_map("n", "gy", ":LspTypeDef<CR>", nil, bufnr)
     u.buf_map("n", "[d", ":LspDiagPrev<CR>", nil, bufnr)
     u.buf_map("n", "]d", ":LspDiagNext<CR>", nil, bufnr)
     u.buf_map("n", "gs", ":LspSignatureHelp<CR>", nil, bufnr)
-    u.buf_map("n", "<Leader>a", ":LspDiagLine<CR>", nil, bufnr)
+    u.buf_map("n", "gh", ":LspImplementation<CR>", nil, bufnr)
+    u.buf_map("n", "gl", ":LspDiagLine<CR>", nil, bufnr)
+    u.buf_map("n", "<leader>q", ":LspDiagLocList<CR>", nil, bufnr)
     u.buf_map("i", "<C-x><C-x>", "<cmd> LspSignatureHelp<CR>", nil, bufnr)
 
     -- telescope

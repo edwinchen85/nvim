@@ -1,18 +1,12 @@
-local null_ls = require("null-ls")
-local b = null_ls.builtins
+local null_ls_status_ok, null_ls = pcall(require, "null-ls")
+if not null_ls_status_ok then
+    return
+end
 
-local eslint_opts = {
-    condition = function(utils)
-        return utils.root_has_file(".eslintrc", ".eslintrc.js")
-    end,
-    diagnostics_format = "#{m} [#{c}]",
-}
+local b = null_ls.builtins
 
 local sources = {
     b.formatting.prettierd,
-    b.diagnostics.eslint_d.with(eslint_opts),
-    b.formatting.eslint_d.with(eslint_opts),
-    b.code_actions.eslint_d.with(eslint_opts),
     b.formatting.stylua.with({
         args = { "--indent-width", "4", "--indent-type", "Spaces", "-" },
     }),

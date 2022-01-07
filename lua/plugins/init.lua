@@ -59,7 +59,6 @@ return require("packer").startup(function(use)
 
     -- custom
     use_with_config("kyazdani42/nvim-tree.lua", "nvimtree")
-    use_with_config("cappyzawa/trim.nvim", "trim")
     use_with_config("bkad/CamelCaseMotion", "camelcasemotion")
     use_with_config("folke/which-key.nvim", "whichkey")
     use_with_config("folke/todo-comments.nvim", "todocomments")

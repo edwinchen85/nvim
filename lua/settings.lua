@@ -9,7 +9,7 @@ vim.cmd("autocmd BufEnter * setlocal formatoptions-=cro indentkeys-=:")
 -- vimdows to close with 'q'
 vim.cmd([[autocmd FileType help,qf,fugitiveblame,netrw nnoremap <buffer><silent> q :close<CR>]])
 vim.cmd([[autocmd FileType git nnoremap <buffer><silent> q <C-w>c]])
-vim.cmd([[autocmd FileType fugitive nmap <buffer><silent> q gq]])
+vim.cmd([[autocmd FileType fugitive,GV nmap <buffer><silent> q gq]])
 
 -- treesitter powered fold
 local parsers = require("nvim-treesitter.parsers")

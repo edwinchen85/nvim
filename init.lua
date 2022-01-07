@@ -54,6 +54,8 @@ vim.opt.number = true -- Show line numbers
 vim.opt.relativenumber = true
 vim.opt.signcolumn = "yes:1" -- Always show signcolumn
 vim.opt.backupcopy = "yes"
+vim.opt.wildmode = "longest:full,full"
+vim.opt.path:append("**")
 
 -- Disable various builtin plugins in Vim that bog down speed
 vim.g.loaded_matchparen = 1

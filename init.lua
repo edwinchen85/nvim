@@ -17,7 +17,8 @@ vim.opt.incsearch = true -- Shows the match while typing
 vim.opt.inccommand = "nosplit" -- Shows the match while typing
 vim.opt.joinspaces = false -- No double spaces with join
 vim.opt.linebreak = true -- Stop words being broken on wrap
-vim.opt.list = false -- Show some invisible characters
+vim.opt.list = true -- Show some invisible characters
+vim.opt.listchars:append("tab:▸ ,trail:·")
 vim.opt.mouse = "a"
 vim.opt.pumheight = 10
 vim.opt.shiftwidth = 4 -- Size of indent

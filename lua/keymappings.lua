@@ -62,6 +62,15 @@ u.nmap("J", "mzJ`z")
 u.xmap("<", "<gv")
 u.xmap(">", ">gv")
 
+-- Better window navigation
+u.nmap("<C-h>", "<C-w>h")
+u.nmap("<C-j>", "<C-w>j")
+u.nmap("<C-k>", "<C-w>k")
+u.nmap("<C-l>", "<C-w>l")
+
+-- Close window
+u.nmap("<C-c>", "<C-w>c")
+
 -- Move selected line / block of text
 u.nmap("<M-j>", ":m .+1<CR>==")
 u.nmap("<M-k>", ":m .-2<CR>==")

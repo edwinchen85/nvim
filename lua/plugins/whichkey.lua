@@ -89,6 +89,7 @@ local mappings = {
         D = { "<cmd>Gtabedit @:% | Gdiff :<cr>", "Git diff staged" },
         h = { "<cmd>diffget //2<cr>", "Diffget target branch" },
         l = { "<cmd>diffget //3<cr>", "Diffget merge branch" },
+        v = { ":GV<cr>", "Git commit browser" },
     },
     l = {
         name = "+LSP",

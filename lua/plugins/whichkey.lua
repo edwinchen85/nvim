@@ -58,6 +58,7 @@ local mappings = {
     ["w"] = "Save",
     ["R"] = "Remove File",
     ["T"] = "Terminal",
+
     f = {
         name = "+Find",
         a = { "<cmd>Telescope grep_string<cr>", "Cursor" },
@@ -72,6 +73,7 @@ local mappings = {
         r = { "<cmd>Telescope registers<cr>", "Registers" },
         t = { "<cmd>TodoTelescope<cr>", "Todo" },
     },
+
     g = {
         name = "+Git",
         j = { "<cmd>NextHunk<cr>", "Next Hunk" },
@@ -91,6 +93,7 @@ local mappings = {
         l = { "<cmd>diffget //3<cr>", "Diffget merge branch" },
         v = { ":GV<cr>", "Git commit browser" },
     },
+
     l = {
         name = "+LSP",
         d = { "<cmd>Telescope diagnostics bufnr=0<cr>", "Document Diagnostics" },
@@ -104,6 +107,7 @@ local mappings = {
         s = { "<cmd>Telescope lsp_document_symbols<cr>", "Document Symbols" },
         S = { "<cmd>Telescope lsp_workspace_symbols<cr>", "Workspace Symbols" },
     },
+
     S = {
         name = "+Session",
         s = { "<cmd>SessionSave<cr>", "Save Session" },

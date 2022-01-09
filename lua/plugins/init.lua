@@ -71,6 +71,7 @@ return require("packer").startup(function(use)
     use({ "haya14busa/is.vim" })
     use({ "szw/vim-maximizer" })
     use({ "edwinchen85/vim-pasta" })
+    use({ "ThePrimeagen/harpoon" })
 
     -- text objects
     use("wellle/targets.vim") -- many useful additional text objects

@@ -26,4 +26,12 @@ require("gitsigns").setup({
     sign_priority = 6,
     update_debounce = 200,
     status_formatter = nil, -- Use default
+    preview_config = {
+        -- Options passed to nvim_open_win
+        border = "rounded",
+        style = "minimal",
+        relative = "cursor",
+        row = 0,
+        col = 1,
+    },
 })

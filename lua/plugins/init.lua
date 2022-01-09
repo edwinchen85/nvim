@@ -77,20 +77,25 @@ return require("packer").startup(function(use)
     use("wellle/targets.vim") -- many useful additional text objects
     use("machakann/vim-swap") -- swap delimited items
 
-    -- additional functionality
-    use_with_config("hrsh7th/vim-vsnip", "vsnip") -- snippets
+    -- cmp plugins
     use({
         "hrsh7th/nvim-cmp", -- completion
         requires = {
             "hrsh7th/cmp-nvim-lsp",
             "hrsh7th/cmp-nvim-lua",
             "hrsh7th/cmp-buffer",
-            "hrsh7th/cmp-vsnip",
+            "hrsh7th/cmp-cmdline",
             "hrsh7th/cmp-path",
             "folke/lua-dev.nvim",
+            "saadparwaiz1/cmp_luasnip", -- snippet completions
         },
         config = config("cmp"),
     })
+
+    -- snippets
+    use("L3MON4D3/LuaSnip") --snippet engine
+    use("rafamadriz/friendly-snippets") -- a bunch of snippets to use
+
     use({
         "windwp/nvim-autopairs", -- autocomplete pairs
         config = config("autopairs"),

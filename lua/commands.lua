@@ -193,6 +193,7 @@ u.lua_command("PreviewHunk", "global.commands.preview_hunk()")
 commands.blame_line = function()
     return require("gitsigns").blame_line()
 end
+-- end of gitsigns
 
 u.lua_command("BlameLine", "global.commands.blame_line()")
 
@@ -208,6 +209,7 @@ u.command("Help", 'execute ":help" expand("<cword>")')
 
 -- reset treesitter and lsp diagnostics
 u.command("R", "w | :e")
+-- end of misc
 
 _G.global.commands = commands
 

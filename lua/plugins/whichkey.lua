@@ -51,6 +51,7 @@ local mappings = {
     ["h"] = "No Highlight",
     [";"] = "Dashboard",
     ["c"] = "Close Buffer",
+    ["C"] = "Close All Buffers",
     ["e"] = "Explorer",
     ["i"] = "Jump Forward",
     ["n"] = "Follow File",

@@ -71,6 +71,9 @@ u.nmap("<C-l>", "<C-w>l")
 -- Close window
 u.nmap("<C-c>", "<C-w>c")
 
+-- Close all buffers
+u.nmap("<Leader>C", ":bufdo Bdelete!<CR>")
+
 -- Move selected line / block of text
 u.nmap("<M-j>", ":m .+1<CR>==")
 u.nmap("<M-k>", ":m .-2<CR>==")

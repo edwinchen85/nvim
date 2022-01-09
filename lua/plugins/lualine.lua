@@ -44,7 +44,11 @@ local config = {
         },
         lualine_c = {
             { "diff", source = diff_source },
-            { "diagnostics", sources = { "nvim_diagnostic" } },
+            {
+                "diagnostics",
+                sources = { "nvim_diagnostic" },
+                symbols = { error = "E ", warn = "W ", info = "I ", hint = "H " },
+            },
             { "filename", path = 1, symbols = { modified = " [+]", readonly = " [RO]" } },
         },
         lualine_x = { "filetype", lsp_progress },

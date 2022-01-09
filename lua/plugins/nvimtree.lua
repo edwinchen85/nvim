@@ -5,7 +5,7 @@ vim.g.nvim_tree_refresh_wait = 500 -- "1000 by default, control how often the tr
 vim.g.nvim_tree_respect_buf_cwd = 1 -- "0 by default, will change cwd of nvim-tree to that of new buffer's when opening nvim-tree.
 vim.g.nvim_tree_special_files = {} -- List of filenames that gets highlighted with NvimTreeSpecialFile
 
-local tree_cb = require"nvim-tree.config".nvim_tree_callback
+local tree_cb = require("nvim-tree.config").nvim_tree_callback
 
 vim.g.nvim_tree_icons = {
     default = "",
@@ -17,27 +17,27 @@ vim.g.nvim_tree_icons = {
         renamed = "➜",
         untracked = "★",
         deleted = "",
-        ignored = "◌"
+        ignored = "◌",
     },
     folder = {
         default = "",
         open = "",
         empty = "",
         empty_open = "",
-        symlink = ""
-    }
+        symlink = "",
+    },
 }
 
-require'nvim-tree'.setup {
-    disable_netrw       = true,
-    hijack_netrw        = true,
-    open_on_setup       = false,
-    ignore_ft_on_setup  = {"startify", "dashboard"},
-    auto_close          = false,
-    open_on_tab         = false,
-    hijack_cursor       = false,
-    update_cwd          = true,
-    update_to_buf_dir   = {
+require("nvim-tree").setup({
+    disable_netrw = true,
+    hijack_netrw = true,
+    open_on_setup = false,
+    ignore_ft_on_setup = { "startify", "dashboard" },
+    auto_close = false,
+    open_on_tab = false,
+    hijack_cursor = false,
+    update_cwd = true,
+    update_to_buf_dir = {
         enable = true,
         auto_open = true,
     },
@@ -48,19 +48,19 @@ require'nvim-tree'.setup {
             info = "",
             warning = "",
             error = "",
-        }
+        },
     },
     update_focused_file = {
-        enable      = true,
-        update_cwd  = false
+        enable = true,
+        update_cwd = false,
     },
     system_open = {
-        cmd  = nil,
-        args = {}
+        cmd = nil,
+        args = {},
     },
     filters = {
         dotfiles = true,
-        custom = { ".git", "node_modules", ".cache", "tags", ".DS_Store" }
+        custom = { ".git", "node_modules", ".cache", "tags", ".DS_Store" },
     },
     git = {
         enable = true,
@@ -71,15 +71,15 @@ require'nvim-tree'.setup {
         width = 40,
         height = 40,
         hide_root_folder = false,
-        side = 'right',
+        side = "right",
         auto_resize = false,
         mappings = {
             custom_only = false,
             list = {
-                { key = {"l", "<CR>", "o"}, cb = tree_cb("edit") },
+                { key = { "l", "<CR>", "o" }, cb = tree_cb("edit") },
                 { key = "h", cb = tree_cb("close_node") },
                 { key = "v", cb = tree_cb("vsplit") },
             },
         },
     },
-}
+})

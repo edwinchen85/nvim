@@ -34,4 +34,9 @@ require("gitsigns").setup({
         row = 0,
         col = 1,
     },
+    on_attach = function(bufnr)
+        if vim.api.nvim_buf_get_name(bufnr):match("fugitive") then
+            return false
+        end
+    end,
 })

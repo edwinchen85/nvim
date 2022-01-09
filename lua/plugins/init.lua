@@ -53,6 +53,7 @@ return require("packer").startup(function(use)
         "tpope/vim-fugitive",
         { "junegunn/gv.vim", "tommcdo/vim-fugitive-blame-ext" },
     })
+    use_with_config("shumphrey/fugitive-gitlab.vim", "fugitivegitlab")
     use_with_config("lewis6991/impatient.nvim", "impatient")
     use_with_config("lewis6991/gitsigns.nvim", "gitsigns")
     use_with_config("numToStr/Comment.nvim", "comment")

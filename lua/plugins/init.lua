@@ -69,7 +69,6 @@ return require("packer").startup(function(use)
     use({ "jeffkreeftmeijer/vim-numbertoggle" })
     use({ "haya14busa/vim-asterisk" })
     use({ "haya14busa/is.vim" })
-    use({ "lambdalisue/suda.vim" })
     use({ "szw/vim-maximizer" })
     use({ "edwinchen85/vim-pasta" })
 

@@ -53,7 +53,7 @@ telescope.setup({
             "node_modules/**.*",
             "package-lock.json",
             "yarn.lock",
-            ".git",
+            ".git/**",
         },
         generic_sorter = require("telescope.sorters").get_generic_fuzzy_sorter,
         path_display = { shorten = 5 },

@@ -55,6 +55,7 @@ local mappings = {
     ["e"] = "Explorer",
     ["i"] = "Jump Forward",
     ["n"] = "Follow File",
+    ["p"] = "Toggle Paste",
     ["q"] = "Quit",
     ["w"] = "Save",
     ["R"] = "Remove File",

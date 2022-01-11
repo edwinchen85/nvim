@@ -96,6 +96,9 @@ u.nmap("<Leader>gg", ":G<CR><C-w>o:e<CR>")
 -- Toggle Caps
 u.imap("<C-u>", "<Esc>m`viw~``a")
 
+-- Toggle paste mode
+u.nmap("<Leader>p", ":set invpaste paste?<CR>")
+
 -- Centering and open folds
 u.nmap("n", "nzzzv")
 u.nmap("N", "Nzzzv")

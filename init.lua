@@ -55,6 +55,7 @@ vim.opt.relativenumber = true
 vim.opt.signcolumn = "yes:1" -- Always show signcolumn
 vim.opt.backupcopy = "yes"
 vim.opt.wildmode = "longest:full,full"
+vim.opt.wildignorecase = true
 vim.opt.path:append("**")
 
 -- Disable various builtin plugins in Vim that bog down speed

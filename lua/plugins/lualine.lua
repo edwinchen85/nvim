@@ -34,6 +34,7 @@ local config = {
         theme = "auto",
         section_separators = { left = "", right = "" },
         component_separators = { left = "", right = "" },
+        disabled_filetypes = { "NvimTree" },
         always_divide_middle = false,
         icons_enabled = true,
     },
@@ -63,7 +64,6 @@ local config = {
         lualine_y = {},
         lualine_z = {},
     },
-    extensions = { "nvim-tree" },
 }
 
 local M = {}

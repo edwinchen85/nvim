@@ -1,4 +1,8 @@
-local telescope = require("telescope")
+local status_ok, telescope = pcall(require, "telescope")
+if not status_ok then
+    return
+end
+
 local builtin = require("telescope.builtin")
 local actions = require("telescope.actions")
 local set = require("telescope.actions.set")
@@ -13,6 +17,12 @@ telescope.setup({
         fzf = { fuzzy = true, override_generic_sorter = true, override_file_sorter = true },
     },
     defaults = {
+        preview = {
+            timeout = 500,
+        },
+        file_browser = {
+            hidden = true,
+        },
         find_command = { "rg", "--no-heading", "--with-filename", "--line-number", "--column", "--smart-case" },
         vimgrep_arguments = {
             "rg",
@@ -30,6 +40,7 @@ telescope.setup({
         prompt_prefix = " ",
         selection_caret = " ",
         entry_prefix = "  ",
+        multi_icon = " ",
         initial_mode = "insert",
         selection_strategy = "reset",
         sorting_strategy = "descending",
@@ -56,7 +67,8 @@ telescope.setup({
             ".git/**",
         },
         generic_sorter = require("telescope.sorters").get_generic_fuzzy_sorter,
-        path_display = { shorten = 5 },
+        dynamic_preview_title = true,
+        path_display = { "smart" },
         winblend = 0,
         border = {},
         borderchars = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" },

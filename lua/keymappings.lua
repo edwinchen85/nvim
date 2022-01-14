@@ -30,9 +30,6 @@ u.nmap("<Leader>;", ":Dashboard<CR>")
 u.nmap("<Leader>e", ":NvimTreeRefresh<CR>:NvimTreeToggle<CR>")
 u.nmap("<Leader>n", ":NvimTreeRefresh<CR>:NvimTreeFindFile<CR>")
 
--- Remove file
-u.nmap("<Leader>R", ":Remove<CR>")
-
 -- Buffer
 u.nmap("<S-h>", ":BufferLineCyclePrev<CR>")
 u.nmap("<S-l>", ":BufferLineCycleNext<CR>")

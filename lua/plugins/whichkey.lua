@@ -58,7 +58,6 @@ local mappings = {
     ["p"] = "Toggle Paste",
     ["q"] = "Quit",
     ["w"] = "Save",
-    ["R"] = "Remove File",
     ["T"] = "Terminal",
 
     f = {

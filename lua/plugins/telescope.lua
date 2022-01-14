@@ -128,13 +128,6 @@ _G.global.telescope = {
             builtin.find_files(opts)
         end
     end,
-    file_browser = function()
-        require("telescope.builtin").file_browser({
-            dir_icon = "",
-            hidden = true,
-            cwd = require("telescope.utils").buffer_dir(),
-        })
-    end,
 }
 
 -- lsp

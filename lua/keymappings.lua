@@ -24,7 +24,7 @@ u.nmap("Y", "y$")
 u.nmap("<Leader>h", ":noh<CR>")
 
 -- Dashboard
-u.nmap("<Leader>;", ":Dashboard<CR>")
+u.nmap("<Leader>;", ":Alpha<CR>")
 
 -- Explorer
 u.nmap("<Leader>e", ":NvimTreeRefresh<CR>:NvimTreeToggle<CR>")

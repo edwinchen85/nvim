@@ -46,7 +46,7 @@ vim.opt.directory = "/tmp"
 vim.opt.scrolloff = 8 -- Lines of context
 vim.opt.sidescrolloff = 8 -- Columns of context
 vim.opt.shell = "/bin/zsh"
-vim.opt.shortmess:append("cA")
+vim.opt.shortmess:append("cAS")
 vim.opt.fillchars:append("vert: ,eob: ")
 
 vim.opt.cursorline = true

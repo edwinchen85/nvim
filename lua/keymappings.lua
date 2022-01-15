@@ -167,8 +167,8 @@ u.nmap("<Leader>/", "gcc", { noremap = false })
 u.xmap("<Leader>/", "gc", { noremap = false })
 
 -- is.vim + Asterisk
-u.nmap("n", "<Plug>(is-n)zzzv", { noremap = false })
-u.nmap("N", "<Plug>(is-N)zzzv", { noremap = false })
+u.nmap("n", "<Plug>(is-nohl)zzzv<Plug>(anzu-n-with-echo)", { noremap = false })
+u.nmap("N", "<Plug>(is-nohl)zzzv<Plug>(anzu-N-with-echo)", { noremap = false })
 u.nmap("*", "<Plug>(asterisk-z*)<Plug>(is-nohl-1)", { noremap = false })
 u.nmap("g*", "<Plug>(asterisk-gz*)<Plug>(is-nohl-1)", { noremap = false })
 u.nmap("#", "<Plug>(asterisk-z#)<Plug>(is-nohl-1)", { noremap = false })

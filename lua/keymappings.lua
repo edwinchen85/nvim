@@ -96,10 +96,6 @@ u.imap("<C-u>", "<Esc>m`viw~``a")
 -- Toggle paste mode
 u.nmap("<Leader>p", ":set invpaste paste?<CR>")
 
--- Centering and open folds
-u.nmap("n", "nzzzv")
-u.nmap("N", "Nzzzv")
-
 -- Centering only
 u.nmap("G", "Gzz")
 u.nmap("}", "}zz")

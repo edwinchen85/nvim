@@ -23,11 +23,11 @@ lsp.handlers["textDocument/hover"] = lsp.with(lsp.handlers.hover, border_opts)
 local preferred_formatting_clients = { "denols", "eslint" }
 local fallback_formatting_client = "null-ls"
 
-local formatting = function()
-    local bufnr = api.nvim_get_current_buf()
+local formatting = function(bufnr)
+    bufnr = tonumber(bufnr) or api.nvim_get_current_buf()
 
     local selected_client
-    for _, client in ipairs(lsp.get_active_clients()) do
+    for _, client in ipairs(lsp.buf_get_clients(bufnr)) do
         if vim.tbl_contains(preferred_formatting_clients, client.name) then
             selected_client = client
             break
@@ -43,16 +43,24 @@ local formatting = function()
     end
 
     local params = lsp.util.make_formatting_params()
-    local result, err = selected_client.request_sync("textDocument/formatting", params, 5000, bufnr)
-    if err then
-        local err_msg = type(err) == "string" and err or err.message
-        vim.notify("global.lsp.formatting: " .. err_msg, vim.log.levels.WARN)
-        return
-    end
+    selected_client.request("textDocument/formatting", params, function(err, res)
+        if err then
+            local err_msg = type(err) == "string" and err or err.message
+            vim.notify("global.lsp.formatting: " .. err_msg, vim.log.levels.WARN)
+            return
+        end
 
-    if result and result.result then
-        lsp.util.apply_text_edits(result.result, bufnr)
-    end
+        if not api.nvim_buf_is_loaded(bufnr) or api.nvim_buf_get_option(bufnr, "modified") then
+            return
+        end
+
+        if res then
+            lsp.util.apply_text_edits(res, bufnr, selected_client.offset_encoding or "utf-16")
+            api.nvim_buf_call(bufnr, function()
+                vim.cmd("silent noautocmd update")
+            end)
+        end
+    end, bufnr)
 end
 
 global.lsp = {
@@ -92,7 +100,12 @@ local on_attach = function(client, bufnr)
     u.buf_map("v", "ga", "<Esc><cmd> LspRangeAct<CR>", nil, bufnr)
 
     if client.supports_method("textDocument/formatting") then
-        vim.cmd("autocmd BufWritePre <buffer> lua global.lsp.formatting()")
+        vim.cmd([[
+        augroup LspFormatting
+            autocmd! * <buffer>
+            autocmd BufWritePost <buffer> lua global.lsp.formatting(vim.fn.expand("<abuf>"))
+        augroup END
+        ]])
     end
 end
 

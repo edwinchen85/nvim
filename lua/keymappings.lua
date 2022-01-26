@@ -206,3 +206,9 @@ u.nmap("ma", ":AddMark<CR>")
 u.nmap("m;", ":NextMark<CR>")
 u.nmap("m,", ":PrevMark<CR>")
 u.nmap("mm", ":ToggleMenu<CR>")
+
+-- Exclude {, }, ( and ) in jump list
+u.nmap("}", ":<C-u>execute 'keepjumps normal!' v:count1 . '}zz'<CR>")
+u.nmap("{", ":<C-u>execute 'keepjumps normal!' v:count1 . '{zz'<CR>")
+u.nmap(")", ":<C-u>execute 'keepjumps normal!' v:count1 . ')zz'<CR>")
+u.nmap("(", ":<C-u>execute 'keepjumps normal!' v:count1 . '(zz'<CR>")

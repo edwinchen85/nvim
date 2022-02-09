@@ -31,11 +31,8 @@ u.nmap("<Leader>e", ":NvimTreeRefresh<CR>:NvimTreeToggle<CR>")
 u.nmap("<Leader>n", ":NvimTreeRefresh<CR>:NvimTreeFindFile<CR>")
 
 -- Buffer
-u.nmap("<S-h>", ":BufferLineCyclePrev<CR>")
-u.nmap("<S-l>", ":BufferLineCycleNext<CR>")
 u.nmap("<Leader>c", ":Bdelete!<CR>")
-u.nmap("<Leader><", ":BufferLineMovePrev<CR>")
-u.nmap("<Leader>>", ":BufferLineMoveNext<CR>")
+u.nmap("<Leader>C", ":bufdo Bdelete!<CR>")
 
 -- Maximizer
 u.nmap("<C-w>m", ":MaximizerToggle!<cr>")
@@ -67,9 +64,6 @@ u.nmap("<C-l>", "<C-w>l")
 
 -- Close window
 u.nmap("<C-c>", "<C-w>c")
-
--- Close all buffers
-u.nmap("<Leader>C", ":bufdo Bdelete!<CR>")
 
 -- Move selected line / block of text
 u.nmap("<M-j>", ":m .+1<CR>==")

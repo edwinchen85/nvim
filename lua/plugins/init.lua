@@ -146,7 +146,6 @@ return require("packer").startup(function(use)
     use_with_config("goolord/alpha-nvim", "alpha")
     use_with_config("nvim-lualine/lualine.nvim", "lualine") -- statusline and tabline
     use_with_config("norcalli/nvim-colorizer.lua", "colorizer")
-    use_with_config("akinsho/bufferline.nvim", "bufferline")
 
     -- misc
     use({

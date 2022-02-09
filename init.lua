@@ -25,7 +25,7 @@ vim.opt.shiftwidth = 4 -- Size of indent
 vim.opt.shiftround = true -- Round indent
 vim.opt.showcmd = false
 vim.opt.showmode = false -- Don't display mode
-vim.opt.showtabline = 2
+vim.opt.showtabline = 0
 vim.opt.smartcase = true -- Do not ignore case with capitals
 vim.opt.smartindent = true -- Insert indents automatically
 vim.opt.spelllang = "en"
@@ -49,7 +49,7 @@ vim.opt.shell = "/bin/zsh"
 vim.opt.shortmess:append("cAS")
 vim.opt.fillchars:append("vert: ,eob: ")
 
-vim.opt.cursorline = true
+vim.opt.cursorline = false
 vim.opt.number = true -- Show line numbers
 vim.opt.relativenumber = true
 vim.opt.signcolumn = "yes:1" -- Always show signcolumn

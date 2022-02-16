@@ -17,6 +17,12 @@ local settings = {
             callSnippet = "Disable",
             keywordSnippet = "Disable",
         },
+        workspace = {
+            checkThirdParty = false,
+            library = {
+                ["${3rd}/love2d/library"] = true,
+            },
+        },
     },
 }
 

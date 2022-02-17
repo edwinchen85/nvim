@@ -44,7 +44,6 @@ return require("packer").startup(function(use)
     -- basic
     use("tpope/vim-rsi")
     use("tpope/vim-repeat")
-    use("tpope/vim-sleuth")
     use("tpope/vim-eunuch")
     use("tpope/vim-capslock")
     use("tpope/vim-surround")

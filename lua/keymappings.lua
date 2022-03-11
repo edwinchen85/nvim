@@ -38,7 +38,7 @@ u.nmap("<Leader>C", ":bufdo Bdelete!<CR>")
 u.nmap("<C-w>m", ":MaximizerToggle!<cr>")
 
 -- Find file
-u.nmap("<C-p>", ":Telescope find_files<CR>")
+u.nmap("<Leader>p", ":Telescope find_files<CR>")
 
 -- Telescope buffers
 u.nmap("<Leader><CR>", ":Telescope buffers<CR>")
@@ -85,9 +85,6 @@ u.nmap("<Leader>gg", ":G<CR><C-w>o:e<CR>")
 
 -- Toggle Caps
 u.imap("<C-u>", "<Esc>m`viw~``a")
-
--- Toggle paste mode
-u.nmap("<Leader>p", ":set invpaste paste?<CR>")
 
 -- Centering only
 u.nmap("G", "Gzz")

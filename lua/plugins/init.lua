@@ -152,4 +152,11 @@ return require("packer").startup(function(use)
         run = "cd app && yarn install",
         cmd = "MarkdownPreview",
     })
+    -- use({
+    --     "glacambre/firenvim",
+    --     run = function()
+    --         vim.fn["firenvim#install"](0, 'export PATH="$PATH"')
+    --     end,
+    --     config = config("firenvim"),
+    -- })
 end)

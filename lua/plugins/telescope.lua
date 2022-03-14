@@ -43,14 +43,14 @@ telescope.setup({
         multi_icon = " ",
         initial_mode = "insert",
         selection_strategy = "reset",
-        sorting_strategy = "descending",
-        layout_strategy = "horizontal",
+        sorting_strategy = "ascending",
+        layout_strategy = "vertical",
         layout_config = {
-            prompt_position = "bottom",
+            prompt_position = "top",
             horizontal = {
                 width_padding = 0.04,
                 height_padding = 0.1,
-                preview_width = 0.6,
+                preview_width = 0.4,
             },
             vertical = {
                 width_padding = 0.05,
@@ -68,7 +68,7 @@ telescope.setup({
         },
         generic_sorter = require("telescope.sorters").get_generic_fuzzy_sorter,
         dynamic_preview_title = true,
-        path_display = { "smart" },
+        path_display = {},
         winblend = 0,
         border = {},
         borderchars = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" },

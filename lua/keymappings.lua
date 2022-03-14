@@ -139,18 +139,18 @@ u.nmap("<C-s>", "m`A;<Esc>``")
 u.imap("<C-s>", "<Esc>A;<Esc>")
 
 -- Select pasted text in visual mode
--- u.nmap('gp', '\'`[\' . strpart(getregtype(), 0, 1) . \'`]\'', { expr = true })
+u.nmap("gp", "'`[' . strpart(getregtype(), 0, 1) . '`]'", { expr = true })
 
 -- Paste without overwriting current registry
--- u.xmap('p', 'pgvy<Esc>')
+u.xmap("p", "pgvy<Esc>")
 
 -- Paste and indent
--- u.nmap('p', 'pm`V`]=<Esc>``')
--- u.nmap('P', 'Pm`V`]=<Esc>``')
+u.nmap("p", "pm`V`]=<Esc>``")
+u.nmap("P", "Pm`V`]=<Esc>``")
 
 -- Paste and indent and without overriding current register
--- u.xmap('p', 'pgvygp=<Esc>', { noremap = false })
--- u.xmap('P', 'Pgvygp=<Esc>', { noremap = false })
+u.xmap("p", "pgvygp=<Esc>", { noremap = false })
+u.xmap("P", "Pgvygp=<Esc>", { noremap = false })
 
 -- Toggle comment
 u.nmap("<Leader>/", "gcc", { noremap = false })

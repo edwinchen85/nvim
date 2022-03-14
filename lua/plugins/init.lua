@@ -70,7 +70,6 @@ return require("packer").startup(function(use)
     use({ "haya14busa/is.vim" })
     use({ "szw/vim-maximizer" })
     use({ "osyo-manga/vim-anzu" })
-    use({ "edwinchen85/vim-pasta" })
     use({ "ThePrimeagen/harpoon" })
 
     -- text objects

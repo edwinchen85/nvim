@@ -1,4 +1,3 @@
-vim.g.nvim_tree_quit_on_open = 1 -- "0 by default, closes the tree when you open a file
 vim.g.nvim_tree_indent_markers = 0 -- "0 by default, this option shows indent markers when folders are open
 vim.g.nvim_tree_root_folder_modifier = ":t" -- :~ by default, root folder display format
 vim.g.nvim_tree_refresh_wait = 500 -- "1000 by default, control how often the tree can be refreshed
@@ -37,6 +36,11 @@ require("nvim-tree").setup({
     open_on_tab = false,
     hijack_cursor = false,
     update_cwd = true,
+    actions = {
+        open_file = {
+            quit_on_open = true
+        },
+    },
     update_to_buf_dir = {
         enable = true,
         auto_open = true,

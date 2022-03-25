@@ -18,7 +18,6 @@ u.nmap("<Leader>T", ":term<CR>")
 u.tmap("<C-o>", "<C-\\><C-n>")
 
 -- Useful remaps
-u.nmap("<BS>", "<C-^>")
 u.nmap("D", "d$")
 u.nmap("Y", "y$")
 u.nmap("<Leader>h", ":noh<CR>")

@@ -55,12 +55,6 @@ end
 
 u.lua_command("Wwipeall", "global.commands.wwipeall()")
 
-commands.save_on_cr = function()
-    return vim.bo.buftype ~= "" and u.t("<CR>") or u.t(":w<CR>")
-end
-
-u.nmap("<CR>", "v:lua.global.commands.save_on_cr()", { expr = true })
-
 commands.stop_recording = function()
     return vim.fn.reg_recording() ~= "" and u.t("q") or ""
 end

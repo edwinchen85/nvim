@@ -60,7 +60,6 @@ u.nmap("<C-h>", "<C-w>h")
 u.nmap("<C-j>", "<C-w>j")
 u.nmap("<C-k>", "<C-w>k")
 u.nmap("<C-l>", "<C-w>l")
-u.tmap("<C-h>", "<C-\\><C-n><C-w>h")
 
 -- Close window
 u.nmap("<C-c>", "<C-w>c")

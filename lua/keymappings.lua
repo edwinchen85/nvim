@@ -188,13 +188,6 @@ u.nmap("gS", "<Plug>(swap-interactive)", { noremap = false })
 -- Source luafile
 u.nmap("<Leader>sv", ":luafile %<CR>")
 
--- Harpoon
-u.nmap("gm", "m") -- remap mark
-u.nmap("ma", ":AddMark<CR>")
-u.nmap("m;", ":NextMark<CR>")
-u.nmap("m,", ":PrevMark<CR>")
-u.nmap("mm", ":ToggleMenu<CR>")
-
 -- Exclude {, }, ( and ) in jump list
 u.nmap("}", ":<C-u>execute 'keepjumps normal!' v:count1 . '}zz'<CR>")
 u.nmap("{", ":<C-u>execute 'keepjumps normal!' v:count1 . '{zz'<CR>")

@@ -57,6 +57,7 @@ local mappings = {
     ["n"] = "Follow File",
     ["p"] = "Find File",
     ["q"] = "Quit",
+    ["v"] = "Vsplit Last",
     ["w"] = "Save",
     ["T"] = "Terminal",
 

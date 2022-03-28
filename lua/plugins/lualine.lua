@@ -75,6 +75,10 @@ local function lsp_progress(_, is_active)
     return table.concat(status, " | ") .. " " .. spinners[frame + 1]
 end
 
+local function blank()
+    return " "
+end
+
 vim.cmd([[autocmd User LspProgressUpdate let &ro = &ro]])
 
 local config = {
@@ -104,12 +108,12 @@ local config = {
         lualine_z = { "location" },
     },
     inactive_sections = {
-        lualine_a = {},
-        lualine_b = {},
-        lualine_c = {},
-        lualine_x = {},
-        lualine_y = {},
-        lualine_z = {},
+        lualine_a = { blank },
+        lualine_b = { blank },
+        lualine_c = { blank },
+        lualine_x = { blank },
+        lualine_y = { blank },
+        lualine_z = { blank },
     },
 }
 

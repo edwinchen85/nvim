@@ -135,6 +135,7 @@ return require("packer").startup(function(use)
 
     -- visual
     use("moll/vim-bbye")
+    use("folke/zen-mode.nvim")
     use("folke/tokyonight.nvim")
     use("kyazdani42/nvim-web-devicons")
     use_with_config("ishan9299/nvim-solarized-lua", "solarized")

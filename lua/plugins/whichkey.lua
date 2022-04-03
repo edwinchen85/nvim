@@ -59,6 +59,7 @@ local mappings = {
     ["q"] = "Quit",
     ["v"] = "Vsplit Last",
     ["w"] = "Save",
+    ["z"] = "Zen Mode",
     ["T"] = "Terminal",
 
     f = {

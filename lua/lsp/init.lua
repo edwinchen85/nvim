@@ -5,7 +5,7 @@ local api = vim.api
 
 local border_opts = {
     border = "rounded",
-    focusable = false,
+    focusable = true,
     style = "minimal",
     source = "always",
     scope = "line",

@@ -39,7 +39,10 @@ u.nmap("<C-w>m", ":MaximizerToggle!<cr>")
 u.nmap("<Leader>p", ":Telescope find_files<CR>")
 
 -- Telescope buffers
-u.nmap("<Leader>b", ":Telescope buffers<CR>")
+u.nmap(
+    "<Leader>b",
+    [[<Cmd>lua require("telescope.builtin").buffers({results_title='﬘', winblend = 0, layout_strategy = 'vertical', previewer = false, layout_config = { width = 0.5, height = 0.4 }})<CR>]]
+)
 
 -- Jump to previous buffer
 u.nmap("<Leader><Leader>", "<C-^>")

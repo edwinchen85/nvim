@@ -91,7 +91,7 @@ return require("packer").startup(function(use)
     })
 
     -- snippets
-    use("L3MON4D3/LuaSnip") --snippet engine
+    use_with_config("L3MON4D3/LuaSnip", "luasnip") -- snippet engine
 
     use({
         "windwp/nvim-autopairs", -- autocomplete pairs

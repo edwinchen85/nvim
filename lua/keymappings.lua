@@ -81,7 +81,7 @@ u.imap("<C-j>", '("\\<C-n>")', { expr = true })
 u.imap("<C-k>", '("\\<C-p>")', { expr = true })
 
 -- Fugitive
-u.nmap("<Leader>gg", ":G<CR><C-w>o:e<CR>")
+u.nmap("<Leader>gg", ":aboveleft G<CR>")
 
 -- Toggle Caps
 u.imap("<C-u>", "<Esc>m`viw~``a")

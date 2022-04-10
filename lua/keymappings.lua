@@ -40,7 +40,7 @@ u.nmap("<C-w>m", ":MaximizerToggle!<cr>")
 u.nmap("<Leader>p", ":Telescope find_files<CR>")
 
 -- Telescope buffers
-u.nmap("<Leader><CR>", ":Telescope buffers<CR>")
+u.nmap("<Leader>b", ":Telescope buffers<CR>")
 
 -- Jump to previous buffer
 u.nmap("<Leader><Leader>", "<C-^>")

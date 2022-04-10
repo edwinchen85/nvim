@@ -46,10 +46,10 @@ local opts = {
 }
 
 local mappings = {
-    ["<CR>"] = "Buffers",
     ["/"] = "Comment",
     ["h"] = "No Highlight",
     [";"] = "Dashboard",
+    ["b"] = "Buffers",
     ["c"] = "Close Buffer",
     ["C"] = "Close All Buffers",
     ["e"] = "Explorer",

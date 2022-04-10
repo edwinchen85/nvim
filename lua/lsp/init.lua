@@ -75,6 +75,8 @@ local on_attach = function(client, bufnr)
     u.lua_command("LspRename", "vim.lsp.buf.rename()")
     u.lua_command("LspTypeDef", "vim.lsp.buf.type_definition()")
     u.lua_command("LspDefinition", "vim.lsp.buf.definition()")
+    u.lua_command("LspReferences", "vim.lsp.buf.references()")
+    u.lua_command("LspCodeAction", "vim.lsp.buf.code_action()")
     u.lua_command("LspImplementation", "vim.lsp.buf.implementation()")
     u.lua_command("LspDiagPrev", "vim.diagnostic.goto_prev({ border = 'rounded' })")
     u.lua_command("LspDiagNext", "vim.diagnostic.goto_next({ border = 'rounded' })")
@@ -96,8 +98,8 @@ local on_attach = function(client, bufnr)
     u.buf_map("i", "<C-x><C-x>", "<cmd> LspSignatureHelp<CR>", nil, bufnr)
 
     -- telescope
-    u.buf_map("n", "gr", ":LspRef<CR>", nil, bufnr)
-    u.buf_map("n", "ga", ":LspAct<CR>", nil, bufnr)
+    u.buf_map("n", "gr", ":LspReferences<CR>", nil, bufnr)
+    u.buf_map("n", "ga", ":LspCodeAction<CR>", nil, bufnr)
     u.buf_map("v", "ga", "<Esc><cmd> LspRangeAct<CR>", nil, bufnr)
 
     if client.supports_method("textDocument/formatting") then

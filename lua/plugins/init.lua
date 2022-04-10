@@ -108,6 +108,7 @@ return require("packer").startup(function(use)
                 "nvim-telescope/telescope-fzf-native.nvim", -- better algorithm
                 run = "make",
             },
+            "nvim-telescope/telescope-ui-select.nvim",
         },
     })
 

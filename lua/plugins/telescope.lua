@@ -15,6 +15,7 @@ local api = vim.api
 telescope.setup({
     extensions = {
         fzf = { fuzzy = true, override_generic_sorter = true, override_file_sorter = true },
+        ["ui-select"] = { require("telescope.themes").get_cursor({}) },
     },
     defaults = {
         preview = {
@@ -103,6 +104,7 @@ telescope.setup({
 })
 
 telescope.load_extension("fzf")
+telescope.load_extension("ui-select")
 
 _G.global.telescope = {
     -- grep string from prompt

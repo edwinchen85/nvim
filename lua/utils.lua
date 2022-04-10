@@ -14,7 +14,7 @@ M.map = function(mode, target, source, opts)
     api.nvim_set_keymap(mode, target, source, get_map_options(opts))
 end
 
-for _, mode in ipairs({ "c", "i", "n", "o", "t", "u", "x" }) do
+for _, mode in ipairs({ "c", "i", "n", "o", "t", "u", "v", "x" }) do
     M[mode .. "map"] = function(...)
         M.map(mode, ...)
     end

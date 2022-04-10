@@ -54,7 +54,6 @@ local mappings = {
     ["C"] = "Close All Buffers",
     ["e"] = "Explorer",
     ["i"] = "Jump Forward",
-    ["n"] = "Follow File",
     ["p"] = "Find File",
     ["q"] = "Quit",
     ["v"] = "Vsplit Last",

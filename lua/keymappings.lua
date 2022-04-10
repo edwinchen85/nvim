@@ -26,8 +26,7 @@ u.nmap("<Leader>h", ":noh<CR>")
 u.nmap("<Leader>;", ":Alpha<CR>")
 
 -- Explorer
-u.nmap("<Leader>e", ":NvimTreeRefresh<CR>:NvimTreeToggle<CR>")
-u.nmap("<Leader>n", ":NvimTreeRefresh<CR>:NvimTreeFindFile<CR>")
+u.nmap("<Leader>e", ":NvimTreeToggle<CR>")
 
 -- Buffer
 u.nmap("<Leader>c", ":Bdelete!<CR>")

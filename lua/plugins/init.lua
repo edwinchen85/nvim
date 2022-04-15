@@ -137,6 +137,7 @@ return require("packer").startup(function(use)
     -- visual
     use("moll/vim-bbye")
     use("folke/zen-mode.nvim")
+    use("ellisonleao/glow.nvim")
     use("folke/tokyonight.nvim")
     use("stevearc/dressing.nvim")
     use("kyazdani42/nvim-web-devicons")

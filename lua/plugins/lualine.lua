@@ -1,16 +1,31 @@
+local tokyonight_colors = {
+    darkgray = "#16161d",
+    gray = "#727169",
+    innerbg = nil,
+    outerbg = "#16161D",
+    gutter = "#3b4261",
+    normal = "#7aa2f7",
+    insert = "#9ece6a",
+    visual = "#bb9af7",
+    replace = "#f7768e",
+    command = "#e0af68",
+}
+
+local solarized_colors = {
+    darkgray = "#002b36",
+    gray = "#657b83",
+    innerbg = nil,
+    outerbg = "#002b36",
+    gutter = "#073642",
+    normal = "#268bd2",
+    insert = "#859900",
+    visual = "#6c71c4",
+    replace = "#cb4b16",
+    command = "#b58900",
+}
+
 local function theme()
-    local colors = {
-        darkgray = "#16161d",
-        gray = "#727169",
-        innerbg = nil,
-        outerbg = "#16161D",
-        gutter = "#3b4261",
-        normal = "#7aa2f7",
-        insert = "#9ece6a",
-        visual = "#bb9af7",
-        replace = "#f7768e",
-        command = "#e0af68",
-    }
+    local colors = solarized_colors
 
     return {
         inactive = {

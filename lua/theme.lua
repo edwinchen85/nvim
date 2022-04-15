@@ -25,4 +25,7 @@ vim.cmd([[
   hi StatusLine guibg=NONE ctermbg=NONE
   hi TelescopeNormal guibg=NONE ctermbg=NONE
   hi TelescopeBorder guibg=NONE ctermbg=NONE
+  hi GitSignsAdd guibg=NONE ctermbg=NONE
+  hi GitSignsChange guibg=NONE ctermbg=NONE
+  hi GitSignsDelete guibg=NONE ctermbg=NONE
 ]])

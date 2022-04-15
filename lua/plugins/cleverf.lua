@@ -1,3 +1,3 @@
 vim.g.clever_f_ignore_case = 1
 vim.g.clever_f_smart_case = 1
-vim.g.clever_f_mark_char_color = "Error"
+vim.g.clever_f_mark_char_color = "Search"

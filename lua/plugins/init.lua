@@ -154,6 +154,7 @@ return require("packer").startup(function(use)
         run = "cd app && yarn install",
         cmd = "MarkdownPreview",
     })
+    use_with_config("NTBBloodbath/rest.nvim", "rest")
     -- use({
     --     "glacambre/firenvim",
     --     run = function()

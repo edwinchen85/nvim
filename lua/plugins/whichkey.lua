@@ -59,6 +59,7 @@ local mappings = {
     ["v"] = "Vsplit Last",
     ["w"] = "Save",
     ["z"] = "Zen Mode",
+    ["R"] = "Rest Nvim",
     ["T"] = "Terminal",
 
     f = {

@@ -144,6 +144,7 @@ return require("packer").startup(function(use)
     use_with_config("ishan9299/nvim-solarized-lua", "solarized")
     use_with_config("goolord/alpha-nvim", "alpha")
     use_with_config("nvim-lualine/lualine.nvim", "lualine") -- statusline and tabline
+    use_with_config("gelguy/wilder.nvim", "wilder") -- wildmenu
 
     -- misc
     use({

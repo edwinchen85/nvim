@@ -618,15 +618,13 @@
     "key": "reactFunctionalExportComponent",
     "prefix": "rfce",
     "body": [
-      "import React from 'react'",
+      "import React, { FC, memo } from 'react'",
       "",
-      "function ${1:${TM_FILENAME_BASE}}() {",
-      "  return (",
-      "    <div>${1:first}</div>",
-      "  )",
+      "const ${1:${TM_FILENAME_BASE}}:FC = () => {",
+      "  return <div>${1:first}</div>",
       "}",
       "",
-      "export default ${1:${TM_FILENAME_BASE}}"
+      "export default memo(${1:${TM_FILENAME_BASE}})"
     ],
     "description": "Creates a React Functional Component with ES7 module system",
     "scope": "typescript,typescriptreact,javascript,javascriptreact"
@@ -745,7 +743,7 @@
   },
   "useCallback": {
     "key": "useCallback",
-    "prefix": "useCallbackSnippet",
+    "prefix": "ucb",
     "body": [
       "useCallback(",
       "  () => {",
@@ -755,17 +753,26 @@
       ")",
       ""
     ],
+    "description": "React useCallback() hook",
     "scope": "typescript,typescriptreact,javascript,javascriptreact"
   },
   "useContext": {
     "key": "useContext",
-    "prefix": "useContextSnippet",
+    "prefix": "uc",
     "body": ["const ${1:first} = useContext(${2:second})"],
+    "description": "React useContext() hook",
     "scope": "typescript,typescriptreact,javascript,javascriptreact"
   },
   "useEffect": {
     "key": "useEffect",
-    "prefix": "useEffectSnippet",
+    "prefix": "ue",
+    "body": ["useEffect(() => {", "  ${1:first}", "}, [${2:second}])"],
+    "description": "React useEffect() hook",
+    "scope": "typescript,typescriptreact,javascript,javascriptreact"
+  },
+  "useEffectWithReturn": {
+    "key": "useEffectWithReturn",
+    "prefix": "uer",
     "body": [
       "useEffect(() => {",
       "  ${1:first}",
@@ -773,9 +780,9 @@
       "  return () => {",
       "    ${2:second}",
       "  }",
-      "}, [${3:third}])",
-      ""
+      "}, [${3:third}])"
     ],
+    "description": "React useEffect() with cleanup hook",
     "scope": "typescript,typescriptreact,javascript,javascriptreact"
   },
   "useImperativeHandle": {
@@ -804,12 +811,14 @@
       "  };",
       "}, [${3:third}])"
     ],
+    "description": "React useLayoutEffect() hook",
     "scope": "typescript,typescriptreact,javascript,javascriptreact"
   },
   "useMemo": {
     "key": "useMemo",
-    "prefix": "useMemoSnippet",
+    "prefix": "ume",
     "body": ["useMemo(() => ${1:first}, [${2:second}])"],
+    "description": "React useMemo() hook",
     "scope": "typescript,typescriptreact,javascript,javascriptreact"
   },
   "useReducer": {
@@ -818,20 +827,23 @@
     "body": [
       "const [state, dispatch] = useReducer(${1:first}, ${2:second}, ${3:third})"
     ],
+    "description": "React useReducer() hook",
     "scope": "typescript,typescriptreact,javascript,javascriptreact"
   },
   "useRef": {
     "key": "useRef",
-    "prefix": "useRefSnippet",
+    "prefix": "ur",
     "body": ["const ${1:first} = useRef(${2:second})"],
+    "description": "React useRef() hook",
     "scope": "typescript,typescriptreact,javascript,javascriptreact"
   },
   "useState": {
     "key": "useState",
-    "prefix": "useStateSnippet",
+    "prefix": "us",
     "body": [
       "const [${1:first}, set${1/(.*)/${1:/capitalize}/}] = useState(${2:second})"
     ],
+    "description": "React useState() hook",
     "scope": "typescript,typescriptreact,javascript,javascriptreact"
   },
   "importAs": {

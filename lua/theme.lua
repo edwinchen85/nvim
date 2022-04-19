@@ -29,4 +29,5 @@ vim.cmd([[
   hi GitSignsAdd guibg=NONE ctermbg=NONE
   hi GitSignsChange guibg=NONE ctermbg=NONE
   hi GitSignsDelete guibg=NONE ctermbg=NONE
+  hi WhichKeyFloat guibg=NONE ctermbg=NONE
 ]])

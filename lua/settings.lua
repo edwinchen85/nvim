@@ -12,8 +12,6 @@ augroup END
     false
 )
 
--- vim.cmd([[filetype plugin indent on]])
-
 api.nvim_create_autocmd("BufEnter", { command = "setlocal formatoptions-=cro indentkeys-=:" })
 
 -- vimdows to close with 'q'

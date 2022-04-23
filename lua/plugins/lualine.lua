@@ -101,7 +101,6 @@ local config = {
         theme = theme(),
         section_separators = { left = "", right = "" },
         component_separators = { left = "", right = "" },
-        disabled_filetypes = { "NvimTree" },
         always_divide_middle = false,
         icons_enabled = true,
     },
@@ -140,7 +139,10 @@ function M.load()
     -- if ok then
     --     config.options.theme = name
     -- end
+
     require("lualine").setup(config)
+
+    vim.opt.laststatus = 3
 end
 
 M.load()

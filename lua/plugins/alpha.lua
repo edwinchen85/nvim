@@ -36,5 +36,3 @@ dashboard.section.buttons.opts.hl = "Keyword"
 dashboard.opts.opts.noautocmd = true
 
 alpha.setup(dashboard.opts)
-
-vim.cmd([[autocmd FileType alpha setlocal laststatus=0]])

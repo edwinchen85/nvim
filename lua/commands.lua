@@ -61,11 +61,11 @@ end
 
 u.nmap("q", "v:lua.global.commands.stop_recording()", { expr = true })
 
-commands.yank_highlight = function()
-    vim.highlight.on_yank({ higroup = "IncSearch", timeout = 100 })
-end
-
-u.augroup("YankHighlight", "TextYankPost", "lua global.commands.yank_highlight()")
+api.nvim_create_autocmd("TextYankPost", {
+    callback = function()
+        vim.highlight.on_yank({ higroup = "IncSearch", timeout = 100 })
+    end,
+})
 
 -- cmd should be in the form of "edit $FILE",
 -- where $FILE is replaced with the found file's name

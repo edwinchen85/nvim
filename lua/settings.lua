@@ -1,3 +1,4 @@
+local api = vim.api
 -- Use spelling for markdown files ]s to find next, [s for previous, z= for suggestions when on one.
 -- Source: http:--thejakeharding.com/tutorial/2012/06/13/using-spell-check-in-vim.html
 vim.api.nvim_exec(
@@ -13,8 +14,7 @@ augroup END
 
 -- vim.cmd([[filetype plugin indent on]])
 
--- the only way I've found to make this persistent
-vim.cmd("autocmd BufEnter * setlocal formatoptions-=cro indentkeys-=:")
+api.nvim_create_autocmd("BufEnter", { command = "setlocal formatoptions-=cro indentkeys-=:" })
 
 -- vimdows to close with 'q'
 vim.cmd([[autocmd FileType help,qf,fugitiveblame,netrw nnoremap <buffer><silent> q :close<CR>]])

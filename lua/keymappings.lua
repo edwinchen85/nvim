@@ -36,7 +36,7 @@ u.nmap("<Leader>C", ":bufdo Bdelete!<CR>")
 u.nmap("<C-w>m", ":MaximizerToggle!<cr>")
 
 -- Find file
-u.nmap("<Leader>p", ":Telescope find_files<CR>")
+u.nmap("<C-p>", ":Telescope find_files<CR>")
 
 -- Telescope buffers
 u.nmap(

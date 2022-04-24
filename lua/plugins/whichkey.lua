@@ -54,13 +54,18 @@ local mappings = {
     ["C"] = "Close All Buffers",
     ["e"] = "Explorer",
     ["i"] = "Jump Forward",
-    ["p"] = "Find File",
     ["q"] = "Quit",
     ["v"] = "Vsplit Last",
     ["w"] = "Save",
     ["z"] = "Zen Mode",
     ["R"] = "Rest Nvim",
     ["T"] = "Terminal",
+
+    ["<Tab>"] = {
+        name = "+Toggle",
+        c = { "<cmd>:set cursorline!<cr>", "Cursor Line" },
+        n = { "<cmd>:set relativenumber!<cr>", "Relative Number" },
+    },
 
     f = {
         name = "+Find",
@@ -109,6 +114,15 @@ local mappings = {
         x = { "<cmd>cclose<cr>", "Close Quickfix" },
         s = { "<cmd>Telescope lsp_document_symbols<cr>", "Document Symbols" },
         S = { "<cmd>Telescope lsp_workspace_symbols<cr>", "Workspace Symbols" },
+    },
+
+    p = {
+        name = "+Packer",
+        c = { "<cmd>PackerCompile<cr>", "Compile" },
+        i = { "<cmd>PackerInstall<cr>", "Install" },
+        s = { "<cmd>PackerSync<cr>", "Sync" },
+        S = { "<cmd>PackerStatus<cr>", "Status" },
+        u = { "<cmd>PackerUpdate<cr>", "Update" },
     },
 
     S = {

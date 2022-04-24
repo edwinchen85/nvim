@@ -61,7 +61,7 @@ local mappings = {
     ["R"] = "Rest Nvim",
     ["T"] = "Terminal",
 
-    ["<Tab>"] = {
+    ["<tab>"] = {
         name = "+Toggle",
         c = { "<cmd>:set cursorline!<cr>", "Cursor Line" },
         n = { "<cmd>:set relativenumber!<cr>", "Relative Number" },

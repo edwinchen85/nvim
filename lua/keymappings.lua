@@ -169,6 +169,7 @@ u.nmap("g#", "<Plug>(asterisk-gz#)<Plug>(is-nohl-1)", { noremap = false })
 
 -- Fold
 u.nmap("zn", ":set foldenable!<CR>")
+u.nmap("ze", ":set foldmethod=expr<CR>")
 u.nmap("zi", ":set foldmethod=indent<CR>")
 u.nmap("zs", ":set foldmethod=syntax<CR>")
 

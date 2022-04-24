@@ -92,5 +92,4 @@ require("nvim-tree").setup({
             none = "  ",
         },
     },
-    root_folder_modifier = ":t",
 })

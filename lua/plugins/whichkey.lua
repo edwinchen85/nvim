@@ -104,10 +104,10 @@ local mappings = {
 
     l = {
         name = "+LSP",
-        d = { "<cmd>Telescope diagnostics bufnr=0<cr>", "Document Diagnostics" },
-        w = { "<cmd>Telescope diagnostics<cr>", "Workspace Diagnostics" },
-        l = { "<cmd>Telescope loclist<cr>", "Loclist" },
-        q = { "<cmd>Telescope quickfix<cr>", "Quickfix" },
+        d = { "<cmd>TroubleToggle document_diagnostics<cr>", "Document Diagnostics" },
+        w = { "<cmd>TroubleToggle workspace_diagnostics<cr>", "Workspace Diagnostics" },
+        l = { "<cmd>TroubleToggle loclist<cr>", "Loclist" },
+        q = { "<cmd>TroubleToggle quickfix<cr>", "Quickfix" },
         f = { "<cmd>LspFormatting<cr>", "Format" },
         i = { "<cmd>LspInfo<cr>", "Info" },
         t = { "<cmd>LspTypeDefinition<cr>", "Type Definition" },

@@ -60,6 +60,7 @@ return require("packer").startup(function(use)
     -- custom
     use_with_config("kyazdani42/nvim-tree.lua", "nvimtree")
     use_with_config("bkad/CamelCaseMotion", "camelcasemotion")
+    use_with_config("folke/trouble.nvim", "trouble")
     use_with_config("folke/which-key.nvim", "whichkey")
     use_with_config("folke/todo-comments.nvim", "todocomments")
     use_with_config("akinsho/nvim-toggleterm.lua", "toggleterm")

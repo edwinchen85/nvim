@@ -80,6 +80,9 @@ u.nmap("<C-Right>", ":vertical resize -2<CR>")
 u.imap("<C-j>", '("\\<C-n>")', { expr = true })
 u.imap("<C-k>", '("\\<C-p>")', { expr = true })
 
+-- Paste in insert mode
+u.imap("<C-v>", "<C-r>+")
+
 -- Fugitive
 u.nmap("<Leader>gg", ":aboveleft G<CR>")
 

@@ -65,6 +65,7 @@ telescope.setup({
             "node_modules/**/*.d.ts",
             "node_modules/**.*",
             "%-lock.json",
+            "%-lock.yaml",
             "yarn.lock",
             ".git/**",
         },

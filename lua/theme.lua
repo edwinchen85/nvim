@@ -20,6 +20,7 @@ vim.cmd([[
 vim.cmd([[
   hi Folded guibg=NONE ctermbg=NONE
   hi Normal guibg=NONE ctermbg=NONE
+  hi NormalFloat guibg=NONE ctermbg=NONE
   hi NonText guibg=NONE ctermbg=NONE
   hi SignColumn guibg=NONE ctermbg=NONE
   hi LineNr guibg=NONE ctermbg=NONE

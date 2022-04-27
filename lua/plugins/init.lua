@@ -128,6 +128,7 @@ return require("packer").startup(function(use)
         config = config("treesitter"),
     })
     use("nvim-treesitter/nvim-treesitter-refactor")
+    use("nvim-treesitter/nvim-treesitter-textobjects")
     use({
         "JoosepAlviste/nvim-ts-context-commentstring",
         ft = { "typescript", "typescriptreact", "javascript", "javascriptreact" },

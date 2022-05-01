@@ -26,6 +26,7 @@ vim.opt.shiftround = true -- Round indent
 vim.opt.showcmd = false
 vim.opt.showmode = false -- Don't display mode
 vim.opt.showtabline = 0
+vim.opt.laststatus = 3 -- Global status line
 vim.opt.smartcase = true -- Do not ignore case with capitals
 vim.opt.smartindent = true -- Insert indents automatically
 vim.opt.spelllang = "en"

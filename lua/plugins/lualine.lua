@@ -141,8 +141,6 @@ function M.load()
     -- end
 
     require("lualine").setup(config)
-
-    vim.opt.laststatus = 3
 end
 
 M.load()

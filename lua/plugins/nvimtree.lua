@@ -30,7 +30,6 @@ require("nvim-tree").setup({
     hijack_netrw = true,
     open_on_setup = false,
     ignore_ft_on_setup = { "startify", "dashboard", "alpha" },
-    auto_close = false,
     open_on_tab = false,
     hijack_cursor = false,
     update_cwd = true,
@@ -38,10 +37,6 @@ require("nvim-tree").setup({
         open_file = {
             quit_on_open = true
         },
-    },
-    update_to_buf_dir = {
-        enable = true,
-        auto_open = true,
     },
     diagnostics = {
         enable = false,
@@ -74,7 +69,6 @@ require("nvim-tree").setup({
         height = 40,
         hide_root_folder = false,
         side = "right",
-        auto_resize = false,
         mappings = {
             custom_only = false,
             list = {
@@ -85,11 +79,16 @@ require("nvim-tree").setup({
         },
     },
     renderer = {
-        enable = false,
+        indent_markers = {
+            enable = false,
+            icons = {
+                corner = "└ ",
+                edge = "│ ",
+                none = "  ",
+            },
+        },
         icons = {
-            corner = "└ ",
-            edge = "│ ",
-            none = "  ",
+            webdev_colors = true,
         },
     },
 })

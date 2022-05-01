@@ -23,7 +23,7 @@ u.nmap("Y", "y$")
 u.nmap("<Leader>h", ":noh<CR>")
 
 -- Dashboard
-u.nmap("<Leader>;", ":Alpha<CR>")
+u.nmap("<Leader>a", ":Alpha<CR>")
 
 -- Explorer
 u.nmap("<Leader>e", ":NvimTreeToggle<CR>")
@@ -118,6 +118,9 @@ u.xmap("y", "ygv<ESC>")
 
 -- Use . in visual mode to execute the dot command on each selected line
 u.xmap(".", ":normal .<CR>")
+
+-- Repeat previous command
+u.nmap("<Leader>;", ":@:<CR>")
 
 -- Delete last argument in comma separated list
 u.nmap("dge", "edgE")

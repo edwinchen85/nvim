@@ -66,6 +66,8 @@ local mappings = {
         name = "+Toggle",
         c = { "<cmd>:set cursorline!<cr>", "Cursor Line" },
         n = { "<cmd>:set relativenumber!<cr>", "Relative Number" },
+        p = { "<cmd>:Px!<cr>", "Rem to Px" },
+        r = { "<cmd>:Rem!<cr>", "Px to Rem" },
     },
 
     f = {

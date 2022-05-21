@@ -34,10 +34,6 @@ commands.vsplit = function(args)
     vim.cmd("vsplit " .. args)
 end
 
-vim.cmd("command! -complete=file -nargs=* Vsplit lua global.commands.vsplit(<f-args>)")
-u.command("VsplitLast", "Vsplit #")
-u.nmap("<Leader>v", ":VsplitLast<CR>")
-
 commands.wwipeall = function()
     local win = api.nvim_get_current_win()
     u.for_each(vim.fn.getwininfo(), function(w)

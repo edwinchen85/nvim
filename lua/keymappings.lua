@@ -210,5 +210,9 @@ u.nmap("(", ":<C-u>execute 'keepjumps normal!' v:count1 . '(zz'<CR>")
 u.nmap("+", "<C-a>")
 u.nmap("-", "<C-x>")
 
+-- Column increment / decrement
+u.xmap("g+", "g<C-a>", { noremap = false })
+u.xmap("g-", "g<C-x>", { noremap = false })
+
 -- Rest.nvim
 u.nmap("<Leader>R", "<Plug>RestNvim", { noremap = false })

@@ -29,3 +29,6 @@ local ft_str = table.concat(
     ","
 )
 vim.cmd("autocmd Filetype " .. ft_str .. " setlocal foldmethod=expr foldexpr=nvim_treesitter#foldexpr()")
+
+-- define custom Browse command to use GBrowse with range
+vim.cmd([[ command! -bar -nargs=1 Browse silent! exe '!open' shellescape(<q-args>, 1) ]])

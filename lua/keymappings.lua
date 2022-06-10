@@ -71,8 +71,8 @@ u.xmap("<C-j>", ":m '>+1<CR>gv=gv")
 u.xmap("<C-k>", ":m '<-2<CR>gv=gv")
 
 -- Resize window
-u.nmap("<C-Up>", ":resize +2<CR>")
-u.nmap("<C-Down>", ":resize -2<CR>")
+u.nmap("<C-Down>", ":resize +2<CR>")
+u.nmap("<C-Up>", ":resize -2<CR>")
 u.nmap("<C-Left>", ":vertical resize +2<CR>")
 u.nmap("<C-Right>", ":vertical resize -2<CR>")
 

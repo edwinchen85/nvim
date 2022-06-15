@@ -86,6 +86,9 @@ u.imap("<C-k>", '("\\<C-p>")', { expr = true })
 -- Paste in insert mode
 u.imap("<C-v>", "<C-r>+")
 
+-- Forward delete line
+u.imap("<C-k>", "<C-o>D")
+
 -- Fugitive
 u.nmap("<Leader>gg", ":aboveleft G<CR>")
 

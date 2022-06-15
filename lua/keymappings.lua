@@ -32,6 +32,9 @@ u.nmap("<Leader>e", ":NvimTreeToggle<CR>")
 u.nmap("<Leader>c", ":Bdelete!<CR>")
 u.nmap("<Leader>C", ":bufdo Bdelete!<CR>")
 
+-- Vertical split last buffer
+u.nmap("<Leader>v", ":vsp #<CR>")
+
 -- Maximizer
 u.nmap("<C-w>m", ":MaximizerToggle!<cr>")
 

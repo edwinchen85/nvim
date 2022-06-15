@@ -89,9 +89,6 @@ u.imap("<C-v>", "<C-r>+")
 -- Fugitive
 u.nmap("<Leader>gg", ":aboveleft G<CR>")
 
--- Toggle Caps
-u.imap("<C-u>", "<Esc>m`viw~``a")
-
 -- Centering only
 u.nmap("G", "Gzz")
 u.nmap("}", "}zz")

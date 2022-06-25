@@ -197,6 +197,9 @@ u.imap(":", ":<c-g>u")
 u.nmap(";", ":", { silent = false })
 u.xmap(";", ":", { silent = false })
 
+-- Shortcut to bang
+u.nmap("!", ":!", { silent = false })
+
 -- Swap interactive
 u.nmap("gS", "<Plug>(swap-interactive)", { noremap = false })
 

@@ -79,10 +79,6 @@ u.nmap("<C-Up>", ":resize -2<CR>")
 u.nmap("<C-Left>", ":vertical resize +2<CR>")
 u.nmap("<C-Right>", ":vertical resize -2<CR>")
 
--- Better nav for omnicomplete
-u.imap("<C-j>", '("\\<C-n>")', { expr = true })
-u.imap("<C-k>", '("\\<C-p>")', { expr = true })
-
 -- Paste in insert mode
 u.imap("<C-v>", "<C-r>+")
 

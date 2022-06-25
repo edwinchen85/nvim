@@ -5,27 +5,6 @@ vim.g.nvim_tree_group_empty = 1 -- Folders that contain only one folder are grou
 
 local tree_cb = require("nvim-tree.config").nvim_tree_callback
 
-vim.g.nvim_tree_icons = {
-    default = "",
-    symlink = "",
-    git = {
-        unstaged = "",
-        staged = "✓",
-        unmerged = "",
-        renamed = "➜",
-        untracked = "★",
-        deleted = "",
-        ignored = "◌",
-    },
-    folder = {
-        default = "",
-        open = "",
-        empty = "",
-        empty_open = "",
-        symlink = "",
-    },
-}
-
 require("nvim-tree").setup({
     disable_netrw = false,
     hijack_netrw = true,
@@ -90,6 +69,26 @@ require("nvim-tree").setup({
         },
         icons = {
             webdev_colors = true,
+            glyphs = {
+                default = "",
+                symlink = "",
+                git = {
+                    unstaged = "",
+                    staged = "✓",
+                    unmerged = "",
+                    renamed = "➜",
+                    untracked = "★",
+                    deleted = "",
+                    ignored = "◌",
+                },
+                folder = {
+                    default = "",
+                    open = "",
+                    empty = "",
+                    empty_open = "",
+                    symlink = "",
+                },
+            },
         },
     },
 })

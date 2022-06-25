@@ -11,21 +11,21 @@ local tokyonight_colors = {
     command = "#e0af68",
 }
 
-local solarized_colors = {
-    darkgray = "#002b36",
-    gray = "#657b83",
-    innerbg = nil,
-    outerbg = "#002b36",
-    gutter = "#073642",
-    normal = "#268bd2",
-    insert = "#859900",
-    visual = "#6c71c4",
-    replace = "#cb4b16",
-    command = "#b58900",
-}
+-- local solarized_colors = {
+--     darkgray = "#002b36",
+--     gray = "#657b83",
+--     innerbg = nil,
+--     outerbg = "#002b36",
+--     gutter = "#073642",
+--     normal = "#268bd2",
+--     insert = "#859900",
+--     visual = "#6c71c4",
+--     replace = "#cb4b16",
+--     command = "#b58900",
+-- }
 
 local function theme()
-    local colors = solarized_colors
+    local colors = tokyonight_colors
 
     return {
         inactive = {
@@ -134,11 +134,11 @@ local config = {
 local M = {}
 
 function M.load()
-    -- local name = vim.g.colors_name or ""
-    -- local ok, _ = pcall(require, "lualine.themes." .. name)
-    -- if ok then
-    --     config.options.theme = name
-    -- end
+    local name = vim.g.colors_name or ""
+    local ok, _ = pcall(require, "lualine.themes." .. name)
+    if ok then
+        config.options.theme = name
+    end
 
     require("lualine").setup(config)
 end

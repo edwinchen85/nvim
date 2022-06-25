@@ -1,7 +1,4 @@
 vim.g.nvim_tree_refresh_wait = 500 -- "1000 by default, control how often the tree can be refreshed
-vim.g.nvim_tree_respect_buf_cwd = 1 -- "0 by default, will change cwd of nvim-tree to that of new buffer's when opening nvim-tree.
-vim.g.nvim_tree_special_files = {} -- List of filenames that gets highlighted with NvimTreeSpecialFile
-vim.g.nvim_tree_group_empty = 1 -- Folders that contain only one folder are grouped together
 
 local tree_cb = require("nvim-tree.config").nvim_tree_callback
 
@@ -13,6 +10,7 @@ require("nvim-tree").setup({
     open_on_tab = false,
     hijack_cursor = false,
     update_cwd = true,
+    respect_buf_cwd = true,
     actions = {
         open_file = {
             quit_on_open = true
@@ -90,5 +88,7 @@ require("nvim-tree").setup({
                 },
             },
         },
+        group_empty = true,
+        special_files = {},
     },
 })

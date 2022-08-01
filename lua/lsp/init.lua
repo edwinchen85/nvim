@@ -20,7 +20,7 @@ lsp.handlers["textDocument/hover"] = lsp.with(lsp.handlers.hover, border_opts)
 
 -- use lsp formatting if it's available (and if it's good)
 -- otherwise, fall back to null-ls
-local preferred_formatting_clients = { "denols", "eslint" }
+local preferred_formatting_clients = { "eslint" }
 local fallback_formatting_client = "null-ls"
 
 local formatting = function(bufnr)
@@ -118,7 +118,6 @@ capabilities = require("cmp_nvim_lsp").update_capabilities(capabilities)
 for _, server in
     ipairs({
         "bashls",
-        "denols",
         "eslint",
         "jsonls",
         "null-ls",

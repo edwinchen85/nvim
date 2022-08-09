@@ -46,7 +46,6 @@ return require("packer").startup(function(use)
     use("tpope/vim-repeat")
     use("tpope/vim-eunuch")
     use("tpope/vim-capslock")
-    use("tpope/vim-surround")
     use("tpope/vim-unimpaired")
     use({
         "tpope/vim-fugitive",
@@ -55,6 +54,7 @@ return require("packer").startup(function(use)
     use_with_config("shumphrey/fugitive-gitlab.vim", "fugitivegitlab")
     use_with_config("lewis6991/impatient.nvim", "impatient")
     use_with_config("lewis6991/gitsigns.nvim", "gitsigns")
+    use_with_config("kylechui/nvim-surround", "surround")
     use_with_config("numToStr/Comment.nvim", "comment")
 
     -- custom

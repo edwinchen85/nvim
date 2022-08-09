@@ -115,16 +115,14 @@ end
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities = require("cmp_nvim_lsp").update_capabilities(capabilities)
 
-for _, server in
-    ipairs({
-        "bashls",
-        "eslint",
-        "jsonls",
-        "null-ls",
-        "sumneko_lua",
-        "tsserver",
-    })
-do
+for _, server in ipairs({
+    "bashls",
+    "eslint",
+    "jsonls",
+    "null-ls",
+    "sumneko_lua",
+    "tsserver",
+}) do
     -- Refer to https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md
     require("lsp." .. server).setup(on_attach, capabilities)
 end

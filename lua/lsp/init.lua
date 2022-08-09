@@ -129,10 +129,14 @@ do
     require("lsp." .. server).setup(on_attach, capabilities)
 end
 
--- suppress lspconfig messages
+-- suppress irrelevant messages
 local notify = vim.notify
 vim.notify = function(msg, ...)
     if msg:match("%[lspconfig%]") then
+        return
+    end
+
+    if msg:match("warning: multiple different client offset_encodings") then
         return
     end
 

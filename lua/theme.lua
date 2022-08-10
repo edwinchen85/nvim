@@ -1,6 +1,6 @@
 vim.g.tokyonight_style = "night" -- 'storm, night, day'
-vim.g.tokyonight_transparent = true
-vim.g.tokyonight_transparent_sidebar = true
+vim.g.tokyonight_transparent = false
+vim.g.tokyonight_transparent_sidebar = false
 vim.g.tokyonight_hide_inactive_statusline = true
 vim.g.tokyonight_italic_functions = true
 vim.g.tokyonight_italic_variables = true
@@ -15,7 +15,7 @@ vim.g.nord_italic = false
 
 vim.cmd([[
   try
-    colorscheme onenord
+    colorscheme tokyonight
   catch /^Vim\%((\a\+)\)\=:E185/
     colorscheme default
     set background=dark

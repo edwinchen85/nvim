@@ -49,7 +49,7 @@ return require("packer").startup(function(use)
     use("tpope/vim-unimpaired")
     use({
         "tpope/vim-fugitive",
-        { "junegunn/gv.vim", "tommcdo/vim-fugitive-blame-ext" },
+        { "tpope/vim-rhubarb", "junegunn/gv.vim", "tommcdo/vim-fugitive-blame-ext" },
     })
     use_with_config("shumphrey/fugitive-gitlab.vim", "fugitivegitlab")
     use_with_config("lewis6991/impatient.nvim", "impatient")

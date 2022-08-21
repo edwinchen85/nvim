@@ -21,6 +21,7 @@ u.tmap("<C-o>", "<C-\\><C-n>")
 u.nmap("D", "d$")
 u.nmap("Y", "y$")
 u.nmap("<Leader>h", ":noh<CR>")
+u.xmap("$", "$<left>")
 
 -- Dashboard
 u.nmap("<Leader>a", ":Alpha<CR>")

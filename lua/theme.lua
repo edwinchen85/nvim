@@ -8,11 +8,6 @@ vim.g.tokyonight_terminal_colors = true
 vim.g.tokyonight_sidebars = { "qf", "vista_kind", "terminal", "packer" }
 vim.g.tokyonight_colors = { hint = "orange", error = "#ff0000" }
 
-vim.g.nord_contrast = true
-vim.g.nord_borders = true
-vim.g.nord_disable_background = false
-vim.g.nord_italic = false
-
 vim.cmd([[
   try
     colorscheme tokyonight

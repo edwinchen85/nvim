@@ -1915,5 +1915,96 @@
     "prefix": "tpf",
     "body": ["typeof ${1:first}"],
     "scope": "typescript,typescriptreact,javascript,javascriptreact"
+  },
+  "arrowFunction": {
+    "key": "implicit return without arg(s)",
+    "prefix": "af",
+    "body": "() => $0",
+    "description": "Arrow function (implicit return)",
+    "scope": "typescript,typescriptreact,javascript,javascriptreact"
+  },
+  "arrowFunctionWithArguments": {
+    "key": "implicit return with arg(s)",
+    "prefix": "afa",
+    "body": "(${1:arg}) => $0",
+    "description": "Arrow function (implicit return) with arguments",
+    "scope": "typescript,typescriptreact,javascript,javascriptreact"
+  },
+  "arrowFunctionWithArgumentDestructuring": {
+    "key": "implicit return with arg destructuring",
+    "prefix": "afad",
+    "body": "({${1:prop}, ${2:prop}}) => $0",
+    "description": "Arrow function (implicit return) with argument destructuring",
+    "scope": "typescript,typescriptreact,javascript,javascriptreact"
+  },
+  "arrowFunctionObject": {
+    "key": "implicit return object",
+    "prefix": "afo",
+    "body": "() =>  ( { ${1:prop}:${0:value}} )",
+    "description": "Arrow function (object literal implicit return)",
+    "scope": "typescript,typescriptreact,javascript,javascriptreact"
+  },
+  "arrowFunctionObjectWithArguments": {
+    "key": "implicit return object with arg(s)",
+    "prefix": "afoa",
+    "body": "(${1:arg}) => ( { ${2:prop}:${0:value}} )",
+    "description": "Arrow function (object literal implicit return) with arguments",
+    "scope": "typescript,typescriptreact,javascript,javascriptreact"
+  },
+  "arrowFunctionExplicit": {
+    "key": "explicit return",
+    "prefix": "afe",
+    "body": ["() => {", "\treturn $0", "}"],
+    "description": "Arrow function (explicit return)",
+    "scope": "typescript,typescriptreact,javascript,javascriptreact"
+  },
+  "arrowFunctionExplicitWithArguments": {
+    "key": "explicit return with arg(s)",
+    "prefix": "afea",
+    "body": ["(${1:arg}) => {", "\treturn ${0}", "}"],
+    "description": "Arrow function (explicit return) with arguments",
+    "scope": "typescript,typescriptreact,javascript,javascriptreact"
+  },
+  "arrowFunctionExplicitWithArgumentDestructuring": {
+    "key": "explicit return with arg destructuring",
+    "prefix": "afead",
+    "body": ["({${1:prop}, ${2:prop}}) => {", "\treturn ${0}", "}"],
+    "description": "Arrow function (explicit return) with argument destructuring",
+    "scope": "typescript,typescriptreact,javascript,javascriptreact"
+  },
+  "arrowFunctionExplicitEmpty": {
+    "key": "explicit empty",
+    "prefix": "afee",
+    "body": ["() => {", "\t$0", "}"],
+    "description": "Arrow function (without return)",
+    "scope": "typescript,typescriptreact,javascript,javascriptreact"
+  },
+  "arrowFunctionExplicitEmptyWithArguments": {
+    "key": "explicit empty with arg(s)",
+    "prefix": "afeea",
+    "body": ["(${1:arg}) => {", "\t$0", "}"],
+    "description": "Arrow function (without return) with arguments",
+    "scope": "typescript,typescriptreact,javascript,javascriptreact"
+  },
+  "arrowFunctionParentheses": {
+    "key": "explicit with parentheses",
+    "prefix": "afp",
+    "body": ["() => {", "\t( ${0} )", "}"],
+    "description": "Arrow function (explicit without return)",
+    "scope": "typescript,typescriptreact,javascript,javascriptreact"
+  },
+  "arrowFunctionParenthesesWithArguments": {
+    "key": "explicit with parentheses and arg(s)",
+    "prefix": "afpa",
+    "body": ["(${1:arg}) => {", "\t( ${0} )", "}"],
+    "description": "Arrow function (explicit without return) with arguments",
+    "scope": "typescript,typescriptreact,javascript,javascriptreact"
+  },
+  "arrowFunctionImmediatelyInvoque": {
+    "key": "immediately invoke arrow function",
+    "prefix": ["iiaf", "afii"],
+    "body": "(() => $0)()",
+    "description": "Arrow function Immediately Invoke",
+    "scope": "typescript,typescriptreact,javascript,javascriptreact"
   }
 }

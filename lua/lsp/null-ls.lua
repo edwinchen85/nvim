@@ -6,6 +6,7 @@ end
 local b = null_ls.builtins
 
 local sources = {
+    -- formatting
     b.formatting.prettierd,
     b.formatting.stylua.with({
         args = { "--indent-width", "4", "--indent-type", "Spaces", "-" },

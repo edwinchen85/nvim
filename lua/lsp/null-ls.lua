@@ -13,7 +13,6 @@ local sources = {
     }),
     b.formatting.trim_whitespace.with({ filetypes = { "tmux", "zsh" } }),
     b.formatting.shfmt,
-    b.diagnostics.tsc,
 }
 
 local M = {}

@@ -13,6 +13,9 @@ local sources = {
     }),
     b.formatting.trim_whitespace.with({ filetypes = { "tmux", "zsh" } }),
     b.formatting.shfmt,
+    -- diagnostics
+    b.diagnostics.write_good,
+    b.diagnostics.markdownlint,
 }
 
 local M = {}

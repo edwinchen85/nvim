@@ -67,6 +67,12 @@ u.nmap("<C-j>", "<C-w>j")
 u.nmap("<C-k>", "<C-w>k")
 u.nmap("<C-l>", "<C-w>l")
 
+-- Page up down and center
+u.nmap("<C-f>", "<C-f>zz")
+u.nmap("<C-b>", "<C-b>zz")
+u.nmap("<C-u>", "<C-u>zz")
+u.nmap("<C-d>", "<C-d>zz")
+
 -- Close window
 u.nmap("<C-c>", "<C-w>c")
 

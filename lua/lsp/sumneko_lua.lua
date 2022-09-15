@@ -2,7 +2,6 @@ local settings = {
     Lua = {
         diagnostics = {
             globals = {
-                "global",
                 "vim",
                 "use",
                 "describe",

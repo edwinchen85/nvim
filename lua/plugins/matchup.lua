@@ -1,4 +1,4 @@
-local u = require("utils")
+local u = require("config.utils")
 
 vim.g.matchup_matchparen_offscreen = { method = "popup", border = "shadow" }
 vim.g.matchup_surround_enabled = true

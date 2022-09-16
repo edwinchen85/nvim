@@ -8,7 +8,7 @@ local actions = require("telescope.actions")
 local set = require("telescope.actions.set")
 local trouble = require("trouble.providers.telescope")
 
-local u = require("utils")
+local u = require("config.utils")
 local commands = require("commands")
 
 local api = vim.api

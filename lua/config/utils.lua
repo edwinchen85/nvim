@@ -20,8 +20,11 @@ for _, mode in ipairs({ "c", "i", "n", "o", "t", "u", "v", "x" }) do
     end
 end
 
-M.buf_map = function(mode, target, source, opts, bufnr)
-    api.nvim_buf_set_keymap(bufnr, mode, target, source, get_map_options(opts))
+M.buf_map = function(bufnr, mode, target, source, opts)
+    opts = opts or {}
+    opts.buffer = bufnr
+
+    M.map(mode, target, source, get_map_options(opts))
 end
 
 M.for_each = function(tbl, cb)
@@ -50,8 +53,21 @@ _G.inspect = function(...)
     print(vim.inspect(...))
 end
 
-M.command = function(name, fn)
-    vim.cmd(string.format("command! %s %s", name, fn))
+M.command = function(name, fn, opts)
+    api.nvim_create_user_command(name, fn, opts or {})
+end
+
+M.buf_command = function(bufnr, name, fn, opts)
+    api.nvim_buf_create_user_command(bufnr, name, fn, opts or {})
+end
+
+M.gfind = function(str, substr, cb, init)
+    init = init or 1
+    local start_pos, end_pos = str:find(substr, init)
+    if start_pos then
+        cb(start_pos, end_pos)
+        return M.gfind(str, substr, cb, end_pos + 1)
+    end
 end
 
 M.lua_command = function(name, fn)

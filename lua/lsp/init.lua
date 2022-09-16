@@ -102,22 +102,22 @@ local on_attach = function(client, bufnr)
     u.lua_command("LspSignatureHelp", "vim.lsp.buf.signature_help()")
 
     -- bindings
-    u.buf_map("n", "K", ":LspHover<CR>", nil, bufnr)
-    u.buf_map("n", "gR", ":LspRename<CR>", nil, bufnr)
-    u.buf_map("n", "gy", ":LspTypeDef<CR>", nil, bufnr)
-    u.buf_map("n", "[d", ":LspDiagPrev<CR>", nil, bufnr)
-    u.buf_map("n", "]d", ":LspDiagNext<CR>", nil, bufnr)
-    u.buf_map("n", "gd", ":LspDefinition<CR>", nil, bufnr)
-    u.buf_map("n", "gs", ":LspSignatureHelp<CR>", nil, bufnr)
-    u.buf_map("n", "gh", ":LspImplementation<CR>", nil, bufnr)
-    u.buf_map("n", "gl", ":LspDiagLine<CR>", nil, bufnr)
-    u.buf_map("n", "<leader>q", ":LspDiagLocList<CR>", nil, bufnr)
-    u.buf_map("i", "<C-x><C-x>", "<cmd> LspSignatureHelp<CR>", nil, bufnr)
+    u.buf_map(bufnr, "n", "K", ":LspHover<CR>", nil)
+    u.buf_map(bufnr, "n", "gR", ":LspRename<CR>", nil)
+    u.buf_map(bufnr, "n", "gy", ":LspTypeDef<CR>", nil)
+    u.buf_map(bufnr, "n", "[d", ":LspDiagPrev<CR>", nil)
+    u.buf_map(bufnr, "n", "]d", ":LspDiagNext<CR>", nil)
+    u.buf_map(bufnr, "n", "gd", ":LspDefinition<CR>", nil)
+    u.buf_map(bufnr, "n", "gs", ":LspSignatureHelp<CR>", nil)
+    u.buf_map(bufnr, "n", "gh", ":LspImplementation<CR>", nil)
+    u.buf_map(bufnr, "n", "gl", ":LspDiagLine<CR>", nil)
+    u.buf_map(bufnr, "n", "<leader>q", ":LspDiagLocList<CR>", nil)
+    u.buf_map(bufnr, "i", "<C-x><C-x>", "<cmd> LspSignatureHelp<CR>", nil)
 
     -- telescope
-    u.buf_map("n", "gr", ":TroubleToggle lsp_references<CR>", nil, bufnr)
-    u.buf_map("n", "ga", ":LspCodeAction<CR>", nil, bufnr)
-    u.buf_map("v", "ga", "<Esc><cmd> LspRangeAct<CR>", nil, bufnr)
+    u.buf_map(bufnr, "n", "gr", ":TroubleToggle lsp_references<CR>", nil)
+    u.buf_map(bufnr, "n", "ga", ":LspCodeAction<CR>", nil)
+    u.buf_map(bufnr, "v", "ga", "<Esc><cmd> LspRangeAct<CR>", nil)
 
     if client.supports_method("textDocument/formatting") then
         vim.cmd([[

@@ -101,6 +101,7 @@ local config = {
         theme = theme(),
         section_separators = { left = "", right = "" },
         component_separators = { left = "", right = "" },
+        disabled_filetypes = { "alpha", "dashboard", "NvimTree" },
         always_divide_middle = false,
         icons_enabled = true,
     },

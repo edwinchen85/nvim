@@ -137,6 +137,7 @@ for _, server in ipairs({
     "eslint",
     "jsonls",
     "null-ls",
+    "pyright",
     "sumneko_lua",
     "tsserver",
 }) do

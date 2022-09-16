@@ -12,7 +12,10 @@ augroup END
     false
 )
 
-api.nvim_create_autocmd("BufEnter", { command = "setlocal formatoptions-=cro indentkeys-=:" })
+-- override for all file types
+api.nvim_create_autocmd("FileType", {
+    command = "setlocal formatoptions-=cro indentkeys-=:",
+})
 
 -- vimdows to close with 'q'
 vim.cmd([[autocmd FileType help,qf,fugitiveblame,netrw nnoremap <buffer><silent> q :close<CR>]])

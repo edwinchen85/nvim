@@ -15,8 +15,8 @@ require("which-key").setup({
         },
     },
     key_labels = { ["<space>"] = "_", ["<CR>"] = "↵", ["<tab>"] = "⇆" },
-    breadcrumb = "»", -- symbol used in the command line area that shows your active key combo
     icons = {
+        breadcrumb = "»", -- symbol used in the command line area that shows your active key combo
         separator = "➜", -- symbol used between a key and it's label
         group = "+", -- symbol prepended to a group
     },

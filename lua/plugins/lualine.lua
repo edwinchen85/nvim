@@ -104,6 +104,7 @@ local config = {
         disabled_filetypes = { "alpha", "dashboard", "NvimTree" },
         always_divide_middle = true,
         icons_enabled = true,
+        globalstatus = true,
     },
     sections = {
         lualine_a = { { "filename", path = 1, symbols = { modified = " [+]", readonly = " [RO]" } } },

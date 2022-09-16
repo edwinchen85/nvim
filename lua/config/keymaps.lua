@@ -9,9 +9,9 @@ u.nmap("k", [[(v:count > 1 ? "m'" . v:count : '') . 'gk'"]], { expr = true })
 u.nmap("j", [[(v:count > 1 ? "m'" . v:count : '') . 'gj'"]], { expr = true })
 
 -- Tab to jump to match
-u.nmap("<Tab>", "%", { noremap = false })
-u.xmap("<Tab>", "%", { noremap = false })
-u.omap("<Tab>", "%", { noremap = false })
+u.nmap("<Tab>", "%", { remap = true })
+u.xmap("<Tab>", "%", { remap = true })
+u.omap("<Tab>", "%", { remap = true })
 
 -- Visual line
 u.nmap("vv", "V")
@@ -119,7 +119,7 @@ u.nmap("s", '"_s')
 u.nmap("S", '"_S')
 
 -- Search for visually selected text
-u.xmap("/", "y/\\V<C-r>=escape(@\",'/\\')<CR><CR>N", { noremap = false })
+u.xmap("/", "y/\\V<C-r>=escape(@\",'/\\')<CR><CR>N", { remap = true })
 
 -- Place cursor at the end of yank in visual mode
 u.xmap("y", "ygv<ESC>")
@@ -163,20 +163,20 @@ u.nmap("p", "pm`V`]=<Esc>``")
 u.nmap("P", "Pm`V`]=<Esc>``")
 
 -- Paste and indent and without overriding current register
-u.xmap("p", "pgvygp=<Esc>", { noremap = false })
-u.xmap("P", "Pgvygp=<Esc>", { noremap = false })
+u.xmap("p", "pgvygp=<Esc>", { remap = true })
+u.xmap("P", "Pgvygp=<Esc>", { remap = true })
 
 -- Toggle comment
-u.nmap("<Leader>/", "gcc", { noremap = false })
-u.xmap("<Leader>/", "gc", { noremap = false })
+u.nmap("<Leader>/", "gcc", { remap = true })
+u.xmap("<Leader>/", "gc", { remap = true })
 
 -- is.vim + Asterisk
-u.nmap("n", "<Plug>(is-nohl)zzzv<Plug>(anzu-n-with-echo)", { noremap = false })
-u.nmap("N", "<Plug>(is-nohl)zzzv<Plug>(anzu-N-with-echo)", { noremap = false })
-u.nmap("*", "<Plug>(asterisk-z*)<Plug>(is-nohl-1)", { noremap = false })
-u.nmap("g*", "<Plug>(asterisk-gz*)<Plug>(is-nohl-1)", { noremap = false })
-u.nmap("#", "<Plug>(asterisk-z#)<Plug>(is-nohl-1)", { noremap = false })
-u.nmap("g#", "<Plug>(asterisk-gz#)<Plug>(is-nohl-1)", { noremap = false })
+u.nmap("n", "<Plug>(is-nohl)zzzv<Plug>(anzu-n-with-echo)", { remap = true })
+u.nmap("N", "<Plug>(is-nohl)zzzv<Plug>(anzu-N-with-echo)", { remap = true })
+u.nmap("*", "<Plug>(asterisk-z*)<Plug>(is-nohl-1)", { remap = true })
+u.nmap("g*", "<Plug>(asterisk-gz*)<Plug>(is-nohl-1)", { remap = true })
+u.nmap("#", "<Plug>(asterisk-z#)<Plug>(is-nohl-1)", { remap = true })
+u.nmap("g#", "<Plug>(asterisk-gz#)<Plug>(is-nohl-1)", { remap = true })
 
 -- Fold
 u.nmap("zn", ":set foldenable!<CR>")
@@ -206,7 +206,7 @@ u.xmap(";", ":", { silent = false })
 u.nmap("!", ":!", { silent = false })
 
 -- Swap interactive
-u.nmap("gS", "<Plug>(swap-interactive)", { noremap = false })
+u.nmap("gS", "<Plug>(swap-interactive)", { remap = true })
 
 -- Source luafile
 u.nmap("<Leader>sv", ":luafile %<CR>")
@@ -222,8 +222,8 @@ u.nmap("+", "<C-a>")
 u.nmap("-", "<C-x>")
 
 -- Column increment / decrement
-u.xmap("g+", "g<C-a>", { noremap = false })
-u.xmap("g-", "g<C-x>", { noremap = false })
+u.xmap("g+", "g<C-a>", { remap = true })
+u.xmap("g-", "g<C-x>", { remap = true })
 
 -- Rest.nvim
-u.nmap("<Leader>R", "<Plug>RestNvim", { noremap = false })
+u.nmap("<Leader>R", "<Plug>RestNvim", { remap = true })

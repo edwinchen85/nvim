@@ -84,9 +84,6 @@ vim.g.loaded_remote_plugins = 1
 global = {}
 
 -- source remaining lua config
-require("keymappings")
-require("commands")
-require("settings")
+require("config")
 require("plugins")
-require("theme")
 require("lsp")

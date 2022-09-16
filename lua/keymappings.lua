@@ -14,7 +14,6 @@ u.xmap("<Tab>", "%", { noremap = false })
 u.omap("<Tab>", "%", { noremap = false })
 
 -- Terminal
-u.nmap("<Leader>T", ":term<CR>")
 u.tmap("<C-o>", "<C-\\><C-n>")
 
 -- Useful remaps

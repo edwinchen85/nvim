@@ -60,7 +60,6 @@ local mappings = {
     ["w"] = "Save",
     ["z"] = "Zen Mode",
     ["R"] = "Rest Nvim",
-    ["T"] = "Terminal",
 
     ["<tab>"] = {
         name = "+Toggle",

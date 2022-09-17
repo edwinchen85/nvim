@@ -146,8 +146,8 @@ u.cmap("<C-j>", [[wildmenumode() ? '<Right>' : '<Down>']], { expr = true, silent
 u.cmap("<C-k>", [[wildmenumode() ? '<Left>' : '<Up>']], { expr = true, silent = false })
 
 -- EOL semicolon
-u.nmap("<C-s>", "m`A;<Esc>``")
-u.imap("<C-s>", "<Esc>A;<Esc>")
+u.nmap("<C-;>", "m`A;<Esc>``")
+u.imap("<C-;>", "<Esc>A;<Esc>")
 
 -- Select pasted text in visual mode
 u.nmap("gp", "'`[' . strpart(getregtype(), 0, 1) . '`]'", { expr = true })

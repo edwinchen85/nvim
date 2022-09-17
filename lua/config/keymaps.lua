@@ -53,9 +53,6 @@ u.nmap(
 -- Jump to previous buffer
 u.nmap("<Leader><Leader>", "<C-^>")
 
--- Jump forward
-u.nmap("<Leader>i", "<C-i>")
-
 -- Better join
 u.nmap("J", "mzJ`z")
 

@@ -74,6 +74,7 @@ return require("packer").startup(function(use)
     -- text objects
     use("wellle/targets.vim") -- many useful additional text objects
     use("machakann/vim-swap") -- swap delimited items
+    use("mg979/vim-visual-multi") -- multiple cursors
 
     -- cmp plugins
     use({

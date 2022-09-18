@@ -688,7 +688,7 @@
   },
   "forEach": {
     "key": "forEach",
-    "prefix": "fre",
+    "prefix": "fea",
     "body": ["${1:first}.forEach(${2:second} => {${3:third}})"],
     "description": "Creates a forEach statement",
     "scope": "typescript,typescriptreact,javascript,javascriptreact"
@@ -910,7 +910,7 @@
   },
   "arrowFunctionImmediatelyInvoque": {
     "key": "immediately invoke arrow function",
-    "prefix": ["iiaf", "afii"],
+    "prefix": "iiaf",
     "body": "(() => $0)()",
     "description": "Arrow function Immediately Invoke",
     "scope": "typescript,typescriptreact,javascript,javascriptreact"

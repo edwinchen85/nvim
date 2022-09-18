@@ -227,6 +227,9 @@ u.command("Help", 'execute ":help" expand("<cword>")')
 u.command("R", "w | :e")
 -- end of misc
 
+-- restore syntax highlighting
+u.command("S", "syntax sync clear")
+
 _G.global.commands = commands
 
 return commands

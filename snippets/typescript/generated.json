@@ -815,51 +815,58 @@
     "description": "Create React context",
     "scope": "typescript,typescriptreact,javascript,javascriptreact"
   },
-  "createRef": {
-    "key": "createRef",
-    "prefix": "cref",
-    "body": ["this.${1:first}Ref = React.createRef()"],
-    "description": "Create ref statement used inside constructor",
+  "commentInline": {
+    "key": "commentInline",
+    "prefix": "cmi",
+    "body": ["/** ${1} */"],
     "scope": "typescript,typescriptreact,javascript,javascriptreact"
   },
-  "componentSetStateObject": {
-    "key": "componentSetStateObject",
-    "prefix": "sst",
-    "body": ["this.setState({${1:first}})"],
-    "description": "Performs a shallow merge of nextState into current state",
+  "commentBlock": {
+    "key": "commentBlock",
+    "prefix": "cmb",
+    "body": ["/**", " * ${1}", " */"],
     "scope": "typescript,typescriptreact,javascript,javascriptreact"
   },
-  "componentSetStateFunc": {
-    "key": "componentSetStateFunc",
-    "prefix": "ssf",
-    "body": ["this.setState((state, props) => { return { ${1:first} }})"],
-    "description": "Performs a shallow merge of nextState into current state",
+  "commentPerf": {
+    "key": "commentPerf",
+    "prefix": "perf",
+    "body": "// PERF: $0",
     "scope": "typescript,typescriptreact,javascript,javascriptreact"
   },
-  "componentProps": {
-    "key": "componentProps",
-    "prefix": "props",
-    "body": ["this.props.${1:first}"],
-    "description": "Access component's props",
+  "commentHack": {
+    "key": "commentHack",
+    "prefix": "hack",
+    "body": "// HACK: $0",
     "scope": "typescript,typescriptreact,javascript,javascriptreact"
   },
-  "componentState": {
-    "key": "componentState",
-    "prefix": "state",
-    "body": ["this.state.${1:first}"],
+  "commentTodo": {
+    "key": "commentTodo",
+    "prefix": "todo",
+    "body": "// TODO: $0",
     "scope": "typescript,typescriptreact,javascript,javascriptreact"
   },
-  "bindThis": {
-    "key": "bindThis",
-    "prefix": "bnd",
-    "body": ["this.${1:first} = this.${1:first}.bind(this)"],
-    "description": "Binds this to a method",
+  "commentNote": {
+    "key": "commentNote",
+    "prefix": "note",
+    "body": "// NOTE: $0",
     "scope": "typescript,typescriptreact,javascript,javascriptreact"
   },
-  "commentBigBlock": {
-    "key": "commentBigBlock",
-    "prefix": "cmmb",
-    "body": ["/**", " * ${1:first}", " */"],
+  "commentFix": {
+    "key": "commentFix",
+    "prefix": "fix",
+    "body": "// FIX: $0",
+    "scope": "typescript,typescriptreact,javascript,javascriptreact"
+  },
+  "commentBug": {
+    "key": "commentBug",
+    "prefix": "bug",
+    "body": "// BUG: $0",
+    "scope": "typescript,typescriptreact,javascript,javascriptreact"
+  },
+  "commentWarning": {
+    "key": "commentWarning",
+    "prefix": "warning",
+    "body": "// WARNING: $0",
     "scope": "typescript,typescriptreact,javascript,javascriptreact"
   },
   "hocComponentWithRedux": {

@@ -889,22 +889,22 @@
   },
   "arrowFunctionWithArguments": {
     "key": "implicit return with arg(s)",
-    "prefix": "afa",
-    "body": "(${1:arg}) => $0",
+    "prefix": "afi",
+    "body": "(${1}) => $0",
     "description": "Arrow function (implicit return) with arguments",
     "scope": "typescript,typescriptreact,javascript,javascriptreact"
   },
   "arrowFunctionObjectWithArguments": {
     "key": "implicit return object with arg(s)",
-    "prefix": "afoa",
-    "body": "(${1:arg}) => ( { ${2:prop}:${0:value}} )",
+    "prefix": "afo",
+    "body": "(${1}) => ({ ${2} })",
     "description": "Arrow function (object literal implicit return) with arguments",
     "scope": "typescript,typescriptreact,javascript,javascriptreact"
   },
   "arrowFunctionExplicitEmptyWithArguments": {
     "key": "explicit empty with arg(s)",
-    "prefix": "afeea",
-    "body": ["(${1:arg}) => {", "\t$0", "}"],
+    "prefix": "afe",
+    "body": ["(${1}) => {", "\t$0", "}"],
     "description": "Arrow function (without return) with arguments",
     "scope": "typescript,typescriptreact,javascript,javascriptreact"
   },

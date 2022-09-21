@@ -217,72 +217,45 @@
   "useCallback": {
     "key": "useCallback",
     "prefix": "ucb",
-    "body": [
-      "useCallback(",
-      "  () => {",
-      "    ${1:first}",
-      "  },",
-      "  [${2:second}],",
-      ")",
-      ""
-    ],
+    "body": ["useCallback(() => {${1}}, [${2}])"],
     "description": "React useCallback() hook",
     "scope": "typescript,typescriptreact,javascript,javascriptreact"
   },
   "useContext": {
     "key": "useContext",
-    "prefix": "uc",
-    "body": ["const ${1:first} = useContext(${2:second})"],
+    "prefix": "uct",
+    "body": ["const ${1} = useContext(${2})"],
     "description": "React useContext() hook",
     "scope": "typescript,typescriptreact,javascript,javascriptreact"
   },
   "useEffect": {
     "key": "useEffect",
     "prefix": "ue",
-    "body": ["useEffect(() => {", "  ${1:first}", "}, [${2:second}])"],
+    "body": ["useEffect(() => {${1}}, [${2}])"],
     "description": "React useEffect() hook",
-    "scope": "typescript,typescriptreact,javascript,javascriptreact"
-  },
-  "useEffectWithReturn": {
-    "key": "useEffectWithReturn",
-    "prefix": "uer",
-    "body": [
-      "useEffect(() => {",
-      "  ${1:first}",
-      "",
-      "  return () => {",
-      "    ${2:second}",
-      "  }",
-      "}, [${3:third}])"
-    ],
-    "description": "React useEffect() with cleanup hook",
     "scope": "typescript,typescriptreact,javascript,javascriptreact"
   },
   "useImperativeHandle": {
     "key": "useImperativeHandle",
-    "prefix": "useImperativeHandleSnippet",
+    "prefix": "uimp",
     "body": [
       "useImperativeHandle(",
-      "  ${1:first},",
-      "  () => {",
-      "    ${2:second}",
-      "  },",
-      "  [${3:third}],",
+      "  ${1},",
+      "  () => {${2}},",
+      "  [${3}],",
       ")"
     ],
     "scope": "typescript,typescriptreact,javascript,javascriptreact"
   },
   "useLayoutEffect": {
     "key": "useLayoutEffect",
-    "prefix": "useLayoutEffectSnippet",
+    "prefix": "uelayout",
     "body": [
       "useLayoutEffect(() => {",
-      "  ${1:first}",
+      "  ${1}",
       "",
-      "  return () => {",
-      "    ${2:second}",
-      "  };",
-      "}, [${3:third}])"
+      "  return () => {${2}}",
+      "}, [${3}])"
     ],
     "description": "React useLayoutEffect() hook",
     "scope": "typescript,typescriptreact,javascript,javascriptreact"
@@ -290,31 +263,31 @@
   "useMemo": {
     "key": "useMemo",
     "prefix": "ume",
-    "body": ["useMemo(() => ${1:first}, [${2:second}])"],
+    "body": ["useMemo(() => ${1}, [${2}])"],
     "description": "React useMemo() hook",
     "scope": "typescript,typescriptreact,javascript,javascriptreact"
   },
   "useReducer": {
     "key": "useReducer",
-    "prefix": "useReducerSnippet",
+    "prefix": "ureducer",
     "body": [
-      "const [state, dispatch] = useReducer(${1:first}, ${2:second}, ${3:third})"
+      "const [state, dispatch] = useReducer(${1}, ${2}, ${3})"
     ],
     "description": "React useReducer() hook",
     "scope": "typescript,typescriptreact,javascript,javascriptreact"
   },
   "useRef": {
     "key": "useRef",
-    "prefix": "ur",
-    "body": ["const ${1:first} = useRef(${2:second})"],
+    "prefix": "uref",
+    "body": ["const ${1} = useRef(${2})"],
     "description": "React useRef() hook",
     "scope": "typescript,typescriptreact,javascript,javascriptreact"
   },
   "useState": {
     "key": "useState",
-    "prefix": "us",
+    "prefix": "ustate",
     "body": [
-      "const [${1:first}, set${1/(.*)/${1:/capitalize}/}] = useState(${2:second})"
+      "const [${1}, set${1/(.*)/${1:/capitalize}/}] = useState(${2})"
     ],
     "description": "React useState() hook",
     "scope": "typescript,typescriptreact,javascript,javascriptreact"

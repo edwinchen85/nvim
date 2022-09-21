@@ -884,7 +884,7 @@
   "arrowFunctionExplicitEmptyWithArguments": {
     "key": "explicit empty with arg(s)",
     "prefix": "afe",
-    "body": ["(${1}) => {", "\t$0", "}"],
+    "body": ["(${1}) => {${2}}"],
     "description": "Arrow function (without return) with arguments",
     "scope": "typescript,typescriptreact,javascript,javascriptreact"
   },

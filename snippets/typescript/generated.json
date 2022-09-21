@@ -91,9 +91,9 @@
     "key": "reactFunctionalExportComponent",
     "prefix": "rfce",
     "body": [
-      "import React, { FC, memo } from 'react'",
+      "import React, { memo } from 'react'",
       "",
-      "const ${1:${TM_FILENAME_BASE}}:FC = () => {",
+      "const ${1:${TM_FILENAME_BASE}} = () => {",
       "  return <div>${1:first}</div>",
       "}",
       "",

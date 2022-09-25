@@ -72,29 +72,9 @@ local function diff_source()
     end
 end
 
-local function lsp_progress(_, is_active)
-    if not is_active then
-        return ""
-    end
-    local messages = vim.lsp.util.get_progress_messages()
-    if #messages == 0 then
-        return ""
-    end
-    local status = {}
-    for _, msg in pairs(messages) do
-        table.insert(status, (msg.percentage or 0) .. "%% " .. (msg.title or ""))
-    end
-    local spinners = { "⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏" }
-    local ms = vim.loop.hrtime() / 1000000
-    local frame = math.floor(ms / 120) % #spinners
-    return table.concat(status, " | ") .. " " .. spinners[frame + 1]
-end
-
 local function blank()
     return " "
 end
-
-vim.cmd([[autocmd User LspProgressUpdate let &ro = &ro]])
 
 local config = {
     options = {
@@ -119,7 +99,6 @@ local config = {
                 symbols = { error = " ", warn = " ", info = " ", hint = " " },
             },
         },
-        lualine_x = { "filetype", lsp_progress },
         lualine_y = { "progress" },
         lualine_z = { "location" },
     },

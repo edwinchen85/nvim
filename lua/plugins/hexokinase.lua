@@ -1,4 +1,5 @@
 vim.g.Hexokinase_ftEnabled = {
+    "lua",
     "css",
     "html",
     "javascript",

@@ -185,32 +185,6 @@ commands.blame_line = function()
 end
 -- end of gitsigns
 
--- harpoon
-commands.add_mark = function()
-    return require("harpoon.mark").add_file()
-end
-
-u.lua_command("AddMark", "global.commands.add_mark()")
-
-commands.next_mark = function()
-    return require("harpoon.ui").nav_next()
-end
-
-u.lua_command("NextMark", "global.commands.next_mark()")
-
-commands.prev_mark = function()
-    return require("harpoon.ui").nav_prev()
-end
-
-u.lua_command("PrevMark", "global.commands.prev_mark()")
-
-commands.toggle_menu = function()
-    return require("harpoon.ui").toggle_quick_menu()
-end
-
-u.lua_command("ToggleMenu", "global.commands.toggle_menu()")
--- end of harpoon
-
 u.lua_command("BlameLine", "global.commands.blame_line()")
 
 -- misc

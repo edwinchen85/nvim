@@ -121,6 +121,7 @@ local mappings = {
     p = {
         name = "+Packer",
         c = { "<cmd>PackerCompile<cr>", "Compile" },
+        C = { "<cmd>PackerClean<cr>", "Clean" },
         i = { "<cmd>PackerInstall<cr>", "Install" },
         s = { "<cmd>PackerSync<cr>", "Sync" },
         S = { "<cmd>PackerStatus<cr>", "Status" },

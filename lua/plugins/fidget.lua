@@ -42,6 +42,11 @@ fidget.setup({
             )
         end,
     },
+    sources = { -- Sources to configure
+        formatting = { -- Name of source
+            ignore = true, -- Ignore notifications from this source
+        },
+    },
     debug = {
         logging = false, -- whether to enable logging, for debugging
         strict = false, -- whether to interpret LSP strictly

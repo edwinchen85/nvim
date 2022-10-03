@@ -16,9 +16,6 @@ local sources = {
     -- diagnostics
     b.diagnostics.write_good,
     b.diagnostics.markdownlint,
-    -- code actions
-    b.code_actions.gitsigns,
-    b.code_actions.gitrebase,
     -- hover
     b.hover.dictionary,
 }

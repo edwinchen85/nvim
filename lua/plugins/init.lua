@@ -160,11 +160,11 @@ return require("packer").startup(function(use)
     })
     use("edwinchen85/vim-px-to-rem")
     use_with_config("NTBBloodbath/rest.nvim", "rest")
-    -- use({
-    --     "glacambre/firenvim",
-    --     run = function()
-    --         vim.fn["firenvim#install"](0, 'export PATH="$PATH"')
-    --     end,
-    --     config = config("firenvim"),
-    -- })
+    use({
+        "glacambre/firenvim",
+        run = function()
+            vim.fn["firenvim#install"](0, 'export PATH="$PATH"')
+        end,
+        config = config("firenvim"),
+    })
 end)

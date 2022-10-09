@@ -112,8 +112,6 @@ u.nmap("cl", '"_cl')
 u.nmap("c", '"_c')
 u.xmap("c", '"_c')
 u.nmap("C", '"_C')
-u.nmap("s", '"_s')
-u.nmap("S", '"_S')
 
 -- Search for visually selected text
 u.xmap("/", "y/\\V<C-r>=escape(@\",'/\\')<CR><CR>N", { remap = true })

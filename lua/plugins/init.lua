@@ -87,7 +87,7 @@ return require("packer").startup(function(use)
             "hrsh7th/cmp-buffer",
             "hrsh7th/cmp-cmdline",
             "hrsh7th/cmp-path",
-            "folke/lua-dev.nvim",
+            "folke/neodev.nvim", -- better lua-language-server settings
             "saadparwaiz1/cmp_luasnip", -- snippet completions
         },
         config = config("cmp"),

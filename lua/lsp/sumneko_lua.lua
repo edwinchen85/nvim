@@ -28,7 +28,7 @@ local settings = {
 local M = {}
 
 M.setup = function(on_attach, capabilities)
-    require("lua-dev").setup({
+    require("neodev").setup({
         override = function(root_dir, library)
             if root_dir:match("dotfiles") then
                 library.enabled = true

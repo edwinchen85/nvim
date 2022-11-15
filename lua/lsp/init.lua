@@ -134,6 +134,7 @@ capabilities = require("cmp_nvim_lsp").default_capabilities()
 
 for _, server in ipairs({
     "bashls",
+    "cssls",
     "eslint",
     "jsonls",
     "null-ls",

@@ -120,9 +120,11 @@ return require("packer").startup(function(use)
     use("jose-elias-alvarez/null-ls.nvim")
     use("jose-elias-alvarez/nvim-lsp-ts-utils")
     use("jose-elias-alvarez/typescript.nvim")
-    use("williamboman/nvim-lsp-installer")
     use("tamago324/nlsp-settings.nvim") -- language server settings defined in json
     use("b0o/schemastore.nvim") -- simple access to json-language-server schemae
+    use("williamboman/nvim-lsp-installer")
+    use("williamboman/mason.nvim")
+    use_with_config("williamboman/mason-lspconfig.nvim", "mason")
 
     -- development
     use("nvim-lua/plenary.nvim")

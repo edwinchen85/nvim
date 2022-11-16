@@ -140,6 +140,7 @@ for _, server in ipairs({
     "null-ls",
     "pyright",
     "sumneko_lua",
+    "tailwindcss",
     "tsserver",
 }) do
     -- Refer to https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md

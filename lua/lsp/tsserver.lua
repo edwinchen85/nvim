@@ -10,7 +10,7 @@ M.setup = function(on_attach, capabilities)
                 u.buf_map(bufnr, "n", "go", ":TypescriptAddMissingImports<CR>")
 
                 require("nvim-lsp-ts-utils").setup({
-                    filter_out_diagnostics_by_code = { 80001, 80006 },
+                    filter_out_diagnostics_by_code = { 80001, 80006, 80007 },
                 })
                 require("nvim-lsp-ts-utils").setup_client(client)
             end,

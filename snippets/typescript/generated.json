@@ -890,5 +890,12 @@
     "body": "(() => $0)()",
     "description": "Arrow function Immediately Invoke",
     "scope": "typescript,typescriptreact,javascript,javascriptreact"
+  },
+  "className": {
+    "key": "class name snippet",
+    "prefix": "cln",
+    "body": "className=\"$0\"",
+    "description": "Snippet of React className attribute",
+    "scope": "typescript,typescriptreact,javascript,javascriptreact"
   }
 }

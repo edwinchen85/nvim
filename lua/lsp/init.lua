@@ -44,7 +44,7 @@ local formatting = function(bufnr)
     bufnr = tonumber(bufnr) or api.nvim_get_current_buf()
 
     local selected_client
-    for _, client in ipairs(lsp.buf_get_clients(bufnr)) do
+    for _, client in ipairs(lsp.get_active_clients()) do
         if vim.tbl_contains(preferred_formatting_clients, client.name) then
             selected_client = client
             break

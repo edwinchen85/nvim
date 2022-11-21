@@ -11,6 +11,7 @@ M.setup = function(on_attach, capabilities)
 
                 require("nvim-lsp-ts-utils").setup({
                     filter_out_diagnostics_by_code = { 80001, 80006, 80007 },
+                    filter_out_diagnostics_by_code = { 80001, 80005, 80006, 80007 },
                 })
                 require("nvim-lsp-ts-utils").setup_client(client)
             end,

@@ -3,6 +3,12 @@ if not status_ok then
     return
 end
 
+local pre_hook
+local loaded, ts_comment = pcall(require, "ts_context_commentstring.integrations.comment_nvim")
+if loaded and ts_comment then
+    pre_hook = ts_comment.create_pre_hook()
+end
+
 comment.setup({
     active = true,
     on_config_done = nil,
@@ -48,26 +54,7 @@ comment.setup({
 
     ---Pre-hook, called before commenting the line
     ---@type function|nil
-    pre_hook = function(ctx)
-        if not vim.tbl_contains({ "typescript", "typescriptreact" }, vim.bo.ft) then
-            return
-        end
-
-        local comment_utils = require("Comment.utils")
-        local type = ctx.ctype == comment_utils.ctype.line and "__default" or "__multiline"
-
-        local location
-        if ctx.ctype == comment_utils.ctype.block then
-            location = require("ts_context_commentstring.utils").get_cursor_location()
-        elseif ctx.cmotion == comment_utils.cmotion.v or ctx.cmotion == comment_utils.cmotion.V then
-            location = require("ts_context_commentstring.utils").get_visual_start_location()
-        end
-
-        return require("ts_context_commentstring.internal").calculate_commentstring({
-            key = type,
-            location = location,
-        })
-    end,
+    pre_hook = pre_hook,
 
     ---Post-hook, called after commenting is done
     ---@type function|nil

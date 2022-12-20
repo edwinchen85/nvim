@@ -130,7 +130,7 @@ local filename = {
     "filename",
     path = 1,
     symbols = { modified = "[+]", readonly = "[RO]" },
-    padding = 0
+    padding = 0,
 }
 
 local mode = {

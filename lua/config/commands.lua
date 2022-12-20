@@ -180,6 +180,12 @@ end
 
 u.lua_command("PreviewHunk", "global.commands.preview_hunk()")
 
+commands.preview_hunk_inline = function()
+  return require("gitsigns").preview_hunk_inline()
+end
+
+u.lua_command("PreviewHunkInline", "global.commands.preview_hunk_inline()")
+
 commands.blame_line = function()
     return require("gitsigns").blame_line()
 end

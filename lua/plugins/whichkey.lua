@@ -86,6 +86,7 @@ local mappings = {
 
     g = {
         name = "+Git",
+        i = { "<cmd>PreviewHunkInline<cr>", "Preview Hunk Inline" },
         j = { "<cmd>NextHunk<cr>", "Next Hunk" },
         k = { "<cmd>PrevHunk<cr>", "Prev Hunk" },
         p = { "<cmd>PreviewHunk<cr>", "Preview Hunk" },

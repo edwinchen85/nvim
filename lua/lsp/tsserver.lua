@@ -8,6 +8,7 @@ M.setup = function(on_attach, capabilities)
                 on_attach(client, bufnr)
 
                 u.buf_map(bufnr, "n", "go", ":TypescriptAddMissingImports<CR>")
+                u.buf_map(bufnr, "n", "gd", ":TypescriptGoToSourceDefinition<CR>")
 
                 require("nvim-lsp-ts-utils").setup({
                     -- Refer to https://github.com/microsoft/TypeScript/blob/main/src/compiler/diagnosticMessages.json

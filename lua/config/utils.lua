@@ -70,6 +70,17 @@ M.gfind = function(str, substr, cb, init)
     end
 end
 
+M.table = {
+    some = function(tbl, cb)
+        for k, v in pairs(tbl) do
+            if cb(k, v) then
+                return true
+            end
+        end
+        return false
+    end,
+}
+
 M.lua_command = function(name, fn)
     M.command(name, "lua " .. fn)
 end

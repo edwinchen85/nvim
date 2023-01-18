@@ -6,7 +6,7 @@ require("nvim-treesitter.configs").setup({
         enable_autocmd = false,
     },
     autopairs = { enable = true },
-    highlight = { enable = true },
+    highlight = { enable = true, additional_vim_regex_highlighting = true },
     autotag = { enable = true },
     matchup = {
         enable = true,

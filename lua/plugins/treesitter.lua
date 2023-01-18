@@ -31,9 +31,7 @@ require("nvim-treesitter.configs").setup({
     autopairs = { enable = true },
     highlight = { enable = true, additional_vim_regex_highlighting = true },
     autotag = { enable = true },
-    matchup = {
-        enable = true,
-    },
+    matchup = { enable = true },
     refactor = {
         highlight_definitions = { enable = true },
         highlight_current_scope = { enable = false },

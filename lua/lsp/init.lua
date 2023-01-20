@@ -92,7 +92,7 @@ local on_attach = function(client, bufnr)
     u.buf_map(bufnr, "n", "gh", ":LspImplementation<CR>", nil)
     u.buf_map(bufnr, "n", "gl", ":LspDiagLine<CR>", nil)
     u.buf_map(bufnr, "n", "<leader>q", ":LspDiagLocList<CR>", nil)
-    u.buf_map(bufnr, "i", "<C-x><C-x>", "<cmd> LspSignatureHelp<CR>", nil)
+    u.buf_map(bufnr, "i", "<C-s>", "<cmd> LspSignatureHelp<CR>", nil)
 
     -- telescope
     u.buf_map(bufnr, "n", "gr", ":TroubleToggle lsp_references<CR>", nil)

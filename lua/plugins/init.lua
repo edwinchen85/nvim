@@ -84,7 +84,6 @@ return require("packer").startup(function(use)
             "hrsh7th/cmp-nvim-lsp",
             "hrsh7th/cmp-nvim-lua",
             "hrsh7th/cmp-buffer",
-            "hrsh7th/cmp-cmdline",
             "hrsh7th/cmp-path",
             "folke/neodev.nvim", -- better lua-language-server settings
             "saadparwaiz1/cmp_luasnip", -- snippet completions
@@ -151,6 +150,7 @@ return require("packer").startup(function(use)
     use_with_config("goolord/alpha-nvim", "alpha")
     use_with_config("j-hui/fidget.nvim", "fidget")
     use_with_config("nvim-lualine/lualine.nvim", "lualine") -- statusline and tabline
+    use_with_config("gelguy/wilder.nvim", "wilder") -- wildmenu
     use_with_config("folke/tokyonight.nvim", "tokyonight") -- theme
 
     -- misc

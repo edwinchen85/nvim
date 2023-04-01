@@ -131,6 +131,7 @@ return require("packer").startup(function(use)
         run = ":TSUpdate",
         config = config("treesitter"),
     })
+    use("nvim-treesitter/nvim-treesitter-context")
     use("nvim-treesitter/nvim-treesitter-refactor")
     use("nvim-treesitter/nvim-treesitter-textobjects")
     use({

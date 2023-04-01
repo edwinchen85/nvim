@@ -153,6 +153,7 @@ return require("packer").startup(function(use)
     use_with_config("nvim-lualine/lualine.nvim", "lualine") -- statusline and tabline
     use_with_config("gelguy/wilder.nvim", "wilder") -- wildmenu
     use_with_config("folke/tokyonight.nvim", "tokyonight") -- theme
+    use_with_config("karb94/neoscroll.nvim", "neoscroll") -- smooth scroll
 
     -- misc
     use({

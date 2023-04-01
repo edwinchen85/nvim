@@ -57,6 +57,7 @@ local mappings = {
     ["e"] = "Explorer",
     ["v"] = "Vsplit Last",
     ["w"] = "Save",
+    ["W"] = "Save (No Format)",
     ["z"] = "Zen Mode",
     ["R"] = "Rest Nvim",
 

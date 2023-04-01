@@ -182,6 +182,9 @@ u.nmap("zs", ":set foldmethod=syntax<CR>")
 -- Save
 u.nmap("<Leader>w", ":w<CR>")
 
+-- Save without format
+u.nmap("<Leader>W", ":noa w<CR>")
+
 -- Zen Mode
 u.nmap("<Leader>z", ":ZenMode<CR>")
 

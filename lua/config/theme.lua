@@ -7,6 +7,9 @@ vim.cmd([[
   endtry
 ]])
 
+-- hide cursorline background highlight
+vim.cmd([[ hi CursorLine guibg=NONE ]])
+
 -- vim.cmd([[
 --   hi Folded guibg=NONE ctermbg=NONE
 --   hi Normal guibg=NONE ctermbg=NONE

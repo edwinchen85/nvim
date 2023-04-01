@@ -52,7 +52,7 @@ vim.opt.fillchars:append("eob: ")
 
 vim.opt.cursorline = true
 vim.opt.number = true -- Show line numbers
-vim.opt.relativenumber = false
+vim.opt.relativenumber = true
 vim.opt.signcolumn = "yes" -- Always show signcolumn
 vim.opt.backupcopy = "yes"
 vim.opt.wildmode = "longest:full,full"

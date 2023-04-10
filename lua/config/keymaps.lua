@@ -13,9 +13,6 @@ u.nmap("<Tab>", "%", { remap = true })
 u.xmap("<Tab>", "%", { remap = true })
 u.omap("<Tab>", "%", { remap = true })
 
--- Visual line
-u.nmap("vv", "V")
-
 -- Terminal
 u.tmap("<C-o>", "<C-\\><C-n>")
 

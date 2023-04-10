@@ -33,8 +33,8 @@ local indent = "#CE9178"
 local purple = "#C586C0"
 
 if lualine_scheme == "tokyonight" then
-    gray = "#303030"
-    dark_gray = "#303030"
+    gray = "#292e42"
+    dark_gray = "#292e42"
     red = "#bf616a"
     blue = "#5e81ac"
     indent = "#A3BE8C"
@@ -46,7 +46,7 @@ end
 
 vim.api.nvim_set_hl(0, "SLGitIcon", { fg = "#E8AB53", bg = dark_gray })
 vim.api.nvim_set_hl(0, "SLTermIcon", { fg = purple, bg = gray })
-vim.api.nvim_set_hl(0, "SLBranchName", { fg = "#abb2bf", bg = dark_gray, bold = false })
+vim.api.nvim_set_hl(0, "SLBranchName", { fg = "#a9b1d6", bg = gray, bold = false })
 vim.api.nvim_set_hl(0, "SLProgress", { fg = purple, bg = gray })
 vim.api.nvim_set_hl(0, "SLLocation", { fg = blue, bg = gray })
 vim.api.nvim_set_hl(0, "SLFT", { fg = cyan, bg = gray })
@@ -108,7 +108,7 @@ local right_pad = {
 
 local left_pad_alt = {
     function()
-        return " "
+        return "  "
     end,
     padding = 0,
     color = function()
@@ -118,7 +118,7 @@ local left_pad_alt = {
 
 local right_pad_alt = {
     function()
-        return " "
+        return "  "
     end,
     padding = 0,
     color = function()

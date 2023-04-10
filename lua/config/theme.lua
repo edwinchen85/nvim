@@ -9,8 +9,6 @@ vim.cmd([[
 
 vim.cmd([[
     hi LineNr guifg=#565f89
-    hi CursorLine guibg=NONE
-    hi CursorLineNr guifg=#c0caf5
 ]])
 
 -- vim.cmd([[

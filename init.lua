@@ -50,7 +50,7 @@ vim.opt.shell = "/bin/zsh"
 vim.opt.shortmess:append("cAS")
 vim.opt.fillchars:append("eob: ")
 
-vim.opt.cursorline = true
+vim.opt.cursorline = false
 vim.opt.number = true -- Show line numbers
 vim.opt.relativenumber = true
 vim.opt.signcolumn = "yes" -- Always show signcolumn

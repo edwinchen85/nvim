@@ -171,6 +171,7 @@ return require("packer").startup(function(use)
     use("github/copilot.vim")
     use("edwinchen85/vim-px-to-rem")
     use_with_config("NTBBloodbath/rest.nvim", "rest")
+    use_with_config("AndrewRadev/splitjoin.vim", "splitjoin") -- split arrays and methods onto multiple lines, or join them up
     use({
         "glacambre/firenvim",
         run = function()

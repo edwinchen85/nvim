@@ -76,6 +76,10 @@ return require("packer").startup(function(use)
     use("wellle/targets.vim") -- many useful additional text objects
     use("machakann/vim-swap") -- swap delimited items
     use("mg979/vim-visual-multi") -- multiple cursors
+    use({
+        "whatyouhide/vim-textobj-xmlattr", -- text objects for html attributes
+        requires = "kana/vim-textobj-user",
+    })
 
     -- cmp plugins
     use({

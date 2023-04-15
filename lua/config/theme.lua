@@ -9,6 +9,13 @@ vim.cmd([[
 
 vim.cmd([[
     hi LineNr guifg=#565f89
+    hi TelescopeNormal guifg=#a9b1d6 guibg=#1f2335
+    hi TelescopeBorder guifg=#1f2335 guibg=#1f2335
+    hi TelescopePromptNormal guibg=#2d3149
+    hi TelescopePromptBorder guifg=#2d3149 guibg=#2d3149
+    hi TelescopePromptTitle guifg=#2d3149 guibg=#2d3149
+    hi TelescopePreviewTitle guifg=#1f2335 guibg=#1f2335
+    hi TelescopeResultsTitle guifg=#1f2335 guibg=#1f2335
 ]])
 
 -- vim.cmd([[

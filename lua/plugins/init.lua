@@ -103,6 +103,7 @@ return require("packer").startup(function(use)
         config = config("autopairs"),
         wants = "nvim-cmp",
     })
+    use("jessarcher/vim-heritage") -- automatically create parent dirs when saving
 
     -- integrations
     use({

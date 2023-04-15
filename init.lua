@@ -60,6 +60,7 @@ vim.opt.wildignorecase = true
 vim.opt.wildignore:append(".git/**")
 vim.opt.path:append("**")
 vim.opt.title = true
+vim.opt.confirm = true -- Ask for confirmation instead of erroring
 
 -- Disable various builtin plugins in Vim that bog down speed
 vim.g.loaded_matchparen = 1

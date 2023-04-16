@@ -1,4 +1,5 @@
 vim.g.mapleader = " "
+vim.g.maplocalleader = " "
 
 vim.opt.autoread = true -- Read again when file has changed outside of vim
 vim.opt.backspace = { "indent", "eol", "start" }

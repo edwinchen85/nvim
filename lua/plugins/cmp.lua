@@ -131,6 +131,10 @@ cmp.setup({
         select = false,
     },
     window = {
+        completion = cmp.config.window.bordered({
+            border = "rounded",
+            winhighlight = "FloatBorder:MyPmenu",
+        }),
         documentation = {
             border = { "╭", "─", "╮", "│", "╯", "─", "╰", "│" },
         },
@@ -140,6 +144,8 @@ cmp.setup({
         native_menu = false,
     },
 })
+
+vim.api.nvim_set_hl(0, "MyPmenu", { bg = "none" })
 
 cmp.setup.cmdline(":", {
     sources = {

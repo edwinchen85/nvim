@@ -3,7 +3,7 @@ local u = require("config.utils")
 local lsp = vim.lsp
 
 local border_opts = {
-    border = "single",
+    border = "rounded",
     focusable = true,
     style = "minimal",
     source = "always",

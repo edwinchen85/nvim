@@ -7,6 +7,7 @@ require("nvim-treesitter.configs").setup({
         "fish",
         "go",
         "help",
+        "http",
         "javascript",
         "json",
         "jsonc",

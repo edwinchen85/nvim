@@ -69,7 +69,7 @@ require("tokyonight").setup({
             fg = c.none,
         }
         hl.NormalFloat = {
-            bg = c.bg_dark,
+            bg = c.none,
         }
     end,
 })

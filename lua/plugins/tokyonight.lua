@@ -70,6 +70,7 @@ require("tokyonight").setup({
         }
         hl.NormalFloat = {
             bg = c.none,
+            fg = c.comment,
         }
     end,
 })

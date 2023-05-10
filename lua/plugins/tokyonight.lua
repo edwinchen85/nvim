@@ -66,7 +66,7 @@ require("tokyonight").setup({
         }
         hl.FloatBorder = {
             bg = c.none,
-            fg = c.none,
+            fg = c.comment,
         }
         hl.NormalFloat = {
             bg = c.none,

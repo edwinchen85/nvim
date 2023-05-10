@@ -18,7 +18,7 @@ wilder.set_option(
                 "Pmenu",
                 { { a = 1 }, { a = 1 }, { foreground = "#f4468f", background = "None" } }
             ),
-            border = "None", -- highlight to use for the border
+            border = "FloatBorder", -- highlight to use for the border
         },
         -- 'single', 'double', 'rounded' or 'solid'
         -- can also be a list of 8 characters, see :h wilder#popupmenu_border_theme() for more details

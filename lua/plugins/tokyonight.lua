@@ -30,7 +30,46 @@ require("tokyonight").setup({
     --- function will be called with a Highlights and ColorScheme table
     ---@param highlights Highlights
     ---@param colors ColorScheme
-    on_highlights = function(highlights, colors) end,
+    on_highlights = function(hl, c)
+        local prompt = "#2d3149"
+        hl.LineNr = {
+            fg = c.comment,
+        }
+        hl.TelescopeNormal = {
+            bg = c.bg_dark,
+            fg = c.fg_dark,
+        }
+        hl.TelescopeBorder = {
+            bg = c.bg_dark,
+            fg = c.bg_dark,
+        }
+        hl.TelescopePromptNormal = {
+            bg = prompt,
+        }
+        hl.TelescopePromptBorder = {
+            bg = prompt,
+            fg = prompt,
+        }
+        hl.TelescopePromptTitle = {
+            bg = prompt,
+            fg = prompt,
+        }
+        hl.TelescopePreviewTitle = {
+            bg = c.bg_dark,
+            fg = c.bg_dark,
+        }
+        hl.TelescopeResultsTitle = {
+            bg = c.bg_dark,
+            fg = c.bg_dark,
+        }
+        hl.FloatBorder = {
+            bg = c.none,
+            fg = c.none,
+        }
+        hl.NormalFloat = {
+            bg = c.bg_dark,
+        }
+    end,
 })
 
 vim.cmd([[colorscheme tokyonight]])

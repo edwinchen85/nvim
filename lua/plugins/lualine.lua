@@ -12,6 +12,18 @@ if not status_theme_ok then
     return
 end
 
+theme.normal = {
+    a = { bg = "NONE" },
+    b = { bg = "NONE" },
+    c = { bg = "NONE" },
+}
+
+theme.inactive = {
+    a = { bg = "NONE" },
+    b = { bg = "NONE" },
+    c = { bg = "NONE" },
+}
+
 -- check if value in table
 local function contains(t, value)
     for _, v in pairs(t) do
@@ -133,6 +145,7 @@ local filename = {
     path = 1,
     symbols = { modified = "[+]", readonly = "[RO]" },
     padding = 0,
+    color = { fg = "#828bb8", bg = "NONE" },
 }
 
 local mode = {

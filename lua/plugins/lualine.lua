@@ -114,7 +114,7 @@ local left_pad_alt = {
     end,
     padding = 0,
     color = function()
-        return { fg = gray, bg = "#1e2130" }
+        return { fg = gray, bg = "NONE" }
     end,
 }
 
@@ -124,7 +124,7 @@ local right_pad_alt = {
     end,
     padding = 0,
     color = function()
-        return { fg = gray, bg = "#1e2130" }
+        return { fg = gray, bg = "NONE" }
     end,
 }
 
@@ -152,9 +152,9 @@ local diagnostics = {
     sources = { "nvim_diagnostic" },
     sections = { "error", "warn", "hint" },
     symbols = {
-        error = "%#SLError#" .. "" .. "%*" .. " ",
-        warn = "%#SLWarning#" .. "" .. "%*" .. " ",
-        hint = "%#SLHint#" .. "" .. "%*" .. " ",
+        error = "%#SLError#" .. "" .. " %*" .. "%#SLDiagnostics#",
+        warn = "%#SLWarning#" .. "" .. " %*" .. "%#SLDiagnostics#",
+        hint = "%#SLHint#" .. "" .. " %*" .. "%#SLDiagnostics#",
     },
     colored = true,
     update_in_insert = false,

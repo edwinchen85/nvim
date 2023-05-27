@@ -72,6 +72,9 @@ require("tokyonight").setup({
             bg = c.none,
             fg = c.comment,
         }
+        hl.WhichKeyFloat = {
+            bg = c.none,
+        }
     end,
 })
 

@@ -57,6 +57,8 @@ vim.api.nvim_set_hl(0, "SLFG", { fg = "#abb2bf", bg = "NONE" })
 vim.api.nvim_set_hl(0, "SLSeparator", { fg = "#6b727f", bg = "NONE", italic = true })
 vim.api.nvim_set_hl(0, "SLError", { fg = "#bf616a", bg = "NONE" })
 vim.api.nvim_set_hl(0, "SLWarning", { fg = "#D7BA7D", bg = "NONE" })
+vim.api.nvim_set_hl(0, "SLHint", { fg = "#82aaff", bg = "NONE" })
+vim.api.nvim_set_hl(0, "SLDiagnostics", { fg = "#828bb8", bg = "NONE" })
 vim.api.nvim_set_hl(0, "SLCopilot", { fg = "#6CC644", bg = "NONE" })
 
 local hl_str = function(str, hl)

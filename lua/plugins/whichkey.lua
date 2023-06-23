@@ -72,7 +72,7 @@ local mappings = {
 
     f = {
         name = "+Find",
-        a = { "<cmd>Telescope grep_string<cr>", "Cursor" },
+        a = { "<cmd>GrepWordUnderCursor<cr>", "Cursor" },
         b = { "<cmd>Telescope buffers<cr>", "Buffers" },
         f = { "<cmd>LiveGrepArgs<cr>", "Grep" },
         h = { "<cmd>Telescope oldfiles<cr>", "History" },

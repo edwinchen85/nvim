@@ -195,6 +195,11 @@ u.lua_command("BlameLine", "global.commands.blame_line()")
 
 u.lua_command("LiveGrepArgs", "require('telescope').extensions.live_grep_args.live_grep_args()")
 
+u.lua_command(
+    "GrepWordUnderCursor",
+    "require('telescope-live-grep-args.shortcuts').grep_word_under_cursor({ postfix = ' -ig ' })"
+)
+
 -- misc
 -- wipe all registers
 u.command("WipeReg", "for i in range(34,122) | silent! call setreg(nr2char(i), []) | endfor")

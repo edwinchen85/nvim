@@ -154,8 +154,8 @@ return require("packer").startup(function(use)
     use("stevearc/dressing.nvim")
     use("kyazdani42/nvim-web-devicons")
     use({ "RRethy/vim-hexokinase", config = config("hexokinase"), run = "make hexokinase" })
+    use({ "j-hui/fidget.nvim", config = config("fidget"), tag = "legacy" })
     use_with_config("goolord/alpha-nvim", "alpha")
-    use_with_config("j-hui/fidget.nvim", "fidget")
     use_with_config("nvim-lualine/lualine.nvim", "lualine") -- statusline and tabline
     use_with_config("gelguy/wilder.nvim", "wilder") -- wildmenu
     use_with_config("folke/tokyonight.nvim", "tokyonight") -- theme

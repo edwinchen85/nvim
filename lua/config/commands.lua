@@ -181,7 +181,7 @@ end
 u.lua_command("PreviewHunk", "global.commands.preview_hunk()")
 
 commands.preview_hunk_inline = function()
-  return require("gitsigns").preview_hunk_inline()
+    return require("gitsigns").preview_hunk_inline()
 end
 
 u.lua_command("PreviewHunkInline", "global.commands.preview_hunk_inline()")
@@ -192,6 +192,8 @@ end
 -- end of gitsigns
 
 u.lua_command("BlameLine", "global.commands.blame_line()")
+
+u.lua_command("LiveGrepArgs", "require('telescope').extensions.live_grep_args.live_grep_args()")
 
 -- misc
 -- wipe all registers

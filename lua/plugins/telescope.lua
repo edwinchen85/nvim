@@ -1,5 +1,10 @@
-local status_ok, telescope = pcall(require, "telescope")
-if not status_ok then
+local status_telescope_ok, telescope = pcall(require, "telescope")
+if not status_telescope_ok then
+    return
+end
+
+local status_lga_ok, lga_actions = pcall(require, "telescope-live-grep-args.actions")
+if not status_lga_ok then
     return
 end
 
@@ -17,6 +22,16 @@ telescope.setup({
     extensions = {
         fzf = { fuzzy = true, override_generic_sorter = true, override_file_sorter = true },
         ["ui-select"] = { require("telescope.themes").get_cursor({}) },
+        live_grep_args = {
+            auto_quoting = true, -- enable/disable auto-quoting
+            mappings = {
+                i = {
+                    ["<C-p>"] = lga_actions.quote_prompt(), -- "foo" path/sub_path
+                    ["<C-i>"] = lga_actions.quote_prompt({ postfix = " --iglob " }), -- "foo" --iglob **/test/**
+                    ["<C-t>"] = lga_actions.quote_prompt({ postfix = " -t " }), -- "foo" -t js
+                },
+            },
+        },
     },
     defaults = {
         preview = {
@@ -107,6 +122,7 @@ telescope.setup({
 
 telescope.load_extension("fzf")
 telescope.load_extension("ui-select")
+telescope.load_extension("live_grep_args")
 
 _G.global.telescope = {
     -- grep string from prompt

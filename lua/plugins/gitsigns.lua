@@ -14,15 +14,6 @@ require("gitsigns").setup({
     },
     numhl = false,
     linehl = false,
-    keymaps = {
-        -- Default keymap options
-        noremap = true,
-        buffer = true,
-        ["n ]c"] = { expr = true, "&diff ? ']c' : '<cmd>lua require\"gitsigns\".next_hunk()<CR>zz'" },
-        ["n [c"] = { expr = true, "&diff ? '[c' : '<cmd>lua require\"gitsigns\".prev_hunk()<CR>zz'" }, -- Text objects
-        ["o ih"] = ':<C-U>lua require"gitsigns.actions".select_hunk()<CR>',
-        ["x ih"] = ':<C-U>lua require"gitsigns.actions".select_hunk()<CR>',
-    },
     watch_gitdir = { interval = 1000 },
     sign_priority = 6,
     update_debounce = 200,
@@ -39,5 +30,37 @@ require("gitsigns").setup({
         if vim.api.nvim_buf_get_name(bufnr):match("fugitive") then
             return false
         end
+
+        local gs = package.loaded.gitsigns
+
+        local function map(mode, l, r, opts)
+            opts = opts or {}
+            opts.buffer = bufnr
+            vim.keymap.set(mode, l, r, opts)
+        end
+
+        -- Navigation
+        map("n", "]c", function()
+            if vim.wo.diff then
+                return "]c"
+            end
+            vim.schedule(function()
+                gs.next_hunk()
+            end)
+            return "<Ignore>"
+        end, { expr = true })
+
+        map("n", "[c", function()
+            if vim.wo.diff then
+                return "[c"
+            end
+            vim.schedule(function()
+                gs.prev_hunk()
+            end)
+            return "<Ignore>"
+        end, { expr = true })
+
+        -- Text object
+        map({ "o", "x" }, "ih", ":<C-U>Gitsigns select_hunk<CR>")
     end,
 })

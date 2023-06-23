@@ -25,7 +25,7 @@ vim.opt.pumheight = 10
 vim.opt.shiftwidth = 4 -- Size of indent
 vim.opt.shiftround = true -- Round indent
 vim.opt.showcmd = false
-vim.opt.showmode = true -- Don't display mode
+vim.opt.showmode = false -- Don't display mode
 vim.opt.showtabline = 0
 vim.opt.laststatus = 3 -- Global status line
 vim.opt.smartcase = true -- Do not ignore case with capitals
@@ -52,7 +52,7 @@ vim.opt.shortmess:append("cAS")
 vim.opt.fillchars:append("eob: ")
 
 vim.opt.cursorline = false
-vim.opt.number = true -- Show line numbers
+vim.opt.number = false -- Show line numbers
 vim.opt.relativenumber = false
 vim.opt.signcolumn = "yes" -- Always show signcolumn
 vim.opt.backupcopy = "yes"

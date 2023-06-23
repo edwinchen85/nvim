@@ -47,6 +47,12 @@ u.nmap(
     [[<Cmd>lua require("telescope.builtin").buffers({results_title='﬘', winblend = 0, layout_strategy = 'vertical', previewer = false, layout_config = { width = 0.5, height = 0.4 }})<CR>]]
 )
 
+-- Telescope grep visual selection
+u.xmap(
+    "<Leader>fa",
+    [[<Cmd>lua require("telescope-live-grep-args.shortcuts").grep_visual_selection({ postfix = " -ig " })<CR>]]
+)
+
 -- Jump to previous buffer
 u.nmap("<Leader><Leader>", "<C-^>")
 

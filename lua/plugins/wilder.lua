@@ -5,7 +5,7 @@ wilder.setup({
     next_key = "<Tab>",
     previous_key = "<S-Tab>",
     accept_key = "<Space>",
-    reject_key = "<Esc>",
+    reject_key = "<C-e>",
     enable_cmdline_enter = 0,
 })
 

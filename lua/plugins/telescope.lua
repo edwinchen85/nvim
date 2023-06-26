@@ -26,7 +26,6 @@ telescope.setup({
             auto_quoting = true, -- enable/disable auto-quoting
             mappings = {
                 i = {
-                    ["<C-p>"] = lga_actions.quote_prompt(), -- "foo" path/sub_path
                     ["<C-i>"] = lga_actions.quote_prompt({ postfix = " --iglob " }), -- "foo" --iglob **/test/**
                     ["<C-t>"] = lga_actions.quote_prompt({ postfix = " -t " }), -- "foo" -t js
                 },

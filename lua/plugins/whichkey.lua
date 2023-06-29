@@ -11,7 +11,7 @@ require("which-key").setup({
             windows = true, -- default bindings on <c-w>
             nav = false, -- misc bindings to work with windows
             z = true, -- bindings for folds, spelling and others prefixed with z
-            g = false, -- bindings for prefixed with g
+            g = true, -- bindings for prefixed with g
         },
     },
     key_labels = { ["<space>"] = "_", ["<CR>"] = "↵", ["<tab>"] = "⇆" },
@@ -139,3 +139,19 @@ local normal_mappings = {
 
 local wk = require("which-key")
 wk.register(normal_mappings, normal_opts)
+
+local g_opts = {
+    mode = "n", -- NORMAL mode
+    prefix = "g",
+    buffer = nil, -- Global mappings. Specify a buffer number for buffer local mappings
+    silent = true, -- use `silent` when creating keymaps
+    noremap = true, -- use `noremap` when creating keymaps
+    nowait = false, -- use `nowait` when creating keymaps
+}
+
+local g_mappings = {
+    ["J"] = "Join",
+    ["S"] = "Split",
+}
+
+wk.register(g_mappings, g_opts)

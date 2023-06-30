@@ -893,7 +893,7 @@
   },
   "className": {
     "key": "class name snippet",
-    "prefix": "cln",
+    "prefix": "cn",
     "body": "className=\"$0\"",
     "description": "Snippet of React className attribute",
     "scope": "typescript,typescriptreact,javascript,javascriptreact"

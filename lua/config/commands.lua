@@ -15,12 +15,6 @@ end
 
 u.nmap("q", "v:lua.global.commands.stop_recording()", { expr = true })
 
-api.nvim_create_autocmd("TextYankPost", {
-    callback = function()
-        vim.highlight.on_yank({ higroup = "IncSearch", timeout = 100 })
-    end,
-})
-
 -- gitsigns
 commands.next_hunk = function()
     return require("gitsigns").next_hunk()

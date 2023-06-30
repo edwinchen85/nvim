@@ -17,6 +17,13 @@ api.nvim_create_autocmd("FileType", {
     command = "setlocal formatoptions-=cro indentkeys-=:",
 })
 
+-- display brief highlight upon yank
+api.nvim_create_autocmd("TextYankPost", {
+    callback = function()
+        vim.highlight.on_yank({ higroup = "IncSearch", timeout = 100 })
+    end,
+})
+
 -- vimdows to close with 'q'
 vim.cmd([[autocmd FileType help,qf,fugitiveblame,netrw nnoremap <buffer><silent> q :close<CR>]])
 vim.cmd([[autocmd FileType git nnoremap <buffer><silent> q <C-w>c]])

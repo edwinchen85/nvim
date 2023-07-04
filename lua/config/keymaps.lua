@@ -128,8 +128,9 @@ u.xmap(".", ":normal .<CR>")
 -- Repeat previous command
 u.nmap("<Leader>;", ":@:<CR>")
 
--- Delete last argument in comma separated list
+-- Delete, yank last argument in comma separated list
 u.nmap("dge", "EdgE")
+u.nmap("yge", "EygE")
 
 -- Avoid unintentional switches to Ex mode
 u.nmap("Q", ":Wwipeall<CR>")

@@ -129,8 +129,7 @@ u.xmap(".", ":normal .<CR>")
 u.nmap("<Leader>;", ":@:<CR>")
 
 -- Delete last argument in comma separated list
-u.nmap("dge", "edgE")
-u.nmap("dgE", "EdgE")
+u.nmap("dge", "EdgE")
 
 -- Avoid unintentional switches to Ex mode
 u.nmap("Q", ":Wwipeall<CR>")

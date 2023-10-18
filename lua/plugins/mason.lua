@@ -11,5 +11,16 @@ end
 mason.setup({})
 
 lspconfig.setup({
-    ensure_installed = { "tailwindcss" },
+    ensure_installed = {
+        "bashls",
+        "cssls",
+        "cssmodules_ls",
+        "eslint",
+        "html",
+        "jsonls",
+        "lua_ls",
+        "tailwindcss",
+        "tsserver",
+        "yamlls",
+    },
 })

@@ -4,6 +4,14 @@ local u = require("config.utils")
 u.nmap("<Down>", "gj")
 u.nmap("<Up>", "gk")
 
+-- Traverse start and end of line
+u.nmap("H", "^")
+u.omap("H", "^")
+u.xmap("H", "^")
+u.nmap("L", "$")
+u.omap("L", "$")
+u.xmap("L", "$h")
+
 -- Automatically add jumps > 1 to jump list
 u.nmap("k", [[(v:count > 1 ? "m'" . v:count : '') . 'gk'"]], { expr = true })
 u.nmap("j", [[(v:count > 1 ? "m'" . v:count : '') . 'gj'"]], { expr = true })

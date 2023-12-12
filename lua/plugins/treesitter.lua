@@ -25,10 +25,6 @@ require("nvim-treesitter.configs").setup({
         "yaml",
     },
     indent = { enable = true },
-    context_commentstring = {
-        enable = true,
-        enable_autocmd = false,
-    },
     autopairs = { enable = true },
     highlight = { enable = true, additional_vim_regex_highlighting = true },
     autotag = { enable = true },

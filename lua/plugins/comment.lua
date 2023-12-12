@@ -55,6 +55,16 @@ comment.setup({
         block = "gb",
     },
 
+    ---LHS of extra mappings
+    extra = {
+        ---Add comment on the line above
+        above = "gcO",
+        ---Add comment on the line below
+        below = "gco",
+        ---Add comment at the end of line
+        eol = "gcA",
+    },
+
     ---Pre-hook, called before commenting the line
     ---@type function|nil
     pre_hook = pre_hook,

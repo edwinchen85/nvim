@@ -13,6 +13,9 @@ comment.setup({
     active = true,
     on_config_done = nil,
 
+    ---Whether the cursor should stay at its position
+    sticky = true,
+
     ---Add a space b/w comment and the line
     ---@type boolean
     padding = true,

@@ -131,6 +131,7 @@ return require("packer").startup(function(use)
     use_with_config("williamboman/mason-lspconfig.nvim", "mason")
 
     -- development
+    use({ "Exafunction/codeium.vim" })
     use("nvim-lua/plenary.nvim")
     use({
         "nvim-treesitter/nvim-treesitter",

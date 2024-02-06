@@ -47,10 +47,10 @@ return require("packer").startup(function(use)
     use("tpope/vim-eunuch")
     use("tpope/vim-capslock")
     use("tpope/vim-unimpaired")
-    use({
-        "tpope/vim-fugitive",
-        { "tpope/vim-rhubarb", "junegunn/gv.vim", "tommcdo/vim-fugitive-blame-ext" },
-    })
+    use("tpope/vim-fugitive")
+    use("tpope/vim-rhubarb")
+    use("junegunn/gv.vim")
+    use("tommcdo/vim-fugitive-blame-ext")
     use_with_config("lewis6991/impatient.nvim", "impatient")
     use_with_config("lewis6991/gitsigns.nvim", "gitsigns")
     use_with_config("kylechui/nvim-surround", "surround")

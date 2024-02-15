@@ -1,5 +1,8 @@
 local u = require("config.utils")
 
+-- Prevent tab map to override control i
+u.nmap("<C-i>", "<C-i>", { noremap = true, silent = true })
+
 -- Vertical Traversal
 u.nmap("<Down>", "gj")
 u.nmap("<Up>", "gk")
@@ -63,9 +66,6 @@ u.xmap(
 
 -- Jump to previous buffer
 u.nmap("<Leader><Leader>", "<C-^>")
-
--- Jump forward
-u.nmap("<Leader>i", "<C-i>")
 
 -- Better join
 u.nmap("J", "mzJ`z")

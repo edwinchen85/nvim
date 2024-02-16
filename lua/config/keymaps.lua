@@ -11,9 +11,9 @@ u.nmap("<Up>", "gk")
 u.nmap("H", "^")
 u.omap("H", "^")
 u.xmap("H", "^")
-u.nmap("L", "$")
-u.omap("L", "$")
-u.xmap("L", "$h")
+u.nmap("L", "g_")
+u.omap("L", "g_")
+u.xmap("L", "g_")
 
 -- Automatically add jumps > 1 to jump list
 u.nmap("k", [[(v:count > 1 ? "m'" . v:count : '') . 'gk'"]], { expr = true })

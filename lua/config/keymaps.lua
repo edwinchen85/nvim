@@ -43,6 +43,9 @@ u.nmap("<Leader>e", ":NvimTreeToggle<CR>")
 u.nmap("<Leader>c", ":Bdelete!<CR>")
 u.nmap("<Leader>C", ":bufdo Bdelete!<CR>")
 
+-- Quickfix
+u.nmap("<Leader>q", ":cclose<CR>")
+
 -- Vertical split last buffer
 u.nmap("<Leader>v", ":vsp #<CR>")
 

@@ -56,6 +56,7 @@ local normal_mappings = {
     ["c"] = "Close Buffer",
     ["C"] = "Close All Buffers",
     ["e"] = "Explorer",
+    ["q"] = "Close Quickfix",
     ["v"] = "Vsplit Last",
     ["w"] = "Save",
     ["W"] = "Save (No Format)",

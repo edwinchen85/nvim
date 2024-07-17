@@ -245,3 +245,7 @@ u.xmap("g-", "g<C-x>", { remap = true })
 
 -- Rest.nvim
 u.nmap("<Leader>R", "<Plug>RestNvim", { remap = true })
+
+-- Todo comments
+u.nmap("]t", ':lua require("todo-comments").jump_next()<CR>')
+u.nmap("[t", ':lua require("todo-comments").jump_prev()<CR>')

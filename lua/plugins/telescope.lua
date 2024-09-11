@@ -6,7 +6,6 @@ end
 local builtin = require("telescope.builtin")
 local actions = require("telescope.actions")
 local set = require("telescope.actions.set")
-local trouble = require("trouble.providers.telescope")
 
 local u = require("config.utils")
 local commands = require("config.commands")

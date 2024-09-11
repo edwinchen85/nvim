@@ -9,3 +9,10 @@ Jump to file from GV diff window
 ```
 visual select the file path and press gf
 ```
+
+Scrolling synchronously
+
+```
+:set scrollbind
+:set noscrollbind
+```

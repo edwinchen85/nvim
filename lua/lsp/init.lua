@@ -95,7 +95,7 @@ local on_attach = function(client, bufnr)
     u.buf_map(bufnr, "i", "<C-s>", "<cmd> LspSignatureHelp<CR>", nil)
 
     -- telescope
-    u.buf_map(bufnr, "n", "gr", ":TroubleToggle lsp_references<CR>", nil)
+    u.buf_map(bufnr, "n", "gr", ":LspReferences<CR>", nil)
     u.buf_map(bufnr, "n", "ga", ":LspCodeAction<CR>", nil)
     u.buf_map(bufnr, "x", "ga", function()
         vim.lsp.buf.code_action() -- range

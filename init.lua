@@ -3,7 +3,7 @@ vim.g.maplocalleader = " "
 
 vim.opt.autoread = true -- Read again when file has changed outside of vim
 vim.opt.backspace = { "indent", "eol", "start" }
-vim.opt.clipboard:append("unnamedplus")
+vim.opt.clipboard = "unnamed,unnamedplus" -- Enable access to system clipboard
 vim.opt.colorcolumn = "9999" -- Hide color column
 vim.opt.encoding = "utf-8" -- Set default encoding to UTF-8
 vim.opt.expandtab = true -- Uses spaces instead of tabs

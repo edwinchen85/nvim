@@ -8,7 +8,7 @@ require("nvim-autopairs").setup({
         javascript = { "string", "template_string" },
         java = false,
     },
-    disable_filetype = { "TelescopePrompt", "spectre_panel" },
+    disable_filetype = { "TelescopePrompt", "spectre_panel", "vue" },
 })
 
 local ts_conds = require("nvim-autopairs.ts-conds")

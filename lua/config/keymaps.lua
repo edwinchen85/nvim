@@ -62,10 +62,7 @@ u.nmap(
 )
 
 -- Telescope grep visual selection
-u.xmap(
-    "<Leader>fa",
-    [[<Cmd>lua require("telescope-live-grep-args.shortcuts").grep_visual_selection({ postfix = " -ig " })<CR>]]
-)
+u.xmap("<Leader>fa", [[<Cmd>Telescope grep_string<CR>]])
 
 -- Jump to previous buffer
 u.nmap("<Leader><Leader>", "<C-^>")

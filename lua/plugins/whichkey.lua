@@ -73,9 +73,9 @@ local normal_mappings = {
 
     f = {
         name = "+Find",
-        a = { "<cmd>GrepWordUnderCursor<cr>", "Cursor" },
+        a = { "<cmd>Telescope grep_string<cr>", "Cursor" },
         b = { "<cmd>Telescope buffers<cr>", "Buffers" },
-        f = { "<cmd>LiveGrepArgs<cr>", "Grep" },
+        f = { "<cmd>Telescope live_grep<cr>", "Grep" },
         h = { "<cmd>Telescope oldfiles<cr>", "History" },
         H = { "<cmd>Telescope help_tags<cr>", "Help Tags" },
         l = { "<cmd>Telescope current_buffer_fuzzy_find<cr>", "BLines" },

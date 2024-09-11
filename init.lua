@@ -53,7 +53,7 @@ vim.opt.shortmess:append("cAS")
 vim.opt.fillchars:append("eob: ")
 
 vim.opt.cursorline = false
-vim.opt.number = false -- Show line numbers
+vim.opt.number = true -- Show line numbers
 vim.opt.relativenumber = false
 vim.opt.signcolumn = "yes" -- Always show signcolumn
 vim.opt.backupcopy = "yes"

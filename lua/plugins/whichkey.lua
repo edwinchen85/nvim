@@ -70,6 +70,7 @@ local normal_mappings = {
         p = { "<cmd>:Px!<cr>", "Rem to Px" },
         r = { "<cmd>:Rem!<cr>", "Px to Rem" },
         v = { "<cmd>:ToggleVirtualText<cr>", "Virtual Text" },
+        w = { "<cmd>:lua vim.wo.wrap = not vim .wo .wrap<cr>", "Wrap" },
     },
 
     f = {

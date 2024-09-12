@@ -167,7 +167,7 @@ local diagnostics = {
     symbols = {
         error = "%#SLError#" .. "" .. " %*" .. "%#SLDiagnostics#",
         warn = "%#SLWarning#" .. "" .. " %*" .. "%#SLDiagnostics#",
-        hint = "%#SLHint#" .. "" .. " %*" .. "%#SLDiagnostics#",
+        hint = "%#SLHint#" .. "" .. " %*" .. "%#SLDiagnostics#",
     },
     colored = true,
     update_in_insert = false,

@@ -15,6 +15,18 @@ end
 
 u.nmap("q", "v:lua.global.commands.stop_recording()", { expr = true })
 
+-- virtual text
+local isLspDiagnosticsVisible = false
+commands.toggle_virtual_text = function()
+    isLspDiagnosticsVisible = not isLspDiagnosticsVisible
+    vim.diagnostic.config({
+        virtual_text = isLspDiagnosticsVisible,
+        underline = isLspDiagnosticsVisible,
+    })
+end
+
+u.lua_command("ToggleVirtualText", "global.commands.toggle_virtual_text()")
+
 -- gitsigns
 commands.next_hunk = function()
     return require("gitsigns").next_hunk()

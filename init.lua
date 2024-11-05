@@ -1,6 +1,13 @@
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 
+-- Setup lazy.nvim
+require("lazy").setup("plugins", {
+    change_detection = {
+        notify = false,
+    },
+})
+
 vim.opt.autoread = true -- Read again when file has changed outside of vim
 vim.opt.backspace = { "indent", "eol", "start" }
 vim.opt.clipboard = "unnamed,unnamedplus" -- Enable access to system clipboard

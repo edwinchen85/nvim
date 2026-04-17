@@ -14,7 +14,7 @@ M.map = function(mode, target, source, opts)
     vim.keymap.set(mode, target, source, get_map_options(opts))
 end
 
-for _, mode in ipairs({ "c", "i", "n", "o", "t", "u", "v", "x" }) do
+for _, mode in ipairs { "c", "i", "n", "o", "t", "u", "v", "x" } do
     M[mode .. "map"] = function(...)
         M.map(mode, ...)
     end
@@ -49,6 +49,7 @@ M.replace = function(str, original, replacement)
     return first_half .. replacement .. second_half
 end
 
+-- make global to make ex commands easier
 _G.inspect = function(...)
     print(vim.inspect(...))
 end
@@ -86,20 +87,20 @@ M.lua_command = function(name, fn)
 end
 
 M.augroup = function(name, event, fn, ft)
-    api.nvim_exec(
+    api.nvim_exec2(
         string.format(
             [[
-    augroup %s
-        autocmd!
-        autocmd %s %s %s
-    augroup END
-    ]],
+                augroup %s
+                    autocmd!
+                    autocmd %s %s %s
+                augroup END
+            ]],
             name,
             event,
             ft or "*",
             fn
         ),
-        false
+        {}
     )
 end
 
@@ -113,19 +114,19 @@ M.input = function(keys, mode)
 end
 
 M.buf_augroup = function(name, event, fn)
-    api.nvim_exec(
+    api.nvim_exec2(
         string.format(
             [[
-    augroup %s
-        autocmd! * <buffer>
-        autocmd %s <buffer> %s
-    augroup END
-    ]],
+                augroup %s
+                    autocmd! * <buffer>
+                    autocmd %s <buffer> %s
+                augroup END
+            ]],
             name,
             event,
             fn
         ),
-        false
+        {}
     )
 end
 
@@ -138,7 +139,7 @@ M.timer = function(timeout, interval, should_start, callback)
 
     interval = interval or 0
 
-    local timer = vim.loop.new_timer()
+    local timer = vim.uv.new_timer()
     local wrapped = vim.schedule_wrap(callback)
 
     local start = function()
@@ -179,7 +180,7 @@ M.is_file = function(path)
         return false
     end
 
-    local stat = vim.loop.fs_stat(path)
+    local stat = vim.uv.fs_stat(path)
     return stat and stat.type == "file"
 end
 

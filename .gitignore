@@ -1,2 +1,4 @@
 pack/
 plugin/
+.claude/
+lazy-lock.json

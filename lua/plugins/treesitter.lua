@@ -1,87 +1,71 @@
-require("nvim-treesitter.configs").setup({
-    ensure_installed = {
-        "bash",
-        "c",
-        "cpp",
-        "css",
-        "fish",
-        "go",
-        "help",
-        "http",
-        "javascript",
-        "json",
-        "jsonc",
-        "lua",
-        "make",
-        "markdown",
-        "markdown_inline",
-        "python",
-        "ruby",
-        "scss",
-        "toml",
-        "tsx",
-        "typescript",
-        "vim",
-        "yaml",
-    },
-    indent = { enable = true },
-    autopairs = { enable = true },
-    highlight = { enable = true, additional_vim_regex_highlighting = true },
-    autotag = { enable = true },
-    matchup = { enable = true },
-    refactor = {
-        highlight_definitions = { enable = true },
-        highlight_current_scope = { enable = false },
-        navigation = {
+return { -- Highlight, edit, and navigate code
+    "nvim-treesitter/nvim-treesitter",
+    commit = "cf12346a3414fa1b06af75c79faebe7f76df080a", -- pinned: patched query_predicates.lua for nvim 0.12 TSNode[] captures
+    build = ":TSUpdate",
+    main = "nvim-treesitter.configs", -- Sets main module to use for opts
+    -- [[ Configure Treesitter ]] See `:help nvim-treesitter`
+    opts = {
+        ensure_installed = {
+            "bash",
+            "c",
+            "diff",
+            "html",
+            "http",
+            "lua",
+            "luadoc",
+            "markdown",
+            "markdown_inline",
+            "query",
+            "vim",
+            "vimdoc",
+        },
+        -- Autoinstall languages that are not installed
+        auto_install = true,
+        highlight = {
             enable = true,
-            keymaps = {
-                goto_next_usage = "<M-n>",
-                goto_previous_usage = "<M-p>",
+            -- Some languages depend on vim's regex highlighting system (such as Ruby) for indent rules.
+            --  If you are experiencing weird indenting issues, add the language to
+            --  the list of additional_vim_regex_highlighting and disabled languages for indent.
+            additional_vim_regex_highlighting = { "ruby" },
+        },
+        indent = { enable = true, disable = { "ruby", "vue" } },
+        matchup = { enable = true },
+        textobjects = {
+            select = {
+                enable = true,
+                lookahead = true, -- Automatically jump forward to textobj, similar to targets.vim
+                keymaps = {
+                    -- You can use the capture groups defined in textobjects.scm
+                    ["aa"] = "@parameter.outer",
+                    ["ia"] = "@parameter.inner",
+                    ["af"] = "@function.outer",
+                    ["if"] = "@function.inner",
+                    ["ac"] = "@class.outer",
+                    ["ic"] = "@class.inner",
+                    ["ax"] = "@attribute.outer",
+                    ["ix"] = "@attribute.inner",
+                },
+            },
+            move = {
+                enable = true,
+                set_jumps = true,
+                goto_next_start = {
+                    ["]m"] = "@function.outer",
+                    ["]]"] = "@class.outer",
+                },
+                goto_next_end = {
+                    ["]M"] = "@function.outer",
+                    ["]["] = "@class.outer",
+                },
+                goto_previous_start = {
+                    ["[m"] = "@function.outer",
+                    ["[["] = "@class.outer",
+                },
+                goto_previous_end = {
+                    ["[M"] = "@function.outer",
+                    ["[]"] = "@class.outer",
+                },
             },
         },
     },
-    textobjects = {
-        select = {
-            enable = true,
-            -- Automatically jump forward to textobj, similar to targets.vim
-            lookahead = true,
-            keymaps = {
-                -- You can use the capture groups defined in textobjects.scm
-                ["af"] = "@function.outer",
-                ["if"] = "@function.inner",
-                ["ac"] = "@class.outer",
-                ["ic"] = "@class.inner",
-                ["aa"] = "@parameter.outer",
-                ["ia"] = "@parameter.inner",
-            },
-        },
-        move = {
-            enable = true,
-            set_jumps = true,
-            goto_next_start = {
-                ["]m"] = "@function.outer",
-                ["]]"] = "@class.outer",
-            },
-            goto_next_end = {
-                ["]M"] = "@function.outer",
-                ["]["] = "@class.outer",
-            },
-            goto_previous_start = {
-                ["[m"] = "@function.outer",
-                ["[["] = "@class.outer",
-            },
-            goto_previous_end = {
-                ["[M"] = "@function.outer",
-                ["[]"] = "@class.outer",
-            },
-        },
-        lsp_interop = {
-            enable = true,
-            border = "none",
-            peek_definition_code = {
-                ["<leader>po"] = "@class.outer",
-                ["<leader>pO"] = "@function.outer",
-            },
-        },
-    },
-})
+}

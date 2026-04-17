@@ -1,155 +1,168 @@
-local status_ok, telescope = pcall(require, "telescope")
-if not status_ok then
-    return
-end
-
-local builtin = require("telescope.builtin")
-local actions = require("telescope.actions")
-local set = require("telescope.actions.set")
-
-local u = require("config.utils")
-local commands = require("config.commands")
-
-local api = vim.api
-
-telescope.setup({
-    extensions = {
-        fzf = { fuzzy = true, override_generic_sorter = true, override_file_sorter = true },
-        ["ui-select"] = { require("telescope.themes").get_cursor({}) },
-    },
-    defaults = {
-        preview = {
-            timeout = 500,
-        },
-        file_browser = {
-            hidden = true,
-        },
-        find_command = { "rg", "--no-heading", "--with-filename", "--line-number", "--column", "--smart-case" },
-        vimgrep_arguments = {
-            "rg",
-            "--color=never",
-            "--no-heading",
-            "--with-filename",
-            "--line-number",
-            "--column",
-            "--smart-case",
-            "--ignore",
-            "--hidden",
-            "-g",
-            "!.git",
-        },
-        prompt_prefix = " ",
-        selection_caret = " ",
-        entry_prefix = "  ",
-        multi_icon = " ",
-        initial_mode = "insert",
-        selection_strategy = "reset",
-        sorting_strategy = "ascending",
-        layout_strategy = "vertical",
-        layout_config = {
-            prompt_position = "top",
-            horizontal = {
-                width_padding = 0.04,
-                height_padding = 0.1,
-                preview_width = 0.4,
-            },
-            vertical = {
-                width_padding = 0.05,
-                height_padding = 1,
-                preview_height = 0.5,
-            },
-        },
-        file_sorter = require("telescope.sorters").get_fzy_sorter,
-        file_ignore_patterns = {
-            "node_modules/**/*.d.ts",
-            "node_modules/**.*",
-            "%-lock.json",
-            "%-lock.yaml",
-            "yarn.lock",
-            ".git/**",
-        },
-        generic_sorter = require("telescope.sorters").get_generic_fuzzy_sorter,
-        dynamic_preview_title = true,
-        path_display = {},
-        winblend = 0,
-        border = {},
-        borderchars = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" },
-        color_devicons = true,
-        use_less = true,
-        set_env = { ["COLORTERM"] = "truecolor" }, -- default = nil,
-        file_previewer = require("telescope.previewers").vim_buffer_cat.new,
-        grep_previewer = require("telescope.previewers").vim_buffer_vimgrep.new,
-        qflist_previewer = require("telescope.previewers").vim_buffer_qflist.new,
-
-        -- Developer configurations: Not meant for general override
-        buffer_previewer_maker = require("telescope.previewers").buffer_previewer_maker,
-        mappings = {
-            i = {
-                ["<C-n>"] = actions.cycle_history_next,
-                ["<C-p>"] = actions.cycle_history_prev,
-                ["<C-c>"] = actions.close,
-                ["<C-j>"] = actions.move_selection_next,
-                ["<C-k>"] = actions.move_selection_previous,
-                ["<CR>"] = actions.select_default + actions.center,
-                ["<c-d>"] = require("telescope.actions").delete_buffer,
-                ["<C-q>"] = actions.smart_send_to_qflist + actions.open_qflist,
-            },
-            n = {
-                ["<C-j>"] = actions.move_selection_next,
-                ["<C-k>"] = actions.move_selection_previous,
-                ["<c-d>"] = require("telescope.actions").delete_buffer,
-                ["<C-q>"] = actions.smart_send_to_qflist + actions.open_qflist,
-            },
-        },
-    },
-})
-
-telescope.load_extension("fzf")
-telescope.load_extension("ui-select")
-
-_G.global.telescope = {
-    -- grep string from prompt
-    grep_prompt = function()
-        builtin.grep_string({
-            shorten_path = true,
-            search = vim.fn.input("grep > "),
-        })
-    end,
-
-    -- try git_files and fall back to find_files
-    find_files = function()
-        local current = api.nvim_get_current_buf()
-        local opts = {
-            attach_mappings = function(_, map)
-                -- replace current buffer with selected
-                map("i", "<C-r>", function(prompt_bufnr)
-                    set.edit(prompt_bufnr, "edit")
-
-                    commands.bdelete(current)
-                end)
-
-                -- edit file and matching test file in split
-                map("i", "<C-f>", function(prompt_bufnr)
-                    set.edit(prompt_bufnr, "edit")
-
-                    commands.wwipeall()
-                    commands.edit_test_file("vsplit $FILE | wincmd w")
-                end)
-
-                return true
-            end,
-        }
-
-        local is_git_project = pcall(builtin.git_files, opts)
-        if not is_git_project then
-            builtin.find_files(opts)
-        end
-    end,
+local M = {
+    "nvim-telescope/telescope.nvim",
+    dependencies = { { "nvim-telescope/telescope-fzf-native.nvim", build = "make", lazy = true } },
 }
 
--- lsp
-u.command("LspRef", "Telescope lsp_references")
-u.command("LspDef", "Telescope lsp_definitions")
-u.command("LspSym", "Telescope lsp_workspace_symbols")
-u.command("LspAct", "Telescope lsp_code_actions")
-u.command("LspRangeAct", "Telescope lsp_range_code_actions")
+function M.config()
+    local wk = require "which-key"
+    wk.add {
+        { "<leader>f", group = "Find" },
+        { "<leader>fa", "<cmd>Telescope grep_string<cr>", desc = "Cursor" },
+        { "<leader>fb", "<cmd>Telescope buffers<cr>", desc = "Buffers" },
+        { "<leader>fB", "<cmd>Telescope git_branches<cr>", desc = "Checkout Branch" },
+        { "<leader>fc", "<cmd>Telescope colorscheme<cr>", desc = "Colorscheme" },
+        { "<leader>ff", "<cmd>Telescope find_files<cr>", desc = "Find Files" },
+        { "<leader>fp", "<cmd>lua require('telescope').extensions.projects.projects()<cr>", desc = "Projects" },
+        { "<leader>fs", "<cmd>Telescope live_grep<cr>", desc = "Find Text" },
+        { "<leader>fh", "<cmd>Telescope help_tags<cr>", desc = "Help" },
+        { "<leader>fl", "<cmd>Telescope resume<cr>", desc = "Last Search" },
+        { "<leader>fm", "<cmd>Telescope man_pages<cr>", desc = "Man Pages" },
+        { "<leader>fr", "<cmd>Telescope oldfiles<cr>", desc = "Recent File" },
+    }
+
+    local actions = require "telescope.actions"
+
+    require("telescope").setup {
+        defaults = {
+            border = true,
+            -- dynamic_preview_title = true,
+            dynamic_preview_title = false,
+            prompt_prefix = "  ",
+            selection_caret = "  ",
+            entry_prefix = "   ",
+            initial_mode = "insert",
+            selection_strategy = "reset",
+            scroll_strategy = "cycle",
+            path_display = { "truncate" },
+            -- path_display = { "filename_first" },
+            -- prompt_title = "Prompt",
+            -- results_title = "Results",
+            color_devicons = true,
+            vimgrep_arguments = {
+                "rg",
+                "--color=never",
+                "--no-heading",
+                "--with-filename",
+                "--line-number",
+                "--column",
+                "--smart-case",
+                "--hidden",
+                "--glob=!.git/",
+            },
+            -- layout_strategy = "horizontal",
+            layout_config = {
+                horizontal = {
+                    prompt_position = "top",
+                    width = { padding = 0 },
+                    height = { padding = 0 },
+                    preview_width = 0.5,
+                },
+                -- vertical = { width = 0.5 },
+                -- other layout configuration here
+            },
+            sorting_strategy = "ascending",
+
+            mappings = {
+                i = {
+                    ["<C-n>"] = actions.cycle_history_next,
+                    ["<C-p>"] = actions.cycle_history_prev,
+                    ["<C-j>"] = actions.move_selection_next,
+                    ["<C-k>"] = actions.move_selection_previous,
+                },
+                n = {
+                    ["<esc>"] = actions.close,
+                    ["j"] = actions.move_selection_next,
+                    ["k"] = actions.move_selection_previous,
+                    ["q"] = actions.close,
+                },
+            },
+        },
+        pickers = {
+            old_files = {
+                theme = "dropdown",
+            },
+
+            live_grep = {
+                theme = "dropdown",
+            },
+
+            grep_string = {
+                theme = "dropdown",
+            },
+
+            find_files = {
+                -- theme = "dropdown",
+                -- layout_strategy = "center",
+                -- layout_strategy = "bottom_pane",
+                -- previewer = false,
+                hidden = true,
+                find_command = {
+                    "rg",
+                    "--files",
+                    "--glob",
+                    "!{.git/*,.next/*,node_modules/*}",
+                    "--path-separator",
+                    "/",
+                },
+            },
+
+            buffers = {
+                theme = "dropdown",
+                previewer = false,
+                initial_mode = "insert",
+                mappings = {
+                    i = {
+                        ["<C-d>"] = actions.delete_buffer,
+                        ["<C-j>"] = actions.move_selection_next,
+                        ["<C-k>"] = actions.move_selection_previous,
+                    },
+                    n = {
+                        ["dd"] = actions.delete_buffer,
+                        ["j"] = actions.move_selection_next,
+                        ["k"] = actions.move_selection_previous,
+                    },
+                },
+            },
+
+            planets = {
+                show_pluto = true,
+                show_moon = true,
+            },
+
+            colorscheme = {
+                enable_preview = true,
+            },
+
+            lsp_references = {
+                theme = "dropdown",
+                initial_mode = "normal",
+            },
+
+            lsp_definitions = {
+                theme = "dropdown",
+                initial_mode = "normal",
+            },
+
+            lsp_declarations = {
+                theme = "dropdown",
+                initial_mode = "normal",
+            },
+
+            lsp_implementations = {
+                theme = "dropdown",
+                initial_mode = "normal",
+            },
+        },
+        extensions = {
+            fzf = {
+                fuzzy = true, -- false will only do exact matching
+                override_generic_sorter = true, -- override the generic sorter
+                override_file_sorter = true, -- override the file sorter
+                case_mode = "smart_case", -- or "ignore_case" or "respect_case"
+            },
+        },
+    }
+end
+
+return {}
+-- return M

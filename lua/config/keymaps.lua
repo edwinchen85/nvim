@@ -30,41 +30,9 @@ u.tmap("<C-o>", "<C-\\><C-n>")
 -- Useful remaps
 u.nmap("D", "d$")
 u.nmap("Y", "y$")
-u.nmap("<Leader>h", ":noh<CR>")
-
--- Dashboard
-u.nmap("<Leader>a", ":Alpha<CR>")
-
--- Explorer
-u.nmap("<Leader>e", ":NvimTreeToggle<CR>")
-
--- Buffer
-u.nmap("<Leader>c", ":Bdelete!<CR>")
-u.nmap("<Leader>C", ":bufdo Bdelete!<CR>")
-
--- Quickfix
-u.nmap("<Leader>q", ":cclose<CR>")
-
--- Vertical split last buffer
-u.nmap("<Leader>v", ":vsp #<CR>")
 
 -- Maximizer
 u.nmap("<C-w>m", ":MaximizerToggle!<cr>")
-
--- Find file
-u.nmap("<C-p>", ":Telescope find_files<CR>")
-
--- Telescope buffers
-u.nmap(
-    "<Leader>b",
-    [[<Cmd>lua require("telescope.builtin").buffers({results_title='﬘', winblend = 0, layout_strategy = 'vertical', previewer = false, layout_config = { width = 0.5, height = 0.4 }})<CR>]]
-)
-
--- Telescope grep visual selection
-u.xmap("<Leader>fa", [[<Cmd>Telescope grep_string<CR>]])
-
--- Jump to previous buffer
-u.nmap("<Leader><Leader>", "<C-^>")
 
 -- Better join
 u.nmap("J", "mzJ`z")
@@ -89,8 +57,10 @@ u.nmap("<C-d>", "<C-d>zz")
 u.nmap("<C-c>", "<C-w>c")
 
 -- Move selected line / block of text
-u.xmap("<C-j>", ":m '>+1<CR>gv=gv")
-u.xmap("<C-k>", ":m '<-2<CR>gv=gv")
+-- u.xmap("<C-j>", ":m '>+1<CR>gv=gv")
+-- u.xmap("<C-k>", ":m '<-2<CR>gv=gv")
+u.xmap("<a-j>", ":m '>+1<CR>gv=gv")
+u.xmap("<a-k>", ":m '<-2<CR>gv=gv")
 
 -- Resize window
 u.nmap("<C-Down>", ":resize +2<CR>")
@@ -103,9 +73,6 @@ u.imap("<C-v>", "<C-r><C-p>*")
 
 -- Forward delete line
 u.imap("<C-k>", "<C-o>D")
-
--- Fugitive
-u.nmap("<Leader>gg", ":aboveleft G<CR>")
 
 -- Centering only
 u.nmap("G", "Gzz")
@@ -134,9 +101,6 @@ u.xmap("y", "ygv<ESC>")
 
 -- Use . in visual mode to execute the dot command on each selected line
 u.xmap(".", ":normal .<CR>")
-
--- Repeat previous command
-u.nmap("<Leader>;", ":@:<CR>")
 
 -- Delete, yank last argument in comma separated list
 u.nmap("dge", "EdgE")
@@ -174,32 +138,19 @@ u.nmap("P", "Pm`V`]=<Esc>``")
 u.xmap("p", "pgvygp=<Esc>", { remap = true })
 u.xmap("P", "Pgvygp=<Esc>", { remap = true })
 
--- Toggle comment
-u.nmap("<Leader>/", "gcc", { remap = true })
-u.xmap("<Leader>/", "gc", { remap = true })
-
 -- is.vim + Asterisk
-u.nmap("n", "<Plug>(is-nohl)zzzv<Plug>(anzu-n-with-echo)", { remap = true })
-u.nmap("N", "<Plug>(is-nohl)zzzv<Plug>(anzu-N-with-echo)", { remap = true })
-u.nmap("*", "<Plug>(asterisk-z*)<Plug>(is-nohl-1)", { remap = true })
-u.nmap("g*", "<Plug>(asterisk-gz*)<Plug>(is-nohl-1)", { remap = true })
-u.nmap("#", "<Plug>(asterisk-z#)<Plug>(is-nohl-1)", { remap = true })
-u.nmap("g#", "<Plug>(asterisk-gz#)<Plug>(is-nohl-1)", { remap = true })
+u.nmap("n", "<Plug>(is-nohl)nzz<Cmd>lua require('hlslens').start()<CR>", { remap = false })
+u.nmap("N", "<Plug>(is-nohl)Nzz<Cmd>lua require('hlslens').start()<CR>", { remap = false })
+u.nmap("*", "<Plug>(asterisk-z*)<Plug>(is-nohl-1)<Cmd>lua require('hlslens').start()<CR>", { remap = true })
+u.nmap("g*", "<Plug>(asterisk-gz*)<Plug>(is-nohl-1)<Cmd>lua require('hlslens').start()<CR>", { remap = true })
+u.nmap("#", "<Plug>(asterisk-z#)<Plug>(is-nohl-1)<Cmd>lua require('hlslens').start()<CR>", { remap = true })
+u.nmap("g#", "<Plug>(asterisk-gz#)<Plug>(is-nohl-1)<Cmd>lua require('hlslens').start()<CR>", { remap = true })
 
 -- Fold
-u.nmap("zn", ":set foldenable!<CR>")
-u.nmap("ze", ":set foldmethod=expr<CR>")
-u.nmap("zi", ":set foldmethod=indent<CR>")
-u.nmap("zs", ":set foldmethod=syntax<CR>")
-
--- Save
-u.nmap("<Leader>w", ":w<CR>")
-
--- Save without format
-u.nmap("<Leader>W", ":noa w<CR>")
-
--- Zen Mode
-u.nmap("<Leader>z", ":ZenMode<CR>")
+-- u.nmap("zn", ":set foldenable!<CR>")
+-- u.nmap("ze", ":set foldmethod=expr<CR>")
+-- u.nmap("zi", ":set foldmethod=indent<CR>")
+-- u.nmap("zs", ":set foldmethod=syntax<CR>")
 
 -- Undo break points
 u.imap(",", ",<C-g>u")
@@ -217,17 +168,10 @@ u.xmap(";", ":", { silent = false })
 u.nmap("!", ":!", { silent = false })
 
 -- Swap interactive
-u.nmap("gS", "<Plug>(swap-interactive)", { remap = true })
+-- u.nmap("gS", "<Plug>(swap-interactive)", { remap = true })
 
 -- Source luafile
-u.nmap("<Leader>sv", ":luafile %<CR>")
-
--- Harpoon
-u.nmap("gm", "m") -- remap mark
-u.nmap("ma", ':lua require("harpoon.mark").add_file()<CR>')
-u.nmap("mm", ':lua require("harpoon.ui").toggle_quick_menu()<CR>')
-u.nmap("m[", ':lua require("harpoon.ui").nav_prev()<CR>')
-u.nmap("m]", ':lua require("harpoon.ui").nav_next()<CR>')
+-- u.nmap("<Leader>sv", ":luafile %<CR>")
 
 -- Exclude {, }, ( and ) in jump list
 u.nmap("}", ":<C-u>execute 'keepjumps normal!' v:count1 . '}zz'<CR>")
@@ -239,9 +183,41 @@ u.nmap("(", ":<C-u>execute 'keepjumps normal!' v:count1 . '(zz'<CR>")
 u.xmap("g+", "g<C-a>", { remap = true })
 u.xmap("g-", "g<C-x>", { remap = true })
 
--- Rest.nvim
-u.nmap("<Leader>R", "<Plug>RestNvim", { remap = true })
+-- Function to open current file in Finder
+local function open_in_file_manager()
+    local file_path = vim.fn.expand("%:p")
+    print("Opening file in Finder: " .. vim.fn.shellescape(file_path))
+    if file_path ~= "" then
+        -- -- Open in Finder
+        local command = "open -R " .. vim.fn.shellescape(file_path)
+        vim.fn.system(command)
+        print("Opened file in Finder: " .. file_path)
+    else
+        print("No file is currently open")
+    end
+end
 
--- Todo comments
-u.nmap("]t", ':lua require("todo-comments").jump_next()<CR>')
-u.nmap("[t", ':lua require("todo-comments").jump_prev()<CR>')
+-- vim.keymap.set({ "n", "v", "i" }, "<M-f>", open_in_file_manager, { desc = "[P]Open current file in file explorer" })
+-- vim.keymap.set("n", "<leader>o", open_in_file_manager, { desc = "Open file" })
+vim.keymap.set("n", "<M-o>", open_in_file_manager, { desc = "Open file" })
+-- vim.keymap.set("n", "<A-o>", open_in_file_manager, { desc = "Open file" })
+
+-- Permanent "very magic" mode
+u.nmap("/", "/\\v")
+u.vmap("/", "/\\v")
+u.nmap("?", "?\\v")
+u.vmap("?", "?\\v")
+u.cmap("%s/", "%smagic/")
+u.cmap("\\>s/", "\\>smagic/")
+-- conclict with snack commands and command history
+-- u.nmap(":g/", ":g/\\v")
+-- u.nmap(":g//", ":g//")
+
+-- Git conflict resolution
+u.nmap("[r", ":/<<<<<<<CR>dd/=======<CR>V/>>>>>>><CR>d<CR>", { desc = "Conflict: Accept Ours" })
+u.nmap("]r", ":/<<<<<<<CR>V/=======<CR>d/>>>>>>><CR>dd", { desc = "Conflict: Accept Theirs" })
+
+-- Restore vim-unimpaired conflict marker navigation in visual mode
+-- nvim 0.12 defaults.lua overwrites [n/]n in xmode with treesitter node select
+u.xmap("[n", "<Plug>(unimpaired-context-previous)", { remap = true })
+u.xmap("]n", "<Plug>(unimpaired-context-next)", { remap = true })

@@ -1,75 +1,33 @@
-local status_ok, comment = pcall(require, "Comment")
-if not status_ok then
-    return
+local M = {
+    "numToStr/Comment.nvim",
+    lazy = false,
+    dependencies = {
+        {
+            "JoosepAlviste/nvim-ts-context-commentstring",
+            event = "VeryLazy",
+        },
+    },
+}
+
+function M.config()
+    local wk = require "which-key"
+    wk.add {
+        { "<leader>/", "<Plug>(comment_toggle_linewise_current)", desc = "Comment", mode = "n" },
+        { "<leader>/", "<Plug>(comment_toggle_linewise_visual)", desc = "Comment", mode = "v" },
+    }
+
+    vim.g.skip_ts_context_commentstring_module = true
+    ---@diagnostic disable: missing-fields
+    require("ts_context_commentstring").setup {
+        enable_autocmd = false,
+    }
+
+    local ts_pre_hook = require("ts_context_commentstring.integrations.comment_nvim").create_pre_hook()
+    require("Comment").setup {
+        pre_hook = function(ctx)
+            return ts_pre_hook(ctx) or vim.bo.commentstring
+        end,
+    }
 end
 
-local pre_hook
-local loaded, ts_comment = pcall(require, "ts_context_commentstring.integrations.comment_nvim")
-if loaded and ts_comment then
-    pre_hook = ts_comment.create_pre_hook()
-end
-
-comment.setup({
-    active = true,
-    on_config_done = nil,
-
-    ---Whether the cursor should stay at its position
-    sticky = true,
-
-    ---Add a space b/w comment and the line
-    ---@type boolean
-    padding = true,
-
-    ---Lines to be ignored while comment/uncomment.
-    ---Could be a regex string or a function that returns a regex string.
-    ---Example: Use '^$' to ignore empty lines
-    ---@type string|function
-    ignore = "^$",
-
-    ---Whether to create basic (operator-pending) and extra mappings for NORMAL/VISUAL mode
-    ---@type table
-    mappings = {
-        ---operator-pending mapping
-        ---Includes `gcc`, `gcb`, `gc[count]{motion}` and `gb[count]{motion}`
-        basic = true,
-        ---extended mapping
-        ---Includes `g>`, `g<`, `g>[count]{motion}` and `g<[count]{motion}`
-        extra = false,
-    },
-
-    ---LHS of line and block comment toggle mapping in NORMAL/VISUAL mode
-    ---@type table
-    toggler = {
-        ---line-comment toggle
-        line = "gcc",
-        ---block-comment toggle
-        block = "gbc",
-    },
-
-    ---LHS of line and block comment operator-mode mapping in NORMAL/VISUAL mode
-    ---@type table
-    opleader = {
-        ---line-comment opfunc mapping
-        line = "gc",
-        ---block-comment opfunc mapping
-        block = "gb",
-    },
-
-    ---LHS of extra mappings
-    extra = {
-        ---Add comment on the line above
-        above = "gcO",
-        ---Add comment on the line below
-        below = "gco",
-        ---Add comment at the end of line
-        eol = "gcA",
-    },
-
-    ---Pre-hook, called before commenting the line
-    ---@type function|nil
-    pre_hook = pre_hook,
-
-    ---Post-hook, called after commenting is done
-    ---@type function|nil
-    post_hook = nil,
-})
+return M

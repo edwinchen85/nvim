@@ -1,19 +1,38 @@
 local u = require("config.utils")
 
-local api = vim.api
-
 local commands = {}
-
--- make global to make ex commands easier
-_G.inspect = function(...)
-    print(vim.inspect(...))
-end
 
 commands.stop_recording = function()
     return vim.fn.reg_recording() ~= "" and u.t("q") or ""
 end
 
 u.nmap("q", "v:lua.global.commands.stop_recording()", { expr = true })
+
+-- loclist
+commands.toggle_loclist = function()
+    local win = vim.api.nvim_get_current_win()
+    local qf_winid = vim.fn.getloclist(win, { winid = 0 }).winid
+    local action = qf_winid > 0 and "lclose" or "lopen"
+    vim.cmd(action)
+end
+
+u.lua_command("ToggleLocList", "global.commands.toggle_loclist()")
+
+-- quickfix
+commands.toggle_quickfix = function()
+    local qf_winid = vim.fn.getqflist({ winid = 0 }).winid
+    local action = qf_winid > 0 and "cclose" or "copen"
+    vim.cmd("botright " .. action)
+end
+
+u.lua_command("ToggleQuickFix", "global.commands.toggle_quickfix()")
+
+-- inlay hint
+commands.toggle_inlay_hint = function()
+    vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
+end
+
+u.lua_command("ToggleInlayHint", "global.commands.toggle_inlay_hint()")
 
 -- virtual text
 local isLspDiagnosticsVisible = false

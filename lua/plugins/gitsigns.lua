@@ -1,19 +1,75 @@
 return {
     "lewis6991/gitsigns.nvim",
     config = function()
+        local gs = require("gitsigns")
         local wk = require("which-key")
         wk.add({
             { "<leader>g", group = "Git" },
             -- { "<leader>gg", "<cmd>aboveleft G<cr>", desc = "Fugitive" },
             { "<leader>gg", "<cmd>Gedit :<cr>", desc = "Fugitive" },
-            { "<leader>gi", "<cmd>PreviewHunkInline<cr>", desc = "Preview Hunk Inline" },
-            { "<leader>gj", "<cmd>NextHunk<cr>", desc = "Next Hunk" },
-            { "<leader>gk", "<cmd>PrevHunk<cr>", desc = "Prev Hunk" },
-            { "<leader>gp", "<cmd>PreviewHunk<cr>", desc = "Preview Hunk" },
-            { "<leader>gr", "<cmd>ResetHunk<cr>", desc = "Reset Hunk" },
-            { "<leader>gR", "<cmd>ResetBuffer<cr>", desc = "Reset Buffer" },
-            { "<leader>gs", "<cmd>StageHunk<cr>", desc = "Stage Hunk" },
-            { "<leader>gu", "<cmd>UndoStageHunk<cr>", desc = "Undo Last Stage Hunk" },
+            {
+                "<leader>gi",
+                function()
+                    gs.preview_hunk_inline()
+                end,
+                desc = "Preview Hunk Inline",
+            },
+            {
+                "<leader>gj",
+                function()
+                    gs.next_hunk()
+                end,
+                desc = "Next Hunk",
+            },
+            {
+                "<leader>gk",
+                function()
+                    gs.prev_hunk()
+                end,
+                desc = "Prev Hunk",
+            },
+            {
+                "<leader>gp",
+                function()
+                    gs.preview_hunk()
+                end,
+                desc = "Preview Hunk",
+            },
+            {
+                "<leader>gr",
+                function()
+                    gs.reset_hunk()
+                end,
+                desc = "Reset Hunk",
+            },
+            {
+                "<leader>gR",
+                function()
+                    gs.reset_buffer()
+                end,
+                desc = "Reset Buffer",
+            },
+            {
+                "<leader>gs",
+                function()
+                    gs.stage_hunk()
+                end,
+                desc = "Stage Hunk",
+            },
+            {
+                "<leader>gs",
+                function()
+                    gs.stage_buffer()
+                end,
+                desc = "Stage Buffer",
+            },
+            {
+                "<leader>gu",
+                function()
+                    gs.undo_stage_hunk()
+                end,
+                desc = "Undo Last Stage Hunk",
+            },
             { "<leader>go", "<cmd>Telescope git_status<cr>", desc = "Open Changed File" },
             { "<leader>gb", "<cmd>Telescope git_branches<cr>", desc = "Checkout Branch" },
             { "<leader>gc", "<cmd>Telescope git_commits<cr>", desc = "Checkout Commit" },

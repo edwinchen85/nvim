@@ -8,21 +8,15 @@ u.nmap("<Down>", "gj")
 u.nmap("<Up>", "gk")
 
 -- Traverse start and end of line
-u.nmap("H", "^")
-u.omap("H", "^")
-u.xmap("H", "^")
-u.nmap("L", "g_")
-u.omap("L", "g_")
-u.xmap("L", "g_")
+u.map({ "n", "o", "x" }, "H", "^")
+u.map({ "n", "o", "x" }, "L", "g_")
 
 -- Automatically add jumps > 1 to jump list
 u.nmap("k", [[(v:count > 1 ? "m'" . v:count : '') . 'gk'"]], { expr = true })
 u.nmap("j", [[(v:count > 1 ? "m'" . v:count : '') . 'gj'"]], { expr = true })
 
 -- Tab to jump to match
-u.nmap("<Tab>", "%", { remap = true })
-u.xmap("<Tab>", "%", { remap = true })
-u.omap("<Tab>", "%", { remap = true })
+u.map({ "n", "x", "o" }, "<Tab>", "%", { remap = true })
 
 -- Terminal
 u.tmap("<C-o>", "<C-\\><C-n>")
@@ -42,16 +36,14 @@ u.xmap("<", "<gv")
 u.xmap(">", ">gv")
 
 -- Better window navigation
-u.nmap("<C-h>", "<C-w>h")
-u.nmap("<C-j>", "<C-w>j")
-u.nmap("<C-k>", "<C-w>k")
-u.nmap("<C-l>", "<C-w>l")
+for _, d in ipairs({ "h", "j", "k", "l" }) do
+    u.nmap("<C-" .. d .. ">", "<C-w>" .. d)
+end
 
 -- Page up down and center
-u.nmap("<C-f>", "<C-f>zz")
-u.nmap("<C-b>", "<C-b>zz")
-u.nmap("<C-u>", "<C-u>zz")
-u.nmap("<C-d>", "<C-d>zz")
+for _, d in ipairs({ "f", "b", "u", "d" }) do
+    u.nmap("<C-" .. d .. ">", "<C-" .. d .. ">zz")
+end
 
 -- Close window
 u.nmap("<C-c>", "<C-w>c")
@@ -76,8 +68,6 @@ u.imap("<C-k>", "<C-o>D")
 
 -- Centering only
 u.nmap("G", "Gzz")
-u.nmap("}", "}zz")
-u.nmap("{", "{zz")
 
 -- Retrace previous movement in files
 u.nmap("``", "``zzzv")
@@ -127,14 +117,11 @@ u.imap("<C-;>", "<Esc>A;<Esc>")
 -- Select pasted text in visual mode
 u.nmap("gp", "'`[' . strpart(getregtype(), 0, 1) . '`]'", { expr = true })
 
--- Paste without overwriting current registry
-u.xmap("p", "pgvy<Esc>")
-
 -- Paste and indent
 u.nmap("p", "pm`V`]=<Esc>``")
 u.nmap("P", "Pm`V`]=<Esc>``")
 
--- Paste and indent and without overriding current register
+-- Paste and indent without overriding current register
 u.xmap("p", "pgvygp=<Esc>", { remap = true })
 u.xmap("P", "Pgvygp=<Esc>", { remap = true })
 
@@ -153,12 +140,9 @@ u.nmap("g#", "<Plug>(asterisk-gz#)<Plug>(is-nohl-1)<Cmd>lua require('hlslens').s
 -- u.nmap("zs", ":set foldmethod=syntax<CR>")
 
 -- Undo break points
-u.imap(",", ",<C-g>u")
-u.imap(".", ".<C-g>u")
-u.imap("!", "!<C-g>u")
-u.imap("?", "?<C-g>u")
-u.imap(";", ";<c-g>u")
-u.imap(":", ":<c-g>u")
+for _, char in ipairs({ ",", ".", "!", "?", ";", ":" }) do
+    u.imap(char, char .. "<C-g>u")
+end
 
 -- Shortcut to command mode
 u.nmap(";", ":", { silent = false })
@@ -174,26 +158,21 @@ u.nmap("!", ":!", { silent = false })
 -- u.nmap("<Leader>sv", ":luafile %<CR>")
 
 -- Exclude {, }, ( and ) in jump list
-u.nmap("}", ":<C-u>execute 'keepjumps normal!' v:count1 . '}zz'<CR>")
-u.nmap("{", ":<C-u>execute 'keepjumps normal!' v:count1 . '{zz'<CR>")
-u.nmap(")", ":<C-u>execute 'keepjumps normal!' v:count1 . ')zz'<CR>")
-u.nmap("(", ":<C-u>execute 'keepjumps normal!' v:count1 . '(zz'<CR>")
+for _, m in ipairs({ "}", "{", ")", "(" }) do
+    u.nmap(m, ":<C-u>execute 'keepjumps normal!' v:count1 . '" .. m .. "zz'<CR>")
+end
 
 -- Column increment / decrement
 u.xmap("g+", "g<C-a>", { remap = true })
 u.xmap("g-", "g<C-x>", { remap = true })
 
--- Function to open current file in Finder
+-- Open current file in Finder
 local function open_in_file_manager()
     local file_path = vim.fn.expand("%:p")
-    print("Opening file in Finder: " .. vim.fn.shellescape(file_path))
     if file_path ~= "" then
-        -- -- Open in Finder
-        local command = "open -R " .. vim.fn.shellescape(file_path)
-        vim.fn.system(command)
-        print("Opened file in Finder: " .. file_path)
+        vim.fn.system("open -R " .. vim.fn.shellescape(file_path))
     else
-        print("No file is currently open")
+        vim.notify("No file is currently open", vim.log.levels.WARN)
     end
 end
 
@@ -204,12 +183,12 @@ vim.keymap.set("n", "<M-o>", open_in_file_manager, { desc = "Open file" })
 
 -- Permanent "very magic" mode
 u.nmap("/", "/\\v")
-u.vmap("/", "/\\v")
+u.xmap("/", "/\\v")
 u.nmap("?", "?\\v")
-u.vmap("?", "?\\v")
+u.xmap("?", "?\\v")
 u.cmap("%s/", "%smagic/")
 u.cmap("\\>s/", "\\>smagic/")
--- conclict with snack commands and command history
+-- conflict with snack commands and command history
 -- u.nmap(":g/", ":g/\\v")
 -- u.nmap(":g//", ":g//")
 

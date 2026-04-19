@@ -75,12 +75,12 @@ return {
                         default = "",
                         symlink = "",
                         git = {
-                            unstaged = "",
+                            unstaged = "",
                             staged = "✓",
-                            unmerged = "",
+                            unmerged = "",
                             renamed = "➜",
                             untracked = "★",
-                            deleted = "",
+                            deleted = "",
                             ignored = "◌",
                         },
                         folder = {

@@ -1,11 +1,7 @@
-vim.cmd([[
-  try
-    colorscheme tokyonight
-  catch /^Vim\%((\a\+)\)\=:E185/
-    colorscheme default
-    set background=dark
-  endtry
-]])
+if not pcall(vim.cmd.colorscheme, "tokyonight") then
+    vim.cmd.colorscheme("default")
+    vim.o.background = "dark"
+end
 
 -- vim.cmd([[
 --   hi Folded guibg=NONE ctermbg=NONE

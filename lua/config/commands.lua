@@ -8,23 +8,25 @@ end
 
 u.nmap("q", "v:lua.global.commands.stop_recording()", { expr = true })
 
--- loclist
+-- loclist / quickfix
+local function toggle_list(get_winid_fn, open_cmd, close_cmd)
+    vim.cmd(get_winid_fn() > 0 and close_cmd or open_cmd)
+end
+
 commands.toggle_loclist = function()
     local win = vim.api.nvim_get_current_win()
-    local qf_winid = vim.fn.getloclist(win, { winid = 0 }).winid
-    local action = qf_winid > 0 and "lclose" or "lopen"
-    vim.cmd(action)
+    toggle_list(function()
+        return vim.fn.getloclist(win, { winid = 0 }).winid
+    end, "lopen", "lclose")
+end
+
+commands.toggle_quickfix = function()
+    toggle_list(function()
+        return vim.fn.getqflist({ winid = 0 }).winid
+    end, "botright copen", "cclose")
 end
 
 u.lua_command("ToggleLocList", "global.commands.toggle_loclist()")
-
--- quickfix
-commands.toggle_quickfix = function()
-    local qf_winid = vim.fn.getqflist({ winid = 0 }).winid
-    local action = qf_winid > 0 and "cclose" or "copen"
-    vim.cmd("botright " .. action)
-end
-
 u.lua_command("ToggleQuickFix", "global.commands.toggle_quickfix()")
 
 -- inlay hint
@@ -34,22 +36,26 @@ end
 
 u.lua_command("ToggleInlayHint", "global.commands.toggle_inlay_hint()")
 
--- virtual text
-local isLspDiagnosticsVisible = false
+-- virtual text — read live state instead of tracking external variable
 commands.toggle_virtual_text = function()
-    isLspDiagnosticsVisible = not isLspDiagnosticsVisible
+    local enabled = vim.diagnostic.config().virtual_text
     vim.diagnostic.config({
-        virtual_text = isLspDiagnosticsVisible,
-        underline = isLspDiagnosticsVisible,
+        virtual_text = not enabled,
+        underline = not enabled,
     })
 end
 
 u.lua_command("ToggleVirtualText", "global.commands.toggle_virtual_text()")
 
-
 -- misc
 -- wipe all registers
-u.command("WipeReg", "for i in range(34,122) | silent! call setreg(nr2char(i), []) | endfor")
+commands.wipe_registers = function()
+    for i = 34, 122 do
+        pcall(vim.fn.setreg, string.char(i), {})
+    end
+end
+
+u.lua_command("WipeReg", "global.commands.wipe_registers()")
 
 -- start vim with clean registers
 u.augroup("WipeRegisters", "VimEnter", "WipeReg")
@@ -59,7 +65,6 @@ u.command("Help", 'execute ":help" expand("<cword>")')
 
 -- reset treesitter and lsp diagnostics
 u.command("R", "w | :e")
--- end of misc
 
 -- restore syntax highlighting
 u.command("S", "syntax sync clear")

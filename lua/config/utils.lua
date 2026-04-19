@@ -1,11 +1,7 @@
 local api = vim.api
 
 local get_map_options = function(custom_options)
-    local options = { silent = true }
-    if custom_options then
-        options = vim.tbl_extend("force", options, custom_options)
-    end
-    return options
+    return vim.tbl_extend("force", { silent = true }, custom_options or {})
 end
 
 local M = {}
@@ -14,7 +10,7 @@ M.map = function(mode, target, source, opts)
     vim.keymap.set(mode, target, source, get_map_options(opts))
 end
 
-for _, mode in ipairs { "c", "i", "n", "o", "t", "u", "v", "x" } do
+for _, mode in ipairs({ "c", "i", "n", "o", "t", "u", "v", "x" }) do
     M[mode .. "map"] = function(...)
         M.map(mode, ...)
     end
@@ -38,15 +34,7 @@ M.replace = function(str, original, replacement)
     if not found then
         return
     end
-
-    if str == original then
-        return replacement
-    end
-
-    local first_half = string.sub(str, 0, found - 1)
-    local second_half = string.sub(str, found_end + 1)
-
-    return first_half .. replacement .. second_half
+    return string.sub(str, 0, found - 1) .. replacement .. string.sub(str, found_end + 1)
 end
 
 -- make global to make ex commands easier
@@ -63,11 +51,14 @@ M.buf_command = function(bufnr, name, fn, opts)
 end
 
 M.gfind = function(str, substr, cb, init)
-    init = init or 1
-    local start_pos, end_pos = str:find(substr, init)
-    if start_pos then
-        cb(start_pos, end_pos)
-        return M.gfind(str, substr, cb, end_pos + 1)
+    local pos = init or 1
+    while true do
+        local s, e = str:find(substr, pos)
+        if not s then
+            break
+        end
+        cb(s, e)
+        pos = e + 1
     end
 end
 
@@ -87,21 +78,8 @@ M.lua_command = function(name, fn)
 end
 
 M.augroup = function(name, event, fn, ft)
-    api.nvim_exec2(
-        string.format(
-            [[
-                augroup %s
-                    autocmd!
-                    autocmd %s %s %s
-                augroup END
-            ]],
-            name,
-            event,
-            ft or "*",
-            fn
-        ),
-        {}
-    )
+    local group = api.nvim_create_augroup(name, { clear = true })
+    api.nvim_create_autocmd(event, { group = group, pattern = ft or "*", command = fn })
 end
 
 M.t = function(str)
@@ -110,24 +88,11 @@ end
 
 M.input = function(keys, mode)
     vim.api.nvim_feedkeys(M.t(keys), mode or "i", true)
-    -- api.nvim_feedkeys(M.t(keys), mode or "m", true)
 end
 
 M.buf_augroup = function(name, event, fn)
-    api.nvim_exec2(
-        string.format(
-            [[
-                augroup %s
-                    autocmd! * <buffer>
-                    autocmd %s <buffer> %s
-                augroup END
-            ]],
-            name,
-            event,
-            fn
-        ),
-        {}
-    )
+    local group = api.nvim_create_augroup(name, { clear = true })
+    api.nvim_create_autocmd(event, { group = group, pattern = "<buffer>", command = fn })
 end
 
 M.timer = function(timeout, interval, should_start, callback)
@@ -172,7 +137,7 @@ M.timer = function(timeout, interval, should_start, callback)
 end
 
 M.warn = function(msg)
-    api.nvim_echo({ { msg, "WarningMsg" } }, true, {})
+    vim.notify(msg, vim.log.levels.WARN)
 end
 
 M.is_file = function(path)
@@ -196,8 +161,8 @@ M.make_floating_window = function(custom_window_config, height_ratio, width_rati
         border = "double",
         width = width,
         height = height,
-        row = width / 2,
-        col = height / 2,
+        row = math.ceil((vim.opt.lines:get() - height) / 2),
+        col = math.ceil((vim.opt.columns:get() - width) / 2),
     }
     window_config = vim.tbl_extend("force", window_config, custom_window_config or {})
 

@@ -57,7 +57,7 @@ return {
                 desc = "Stage Hunk",
             },
             {
-                "<leader>gs",
+                "<leader>gS",
                 function()
                     gs.stage_buffer()
                 end,

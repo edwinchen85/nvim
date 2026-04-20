@@ -49,10 +49,10 @@ end
 u.nmap("<C-c>", "<C-w>c")
 
 -- Move selected line / block of text
--- u.xmap("<C-j>", ":m '>+1<CR>gv=gv")
--- u.xmap("<C-k>", ":m '<-2<CR>gv=gv")
-u.xmap("<a-j>", ":m '>+1<CR>gv=gv")
-u.xmap("<a-k>", ":m '<-2<CR>gv=gv")
+u.xmap("<m-j>", ":m '>+1<CR>gv=gv")
+u.xmap("<m-k>", ":m '<-2<CR>gv=gv")
+u.nmap("<m-j>", ":m .+1<CR>==")
+u.nmap("<m-k>", ":m .-2<CR>==")
 
 -- Resize window
 u.nmap("<C-Down>", ":resize +2<CR>")

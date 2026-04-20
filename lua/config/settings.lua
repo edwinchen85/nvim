@@ -24,6 +24,15 @@ vim.api.nvim_exec2(
     {}
 )
 
+-- disable modifyOtherKeys after nvim terminal init (fixes Cmd+V paste in Ghostty+tmux)
+-- restore is handled by shell wrapper in ~/.zshrc after nvim exits
+vim.api.nvim_create_autocmd({ "VimEnter" }, {
+    callback = function()
+        io.write("\027[>4;0m")
+        io.flush()
+    end,
+})
+
 -- override for all file types
 vim.api.nvim_create_autocmd({ "BufWinEnter" }, {
     callback = function()

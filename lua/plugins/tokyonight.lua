@@ -6,14 +6,13 @@ return {
         local function highlight_treesitter_context(hl, c)
             local prompt = "#2d3149"
             hl.TreesitterContext = {
-                bg = "NONE",
+                bg = c.bg,
                 fg = "NONE",
             }
-            -- hl.TreesitterContextBottom = {
-            --     bg = c.comment,
-            --     fg = c.comment,
-            -- }
-            -- hi TreesitterContextLineNumberBottom gui=underline guisp=Grey
+            hl.TreesitterContextBottom = {
+                underline = true,
+                sp = c.comment,
+            }
         end
 
         local function highlight_telescope(hl, c)
@@ -51,7 +50,7 @@ return {
             }
         end
 
-        require("tokyonight").setup {
+        require("tokyonight").setup({
             -- your configuration comes here
             -- or leave it empty to use the default settings
             style = "night", -- The theme comes in four styles, `storm`, `moon`, a darker variant `night` and `day`
@@ -146,8 +145,8 @@ return {
                 --   * https://github.com/folke/tokyonight.nvim/tree/main/lua/tokyonight/groups
                 -- telescope = true,
             },
-        }
+        })
 
-        vim.cmd [[colorscheme tokyonight]]
+        vim.cmd([[colorscheme tokyonight]])
     end,
 }

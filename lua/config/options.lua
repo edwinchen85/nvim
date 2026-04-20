@@ -2,25 +2,15 @@ vim.keymap.set("n", "<space>", "", { noremap = true, silent = true })
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 
--- Disable various builtin plugins in Vim that bog down speed
-vim.g.loaded_matchparen = 1
-vim.g.loaded_matchit = 1
-vim.g.loaded_logiPat = 1
-vim.g.loaded_rrhelper = 1
-vim.g.loaded_tarPlugin = 1
-vim.g.loaded_gzip = 1
-vim.g.loaded_zipPlugin = 1
-vim.g.loaded_2html_plugin = 1
-vim.g.loaded_shada_plugin = 1
-vim.g.loaded_spellfile_plugin = 1
-vim.g.loaded_netrw = 1 -- disable netrw
-vim.g.loaded_netrwPlugin = 1 -- disable netrw
-vim.g.loaded_netrwSettings = 1
-vim.g.loaded_netrwFileHandlers = 1
-vim.g.loaded_tutor_mode_plugin = 1
-vim.g.loaded_vimballPlugin = 1
-vim.g.loaded_getscriptPlugin = 1
-vim.g.loaded_remote_plugins = 1
+-- Disable builtin plugins that bog down speed (including netrw)
+for _, p in ipairs({
+    "matchparen", "matchit", "logiPat", "rrhelper", "tarPlugin",
+    "gzip", "zipPlugin", "2html_plugin", "shada_plugin", "spellfile_plugin",
+    "netrw", "netrwPlugin", "netrwSettings", "netrwFileHandlers",
+    "tutor_mode_plugin", "vimballPlugin", "getscriptPlugin", "remote_plugins",
+}) do
+    vim.g["loaded_" .. p] = 1
+end
 
 vim.opt.cmdheight = 1 -- more space in the neovim command line for displaying messages
 vim.opt.conceallevel = 0 -- so that `` is visible in markdown files
@@ -28,14 +18,12 @@ vim.opt.fileencoding = "utf-8" -- the encoding written to a file
 vim.opt.autoread = true -- Read again when file has changed outside of vim
 vim.opt.backspace = { "indent", "eol", "start" }
 vim.opt.clipboard = "unnamed,unnamedplus" -- Enable access to system clipboard
-vim.opt.colorcolumn = "9999" -- Hide color column
-vim.opt.encoding = "utf-8" -- Set default encoding to UTF-8
+vim.opt.colorcolumn = "" -- Disable color column
 vim.opt.expandtab = true -- convert tabs to spaces
 vim.opt.foldenable = true
 vim.opt.foldmethod = "indent"
 vim.opt.foldlevelstart = 99
 vim.opt.guifont = "monospace:h17" -- the font used in graphical neovim applications
-vim.opt.hidden = true -- Enable background buffers
 vim.opt.hlsearch = true -- Highlight found searches
 vim.opt.ignorecase = true -- Ignore case
 vim.opt.incsearch = true -- Shows the match while typing
@@ -46,7 +34,7 @@ vim.opt.list = true -- Show some invisible characters
 vim.opt.listchars = { tab = "▸ ", trail = "·" }
 vim.opt.mouse = "a"
 vim.opt.pumheight = 10
-vim.opt.ruler = true -- Don't show the ruler
+vim.opt.ruler = true -- Show cursor position in status line
 vim.opt.shiftwidth = 2 -- the number of spaces inserted for each indentation
 vim.opt.shiftround = true -- Round indent
 vim.opt.showcmd = false -- Don't show the command in the last line
@@ -70,7 +58,6 @@ vim.opt.timeoutlen = 500
 vim.opt.ttimeoutlen = 0
 vim.opt.writebackup = false
 vim.opt.swapfile = false
-vim.opt.directory = "/tmp"
 vim.opt.scrolloff = 8 -- Lines of context
 vim.opt.sidescrolloff = 8 -- Columns of context
 vim.opt.shell = "/bin/zsh"

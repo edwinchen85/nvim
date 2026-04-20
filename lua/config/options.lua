@@ -4,10 +4,24 @@ vim.g.maplocalleader = " "
 
 -- Disable builtin plugins that bog down speed (including netrw)
 for _, p in ipairs({
-    "matchparen", "matchit", "logiPat", "rrhelper", "tarPlugin",
-    "gzip", "zipPlugin", "2html_plugin", "shada_plugin", "spellfile_plugin",
-    "netrw", "netrwPlugin", "netrwSettings", "netrwFileHandlers",
-    "tutor_mode_plugin", "vimballPlugin", "getscriptPlugin", "remote_plugins",
+    "matchparen",
+    "matchit",
+    "logiPat",
+    "rrhelper",
+    "tarPlugin",
+    "gzip",
+    "zipPlugin",
+    "2html_plugin",
+    "shada_plugin",
+    "spellfile_plugin",
+    "netrw",
+    "netrwPlugin",
+    "netrwSettings",
+    "netrwFileHandlers",
+    "tutor_mode_plugin",
+    "vimballPlugin",
+    "getscriptPlugin",
+    "remote_plugins",
 }) do
     vim.g["loaded_" .. p] = 1
 end

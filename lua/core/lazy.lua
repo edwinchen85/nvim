@@ -12,7 +12,6 @@ if not vim.uv.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
--- require("lazy").setup({ import = "plugins" }, {
 require("lazy").setup({ { import = "plugins" }, { import = "plugins.lsp" } }, {
     install = {
         missing = true,
@@ -29,15 +28,6 @@ require("lazy").setup({ { import = "plugins" }, { import = "plugins.lsp" } }, {
     ui = {
         -- border = "rounded"
     },
-    performance = {
-        rtp = {
-            disabled_plugins = {
-                "gzip",
-                "tarPlugin",
-                "tohtml",
-                "tutor",
-                "zipPlugin",
-            },
-        },
-    },
+    -- Plugin disabling handled by vim.g.loaded_* in options.lua
+    performance = {},
 })

@@ -176,10 +176,7 @@ local function open_in_file_manager()
     end
 end
 
--- vim.keymap.set({ "n", "v", "i" }, "<M-f>", open_in_file_manager, { desc = "[P]Open current file in file explorer" })
--- vim.keymap.set("n", "<leader>o", open_in_file_manager, { desc = "Open file" })
 vim.keymap.set("n", "<M-o>", open_in_file_manager, { desc = "Open file" })
--- vim.keymap.set("n", "<A-o>", open_in_file_manager, { desc = "Open file" })
 
 -- Permanent "very magic" mode
 u.nmap("/", "/\\v")

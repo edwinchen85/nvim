@@ -69,6 +69,14 @@ u.command("R", "w | :e")
 -- restore syntax highlighting
 u.command("S", "syntax sync clear")
 
+-- LspRestart removed in nvim-lspconfig v1.x — reimplement via vim.lsp API
+vim.api.nvim_create_user_command("LspRestart", function()
+    for _, client in ipairs(vim.lsp.get_clients({ bufnr = 0 })) do
+        client:stop()
+    end
+    vim.cmd("edit")
+end, { desc = "Restart LSP for current buffer" })
+
 _G.global.commands = commands
 
 return commands

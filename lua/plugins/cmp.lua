@@ -7,6 +7,7 @@ return {
         { "hrsh7th/cmp-path", event = "InsertEnter" },
         { "saadparwaiz1/cmp_luasnip", event = "InsertEnter" },
         { "hrsh7th/cmp-nvim-lua" },
+        { "hrsh7th/cmp-cmdline" },
     },
     config = function()
         local cmp = require("cmp")
@@ -137,6 +138,37 @@ return {
                 ghost_text = false,
                 native_menu = false,
             },
+        })
+
+        local cmdline_mapping = cmp.mapping.preset.cmdline({
+            ["<CR>"] = {
+                c = function(fallback)
+                    if cmp.visible() and cmp.get_selected_entry() then
+                        cmp.confirm({ select = true })
+                        vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<CR>", true, false, true), "n", false)
+                    else
+                        fallback()
+                    end
+                end,
+            },
+        })
+
+        cmp.setup.cmdline({ "/", "?" }, {
+            mapping = cmdline_mapping,
+            sources = {
+                { name = "buffer" },
+            },
+            completion = { completeopt = "menu,menuone,noinsert" },
+        })
+
+        cmp.setup.cmdline(":", {
+            mapping = cmdline_mapping,
+            sources = cmp.config.sources({
+                { name = "path" },
+            }, {
+                { name = "cmdline" },
+            }),
+            completion = { completeopt = "menu,menuone,noinsert" },
         })
     end,
 }

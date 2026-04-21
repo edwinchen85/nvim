@@ -189,10 +189,6 @@ u.cmap("\\>s/", "\\>smagic/")
 -- u.nmap(":g/", ":g/\\v")
 -- u.nmap(":g//", ":g//")
 
--- Git conflict resolution
-u.nmap("[r", ":/<<<<<<<CR>dd/=======<CR>V/>>>>>>><CR>d<CR>", { desc = "Conflict: Accept Ours" })
-u.nmap("]r", ":/<<<<<<<CR>V/=======<CR>d/>>>>>>><CR>dd", { desc = "Conflict: Accept Theirs" })
-
 -- Restore vim-unimpaired conflict marker navigation in visual mode
 -- nvim 0.12 defaults.lua overwrites [n/]n in xmode with treesitter node select
 u.xmap("[n", "<Plug>(unimpaired-context-previous)", { remap = true })

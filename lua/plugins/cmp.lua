@@ -70,7 +70,12 @@ return {
                 }),
                 ["<CR>"] = cmp.mapping.confirm({ select = true }),
                 ["<Tab>"] = cmp.mapping(function(fallback)
-                    if luasnip.expand_or_jumpable() then
+                    local nes_ok, nes = pcall(require, "sidekick.nes")
+                    if nes_ok and nes.have() then
+                        require("sidekick").nes_jump_or_apply()
+                    elseif cmp.visible() then
+                        cmp.select_next_item()
+                    elseif luasnip.expand_or_jumpable() then
                         luasnip.expand_or_jump()
                     else
                         fallback()

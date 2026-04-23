@@ -35,6 +35,9 @@ return {
             capabilities = vim.lsp.protocol.make_client_capabilities(),
         })
 
+        -- copilot LSP required for sidekick.nvim NES (next edit suggestions)
+        vim.lsp.enable("copilot")
+
         -- ts_ls: JS/TS only — vue files handled by vtsls
         vim.lsp.config("ts_ls", {
             filetypes = { "typescript", "javascript", "javascriptreact", "typescriptreact" },
@@ -42,7 +45,8 @@ return {
 
         -- vtsls: handles .vue files with @vue/typescript-plugin 3.x (designed for vtsls, not ts_ls)
         -- vue_ls communicates with vtsls via tsserver/request bridge
-        local vue_plugin_path = vim.fn.stdpath("data") .. "/mason/packages/vue-language-server/node_modules/@vue/typescript-plugin"
+        local vue_plugin_path = vim.fn.stdpath("data")
+            .. "/mason/packages/vue-language-server/node_modules/@vue/typescript-plugin"
         vim.lsp.config("vtsls", {
             filetypes = { "vue" },
             settings = {

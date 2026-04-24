@@ -58,6 +58,16 @@ return {
             spacing = 10, -- spacing between columns
             winblend = 100,
         },
+        triggers = {
+            { "<leader>", mode = { "n", "v" } },
+            { "g", mode = { "n", "v" } },
+            { "z", mode = { "n", "v" } },
+            { "<C-w>", mode = "n" },
+            { '"', mode = { "n", "v" } },
+            { "'", mode = { "n", "v" } },
+            { "`", mode = { "n", "v" } },
+            { "<C-r>", mode = "i" },
+        },
         disable = {
             ft = { "fugitive" },
             bt = {},

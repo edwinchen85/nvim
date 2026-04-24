@@ -69,7 +69,7 @@ return {
             { "<C-r>", mode = "i" },
         },
         disable = {
-            ft = { "fugitive" },
+            ft = { "fugitive", "NvimTree" },
             bt = {},
         },
     },

@@ -46,7 +46,7 @@ return {
                 dotfiles = true,
                 git_ignored = true,
                 custom = { ".git/", ".cache", "tags", ".DS_Store" },
-                exclude = { ".env", ".env.*", ".dotfiles/" },
+                exclude = { ".env", ".env.*", ".dotfiles/", ".gitlab*" },
             },
             git = {
                 enable = true,

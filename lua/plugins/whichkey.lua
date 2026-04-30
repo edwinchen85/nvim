@@ -68,6 +68,11 @@ return {
             { "`", mode = { "n", "v" } },
             { "<C-r>", mode = "i" },
         },
+        spec = {
+            { "<leader>a", group = "AI" },
+            { "<leader>f", group = "Find" },
+            { "<leader><tab>", group = "Toggle" },
+        },
         disable = {
             ft = { "fugitive", "NvimTree" },
             bt = {},
@@ -98,7 +103,7 @@ return {
         { "<leader>w", "<cmd>w<cr>", desc = "Save" },
         { "<leader>W", "<cmd>noa w<cr>", desc = "Save (No Format)" },
         { "<leader><leader>", "<C-^>", desc = "Previous Buffer" },
-        { "<leader>a", group = "Claude Code", desc = "Claude Code" },
+        { "<leader>a", group = "AI", desc = "AI Agent" },
         { "<leader><tab>", group = "Tab", desc = "Tab" },
         { "<leader><tab>c", "<cmd>set cursorline!<cr>", desc = "Cursor Line" },
         { "<leader><tab>d", "<cmd>ToggleDiagnostics<cr>", desc = "Diagnostics" },

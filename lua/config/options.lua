@@ -78,7 +78,8 @@ vim.opt.shell = "/bin/zsh"
 vim.opt.shortmess:append("cAS")
 vim.opt.fillchars:append("eob: ")
 
-vim.opt.cursorline = false
+vim.opt.cursorline = true -- required for CursorLineNr highlight to apply
+vim.opt.cursorlineopt = "number" -- highlight number column only, no full-line underline
 vim.opt.number = true -- Show line numbers
 vim.opt.numberwidth = 4 -- set number column width to 2 {default 4}
 vim.opt.relativenumber = false

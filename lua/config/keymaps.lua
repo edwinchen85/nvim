@@ -178,13 +178,11 @@ end
 
 vim.keymap.set("n", "<M-o>", open_in_file_manager, { desc = "Open file" })
 
--- Permanent "very magic" mode
-u.nmap("/", "/\\v")
-u.xmap("/", "/\\v")
-u.nmap("?", "?\\v")
-u.xmap("?", "?\\v")
-u.cmap("%s/", "%smagic/")
-u.cmap("\\>s/", "\\>smagic/")
+-- Permanent "very magic" mode via nmap (fires before CmdlineEnter, cmp keyword_pattern handles \v prefix)
+vim.keymap.set("n", "/", "/\\v", { noremap = true })
+vim.keymap.set("n", "?", "?\\v", { noremap = true })
+vim.keymap.set("c", "%s/", "%smagic/", { silent = true })
+vim.keymap.set("c", "\\>s/", "\\>smagic/", { silent = true })
 -- conflict with snack commands and command history
 -- u.nmap(":g/", ":g/\\v")
 -- u.nmap(":g//", ":g//")

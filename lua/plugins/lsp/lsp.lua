@@ -35,8 +35,6 @@ return {
             capabilities = vim.lsp.protocol.make_client_capabilities(),
         })
 
-        -- copilot LSP required for sidekick.nvim NES (next edit suggestions)
-        vim.lsp.enable("copilot")
 
         -- ts_ls: JS/TS only — vue files handled by vtsls
         vim.lsp.config("ts_ls", {

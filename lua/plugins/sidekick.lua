@@ -2,10 +2,6 @@ return {
     "folke/sidekick.nvim",
     event = "VeryLazy",
     opts = {
-        nes = {
-            enabled = true,
-            debounce = 100,
-        },
         cli = {
             win = { layout = "right" },
         },

@@ -1,9 +1,9 @@
 return { -- Highlight, edit, and navigate code
     "nvim-treesitter/nvim-treesitter",
-    commit = "cf12346a3414fa1b06af75c79faebe7f76df080a", -- pinned: patched query_predicates.lua for nvim 0.12 TSNode[] captures
     build = ":TSUpdate",
-    main = "nvim-treesitter.configs", -- Sets main module to use for opts
-    -- [[ Configure Treesitter ]] See `:help nvim-treesitter`
+    config = function(_, opts)
+        require("nvim-treesitter").setup(opts)
+    end,
     opts = {
         ensure_installed = {
             "bash",

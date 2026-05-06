@@ -87,7 +87,7 @@ vim.cmd([[autocmd FileType fugitive,GV nmap <buffer><silent> q gq]])
 -- wrap and spell for commit messages
 vim.api.nvim_create_autocmd({ "FileType" }, {
     group = vim.api.nvim_create_augroup("edit_text", { clear = true }),
-    pattern = { "gitcommit", "markdown", "txt" },
+    pattern = { "markdown", "txt" },
     desc = "Enable spell checking and text wrapping for certain filetypes",
     callback = function()
         vim.opt_local.wrap = true

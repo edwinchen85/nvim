@@ -14,40 +14,31 @@ return {
         local luasnip = require("luasnip")
 
         local kind_icons = {
-            Array = " ",
-            Boolean = " ",
-            Class = " ",
-            Color = " ",
-            Constant = " ",
-            Constructor = " ",
-            Enum = " ",
-            EnumMember = " ",
-            Event = " ",
-            Field = " ",
-            File = " ",
-            Folder = "󰉋 ",
-            Function = " ",
-            Interface = " ",
-            Key = " ",
-            Keyword = " ",
-            Method = " ",
-            Module = " ",
-            Namespace = " ",
-            Null = "󰟢 ",
-            Number = " ",
-            Object = " ",
-            Operator = " ",
-            Package = " ",
-            Property = " ",
-            Reference = " ",
-            Snippet = " ",
-            String = " ",
-            Struct = " ",
-            Text = " ",
-            TypeParameter = " ",
-            Unit = " ",
-            Value = " ",
-            Variable = " ",
+            Class = " ",
+            Color = " ",
+            Constant = " ",
+            Constructor = " ",
+            Enum = " ",
+            EnumMember = " ",
+            Event = " ",
+            Field = " ",
+            File = " ",
+            Folder = " ",
+            Function = " ",
+            Interface = " ",
+            Keyword = " ",
+            Method = " ",
+            Module = " ",
+            Operator = " ",
+            Property = " ",
+            Reference = " ",
+            Snippet = " ",
+            Struct = " ",
+            Text = " ",
+            TypeParameter = " ",
+            Unit = " ",
+            Value = " ",
+            Variable = " ",
         }
 
         cmp.setup({
@@ -59,6 +50,8 @@ return {
             mapping = {
                 ["<C-k>"] = cmp.mapping(cmp.mapping.select_prev_item(), { "i", "c" }),
                 ["<C-j>"] = cmp.mapping(cmp.mapping.select_next_item(), { "i", "c" }),
+                ["<C-p>"] = cmp.mapping(cmp.mapping.select_prev_item(), { "i", "c" }),
+                ["<C-n>"] = cmp.mapping(cmp.mapping.select_next_item(), { "i", "c" }),
                 ["<Down>"] = cmp.mapping(cmp.mapping.select_next_item(), { "i", "c" }),
                 ["<Up>"] = cmp.mapping(cmp.mapping.select_prev_item(), { "i", "c" }),
                 ["<C-b>"] = cmp.mapping(cmp.mapping.scroll_docs(-1), { "i", "c" }),
@@ -70,25 +63,7 @@ return {
                 }),
                 ["<CR>"] = cmp.mapping.confirm({ select = true }),
                 ["<Tab>"] = cmp.mapping(function(fallback)
-                    local nes_ok, nes = pcall(require, "sidekick.nes")
-                    if nes_ok and nes.have() then
-                        require("sidekick").nes_jump_or_apply()
-                    elseif cmp.visible() then
-                        cmp.select_next_item()
-                    elseif luasnip.expand_or_jumpable() then
-                        luasnip.expand_or_jump()
-                    else
-                        fallback()
-                    end
-                end, { "i", "s" }),
-                ["<S-Tab>"] = cmp.mapping(function(fallback)
-                    if cmp.get_selected_entry() then
-                        cmp.select_prev_item()
-                    elseif luasnip.jumpable(-1) then
-                        luasnip.jump(-1)
-                    else
-                        fallback()
-                    end
+                    fallback() -- supermaven intercepts for suggestion acceptance
                 end, { "i", "s" }),
             },
             formatting = {
@@ -145,35 +120,34 @@ return {
             },
         })
 
-        local cmdline_mapping = cmp.mapping.preset.cmdline({
-            ["<CR>"] = {
-                c = function(fallback)
-                    if cmp.visible() and cmp.get_selected_entry() then
-                        cmp.confirm({ select = true })
-                        vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<CR>", true, false, true), "n", false)
-                    else
-                        fallback()
-                    end
-                end,
-            },
-        })
+        local cmdline_mapping = cmp.mapping.preset.cmdline()
 
         cmp.setup.cmdline({ "/", "?" }, {
             mapping = cmdline_mapping,
             sources = {
                 { name = "buffer" },
             },
-            completion = { completeopt = "menu,menuone,noinsert" },
+            completion = { completeopt = "menu,menuone,noinsert,noselect" },
         })
 
         cmp.setup.cmdline(":", {
-            mapping = cmdline_mapping,
+            mapping = cmp.mapping.preset.cmdline({
+                ["<CR>"] = {
+                    c = function(fallback)
+                        if cmp.visible() and cmp.get_selected_entry() then
+                            cmp.confirm({ select = false })
+                        else
+                            fallback()
+                        end
+                    end,
+                },
+            }),
             sources = cmp.config.sources({
                 { name = "path" },
             }, {
                 { name = "cmdline" },
             }),
-            completion = { completeopt = "menu,menuone,noinsert" },
+            completion = { completeopt = "menu,menuone,noinsert,noselect" },
         })
     end,
 }

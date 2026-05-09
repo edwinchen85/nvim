@@ -238,6 +238,84 @@ return {
             },
         })
 
+        -- inlay hint decoration provider override:
+        -- runtime races between multi-client responses can leave stale char positions
+        -- past EOL → "Invalid 'col': out of range" from nvim_buf_set_extmark.
+        -- replace decoration provider on the same namespace; clamp pos to line byte length
+        -- and pcall the extmark call as a safety net.
+        do
+            local inlay = require("vim.lsp.inlay_hint")
+            local util = require("vim.lsp.util")
+            local ns = vim.api.nvim_create_namespace("nvim.lsp.inlayhint")
+            local bufstates
+            for i = 1, math.huge do
+                local n, v = debug.getupvalue(inlay.on_inlayhint, i)
+                if not n then
+                    break
+                end
+                if n == "bufstates" then
+                    bufstates = v
+                    break
+                end
+            end
+            if bufstates then
+                vim.api.nvim_set_decoration_provider(ns, {
+                    on_win = function(_, _, bufnr, topline, botline)
+                        local bufstate = rawget(bufstates, bufnr)
+                        if not bufstate or not bufstate.client_hints then
+                            return
+                        end
+                        if bufstate.version ~= util.buf_versions[bufnr] then
+                            return
+                        end
+                        local line_count = vim.api.nvim_buf_line_count(bufnr)
+                        for lnum = topline, botline do
+                            if lnum < line_count and bufstate.applied[lnum] ~= bufstate.version then
+                                vim.api.nvim_buf_clear_namespace(bufnr, ns, lnum, lnum + 1)
+                                local line = vim.api.nvim_buf_get_lines(bufnr, lnum, lnum + 1, false)[1] or ""
+                                local line_len = #line
+                                local hint_vt = {}
+                                for _, lnum_hints in pairs(bufstate.client_hints) do
+                                    for _, hint in pairs(lnum_hints[lnum] or {}) do
+                                        local text = ""
+                                        local label = hint.label
+                                        if type(label) == "string" then
+                                            text = label
+                                        else
+                                            for _, part in ipairs(label) do
+                                                text = text .. part.value
+                                            end
+                                        end
+                                        local pos = hint.position.character
+                                        if pos > line_len then
+                                            pos = line_len
+                                        end
+                                        local vt = hint_vt[pos] or {}
+                                        if hint.paddingLeft then
+                                            vt[#vt + 1] = { " " }
+                                        end
+                                        vt[#vt + 1] = { text, "LspInlayHint" }
+                                        if hint.paddingRight then
+                                            vt[#vt + 1] = { " " }
+                                        end
+                                        hint_vt[pos] = vt
+                                    end
+                                end
+                                for pos, vt in pairs(hint_vt) do
+                                    pcall(vim.api.nvim_buf_set_extmark, bufnr, ns, lnum, pos, {
+                                        virt_text_pos = "inline",
+                                        ephemeral = false,
+                                        virt_text = vt,
+                                    })
+                                end
+                                bufstate.applied[lnum] = bufstate.version
+                            end
+                        end
+                    end,
+                })
+            end
+        end
+
         -- auto-enable inlay hints when server supports them
         -- Per-buffer flag prevents repeated enable() calls from resetting bufstate
         -- when multiple clients attach to same buffer (e.g. vue: vtsls + vue_ls).

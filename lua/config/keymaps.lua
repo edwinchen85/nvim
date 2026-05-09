@@ -129,12 +129,6 @@ u.nmap("g*", "<Plug>(asterisk-gz*)<Plug>(is-nohl-1)<Cmd>lua require('hlslens').s
 u.nmap("#", "<Plug>(asterisk-z#)<Plug>(is-nohl-1)<Cmd>lua require('hlslens').start()<CR>", { remap = true })
 u.nmap("g#", "<Plug>(asterisk-gz#)<Plug>(is-nohl-1)<Cmd>lua require('hlslens').start()<CR>", { remap = true })
 
--- Fold
--- u.nmap("zn", ":set foldenable!<CR>")
--- u.nmap("ze", ":set foldmethod=expr<CR>")
--- u.nmap("zi", ":set foldmethod=indent<CR>")
--- u.nmap("zs", ":set foldmethod=syntax<CR>")
-
 -- Undo break points
 for _, char in ipairs({ ",", ".", "!", "?", ";", ":" }) do
     u.imap(char, char .. "<C-g>u")
@@ -146,12 +140,6 @@ u.xmap(";", ":", { silent = false })
 
 -- Shortcut to bang
 u.nmap("!", ":!", { silent = false })
-
--- Swap interactive
--- u.nmap("gS", "<Plug>(swap-interactive)", { remap = true })
-
--- Source luafile
--- u.nmap("<Leader>sv", ":luafile %<CR>")
 
 -- Exclude {, }, ( and ) in jump list
 for _, m in ipairs({ "}", "{", ")", "(" }) do

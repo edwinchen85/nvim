@@ -14,31 +14,26 @@ return {
         { "b0o/schemastore.nvim" },
     },
     config = function()
-        -- suppress false-positive diagnostics from ts-plugin source on .vue files
-        -- root cause: @vue/typescript-plugin loads from mason but can't resolve project's vue package
-        -- vue_ls provides correct diagnostics for .vue; vtsls still attaches for the tsserver bridge
-        vim.api.nvim_create_autocmd("LspAttach", {
-            callback = function(args)
-                local client = vim.lsp.get_client_by_id(args.data.client_id)
-                if client and (client.name == "vtsls" or client.name == "ts_ls") then
-                    local bufname = vim.api.nvim_buf_get_name(args.buf)
-                    if bufname:match("%.vue$") then
-                        local ns = vim.lsp.diagnostic.get_namespace(args.data.client_id)
-                        vim.diagnostic.enable(false, { bufnr = args.buf, ns_id = ns })
-                    end
-                end
-            end,
-        })
+        -- suppress vtsls diagnostics on .vue files
+        -- root cause: @vue/typescript-plugin loads from mason, can't resolve project's vue package
+        -- vue_ls provides correct diagnostics; vtsls only needed for tsserver bridge
 
         -- capabilities for all servers
         vim.lsp.config("*", {
             capabilities = vim.lsp.protocol.make_client_capabilities(),
         })
 
-
         -- ts_ls: JS/TS only — vue files handled by vtsls
+        -- force ts_ls to use its bundled TS (6.0.2) instead of workspace TS (5.7.2)
+        -- TS 5.7.2 tsserver has a bug where vue re-exports fail despite tsc working fine
+        local ts_ls_tsserver = vim.fn.stdpath("data")
+            .. "/mason/packages/typescript-language-server/node_modules/typescript/lib/tsserver.js"
         vim.lsp.config("ts_ls", {
             filetypes = { "typescript", "javascript", "javascriptreact", "typescriptreact" },
+            cmd = { "typescript-language-server", "--stdio" },
+            init_options = {
+                tsserver = { path = ts_ls_tsserver },
+            },
         })
 
         -- vtsls: handles .vue files with @vue/typescript-plugin 3.x (designed for vtsls, not ts_ls)
@@ -61,6 +56,25 @@ return {
                         },
                     },
                 },
+            },
+            handlers = {
+                -- vtsls uses workspace TS which has a tsserver bug with vue re-exports;
+                -- drop only the false-positive TS2305 errors for module '"vue"'
+                ["textDocument/publishDiagnostics"] = function(err, result, ctx, config)
+                    if result and result.uri and result.uri:match("%.vue$") and result.diagnostics then
+                        result.diagnostics = vim.tbl_filter(function(d)
+                            if d.code == 2305 and d.message and d.message:match('"vue"') then
+                                return false
+                            end
+                            -- 7016: "Could not find a declaration file for module ..."
+                            if d.code == 7016 then
+                                return false
+                            end
+                            return true
+                        end, result.diagnostics)
+                    end
+                    vim.lsp.diagnostic.on_publish_diagnostics(err, result, ctx, config)
+                end,
             },
         })
 
@@ -187,6 +201,11 @@ return {
 
         -- vue_ls: hybrid mode (vtsls handles TS in .vue, vue_ls handles template/style)
         vim.lsp.config("vue_ls", {
+            settings = {
+                css = { lint = { unknownAtRules = "ignore" } },
+                scss = { lint = { unknownAtRules = "ignore" } },
+                less = { lint = { unknownAtRules = "ignore" } },
+            },
             init_options = {
                 vue = {
                     hybridMode = true,

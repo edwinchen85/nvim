@@ -63,7 +63,12 @@ return {
                 }),
                 ["<CR>"] = cmp.mapping.confirm({ select = true }),
                 ["<Tab>"] = cmp.mapping(function(fallback)
-                    fallback() -- supermaven intercepts for suggestion acceptance
+                    local suggestion = require("supermaven-nvim.completion_preview")
+                    if suggestion.has_suggestion() then
+                        suggestion.on_accept_suggestion()
+                    else
+                        fallback()
+                    end
                 end, { "i", "s" }),
             },
             formatting = {

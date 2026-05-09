@@ -24,6 +24,7 @@ return {
             hijack_cursor = false,
             sync_root_with_cwd = true,
             respect_buf_cwd = true,
+            hijack_directories = { enable = false },
             actions = {
                 open_file = {
                     quit_on_open = false,

@@ -165,6 +165,18 @@ vim.api.nvim_create_autocmd("VimResized", {
     desc = "Auto-resize windows on terminal buffer resize.",
 })
 
+-- diagnostic signs
+vim.diagnostic.config({
+    signs = {
+        text = {
+            [vim.diagnostic.severity.ERROR] = "",
+            [vim.diagnostic.severity.WARN] = "",
+            [vim.diagnostic.severity.INFO] = "",
+            [vim.diagnostic.severity.HINT] = "󰌵",
+        },
+    },
+})
+
 -- toggle diagnostics
 vim.api.nvim_create_user_command("ToggleDiagnostics", function()
     if vim.g.diagnostics_enabled == nil then

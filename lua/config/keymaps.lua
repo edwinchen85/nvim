@@ -21,10 +21,6 @@ u.map({ "n", "x", "o" }, "<Tab>", "%", { remap = true })
 -- Terminal
 u.tmap("<C-o>", "<C-\\><C-n>")
 
--- Useful remaps
-u.nmap("D", "d$")
-u.nmap("Y", "y$")
-
 -- Maximizer
 u.nmap("<C-w>m", ":MaximizerToggle!<cr>")
 

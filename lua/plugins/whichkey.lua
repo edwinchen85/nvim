@@ -111,6 +111,7 @@ return {
         { "<leader><tab>n", "<cmd>set relativenumber!<cr>", desc = "Relative Number" },
         { "<leader><tab>p", "<cmd>Px!<cr>", desc = "Rem to Px" },
         { "<leader><tab>r", "<cmd>Rem!<cr>", desc = "Px to Rem" },
+        { "<leader><tab>t", "<cmd>ToggleTailwindFold<cr>", desc = "Tailwind Fold" },
         { "<leader><tab>v", "<cmd>ToggleVirtualText<cr>", desc = "Virtual Text" },
         { "<leader><tab>w", "<cmd>lua vim.wo.wrap = not vim.wo.wrap<cr>", desc = "Wrap" },
     },

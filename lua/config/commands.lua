@@ -47,6 +47,13 @@ end
 
 u.lua_command("ToggleVirtualText", "global.commands.toggle_virtual_text()")
 
+-- tailwind fold
+commands.toggle_tailwind_fold = function()
+    vim.cmd("TailwindFoldToggle")
+end
+
+u.lua_command("ToggleTailwindFold", "global.commands.toggle_tailwind_fold()")
+
 -- misc
 -- wipe all registers
 commands.wipe_registers = function()

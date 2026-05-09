@@ -1,5 +1,8 @@
 ; extends
 
+; default JSX class/className/style/css/tw attribute folding kept via extends.
+; add cn/twMerge/clsx/cva/tw function calls.
+
 ; cn("class1 class2"), twMerge("..."), clsx("...")
 (call_expression
   function: (identifier) @_fn

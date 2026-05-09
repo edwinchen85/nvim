@@ -1,4 +1,4 @@
-; extends
+; override default — only fold cn/twMerge/clsx/cva/tw function calls.
 
 (call_expression
   function: (identifier) @_fn

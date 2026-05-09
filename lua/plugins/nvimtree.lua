@@ -41,6 +41,7 @@ return {
             update_focused_file = {
                 enable = true,
                 update_root = { enable = false },
+                ignore_list = { "fugitive", "fugitiveblame", "git" },
             },
             filters = {
                 dotfiles = true,

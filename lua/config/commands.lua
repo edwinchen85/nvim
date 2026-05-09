@@ -30,8 +30,45 @@ u.lua_command("ToggleLocList", "global.commands.toggle_loclist()")
 u.lua_command("ToggleQuickFix", "global.commands.toggle_quickfix()")
 
 -- inlay hint
+-- nvim 0.12.2 bug: with multiple LSP clients (vue: vtsls + vue_ls), the decoration
+-- provider's per-line `applied` cache blocks the second client's response from rendering.
+-- Workaround: reach into the inlay_hint module's local `bufstates` table via
+-- debug.getupvalue and clear `applied[]` after each client responds.
+local function get_bufstates()
+    local fn = vim.lsp.inlay_hint.is_enabled
+    for i = 1, math.huge do
+        local name, value = debug.getupvalue(fn, i)
+        if not name then
+            break
+        end
+        if name == "bufstates" then
+            return value
+        end
+    end
+    return nil
+end
+
 commands.toggle_inlay_hint = function()
-    vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
+    local bufnr = vim.api.nvim_get_current_buf()
+    local was_enabled = vim.lsp.inlay_hint.is_enabled({ bufnr = bufnr })
+    vim.lsp.inlay_hint.enable(not was_enabled, { bufnr = bufnr })
+    if not was_enabled then
+        local bufstates = get_bufstates()
+        if not bufstates then
+            return
+        end
+        -- After each response window, clear applied[] and force redraw so newly arrived
+        -- hints from slower clients get rendered.
+        for _, ms in ipairs({ 150, 400, 800 }) do
+            vim.defer_fn(function()
+                local state = rawget(bufstates, bufnr)
+                if state then
+                    state.applied = {}
+                end
+                vim.api.nvim__redraw({ buf = bufnr, valid = false, flush = true })
+            end, ms)
+        end
+    end
 end
 
 u.lua_command("ToggleInlayHint", "global.commands.toggle_inlay_hint()")

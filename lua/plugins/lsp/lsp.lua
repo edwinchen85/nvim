@@ -28,11 +28,25 @@ return {
         -- TS 5.7.2 tsserver has a bug where vue re-exports fail despite tsc working fine
         local ts_ls_tsserver = vim.fn.stdpath("data")
             .. "/mason/packages/typescript-language-server/node_modules/typescript/lib/tsserver.js"
+        local ts_inlay_hints = {
+            includeInlayParameterNameHints = "all",
+            includeInlayParameterNameHintsWhenArgumentMatchesName = false,
+            includeInlayFunctionParameterTypeHints = true,
+            includeInlayVariableTypeHints = true,
+            includeInlayPropertyDeclarationTypeHints = true,
+            includeInlayFunctionLikeReturnTypeHints = true,
+            includeInlayEnumMemberValueHints = true,
+        }
+
         vim.lsp.config("ts_ls", {
             filetypes = { "typescript", "javascript", "javascriptreact", "typescriptreact" },
             cmd = { "typescript-language-server", "--stdio" },
             init_options = {
                 tsserver = { path = ts_ls_tsserver },
+            },
+            settings = {
+                typescript = { inlayHints = ts_inlay_hints },
+                javascript = { inlayHints = ts_inlay_hints },
             },
         })
 
@@ -40,9 +54,20 @@ return {
         -- vue_ls communicates with vtsls via tsserver/request bridge
         local vue_plugin_path = vim.fn.stdpath("data")
             .. "/mason/packages/vue-language-server/node_modules/@vue/typescript-plugin"
+        local vtsls_inlay_hints = {
+            parameterNames = { enabled = "all", suppressWhenArgumentMatchesName = true },
+            parameterTypes = { enabled = true },
+            variableTypes = { enabled = true, suppressWhenTypeMatchesName = true },
+            propertyDeclarationTypes = { enabled = true },
+            functionLikeReturnTypes = { enabled = true },
+            enumMemberValues = { enabled = true },
+        }
+
         vim.lsp.config("vtsls", {
             filetypes = { "vue" },
             settings = {
+                typescript = { inlayHints = vtsls_inlay_hints },
+                javascript = { inlayHints = vtsls_inlay_hints },
                 vtsls = {
                     tsserver = {
                         globalPlugins = {
@@ -157,7 +182,7 @@ return {
                             [vim.fn.stdpath("config") .. "/lua"] = true,
                         },
                     },
-                    hint = { enable = false },
+                    hint = { enable = true },
                     telemetry = { enable = false },
                 },
             },
@@ -211,6 +236,23 @@ return {
                     hybridMode = true,
                 },
             },
+        })
+
+        -- auto-enable inlay hints when server supports them
+        -- Per-buffer flag prevents repeated enable() calls from resetting bufstate
+        -- when multiple clients attach to same buffer (e.g. vue: vtsls + vue_ls).
+        vim.api.nvim_create_autocmd("LspAttach", {
+            callback = function(args)
+                local client = vim.lsp.get_client_by_id(args.data.client_id)
+                if not (client and client:supports_method("textDocument/inlayHint", args.buf)) then
+                    return
+                end
+                if vim.b[args.buf].inlay_hint_enabled then
+                    return
+                end
+                vim.b[args.buf].inlay_hint_enabled = true
+                vim.lsp.inlay_hint.enable(true, { bufnr = args.buf })
+            end,
         })
     end,
 }

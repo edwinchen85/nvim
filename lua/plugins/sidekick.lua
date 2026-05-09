@@ -46,10 +46,6 @@ return {
         nes = { enabled = false },
         cli = {
             win = { layout = "right" },
-            mux = {
-                enabled = true,
-                backend = "tmux",
-            },
             tools = {
                 claude_continue = {
                     cmd = { "claude", "--continue" },

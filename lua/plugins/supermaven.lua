@@ -1,9 +1,10 @@
 return {
     "supermaven-inc/supermaven-nvim",
+    event = "InsertEnter",
     config = function()
         require("supermaven-nvim").setup({
             keymaps = {
-                accept_suggestion = "<Tab>",
+                accept_suggestion = nil, -- handled in cmp Tab chain
                 clear_suggestion = "<C-]>",
                 accept_word = "<C-j>",
             },

@@ -45,7 +45,29 @@ return {
     opts = {
         nes = { enabled = false },
         cli = {
-            win = { layout = "right" },
+            win = {
+                layout = "right",
+                keys = {
+                    full_width = {
+                        "<C-z>",
+                        function(self)
+                            local w = vim.api.nvim_win_get_width(self.win)
+                            local total = vim.o.columns
+                            if w < total - 5 then
+                                vim.b[self.buf]._sk_orig_w = w
+                                vim.api.nvim_win_set_width(self.win, total)
+                            else
+                                vim.api.nvim_win_set_width(
+                                    self.win,
+                                    vim.b[self.buf]._sk_orig_w or math.floor(total / 2)
+                                )
+                            end
+                        end,
+                        mode = { "n", "t" },
+                        desc = "Toggle full width",
+                    },
+                },
+            },
             tools = {
                 claude_continue = {
                     cmd = { "claude", "--continue" },

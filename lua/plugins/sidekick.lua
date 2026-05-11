@@ -1,6 +1,45 @@
 -- workaround for upstream bug: cli.send hardcodes `msg .. "\n"`, and tmux's
 -- paste-buffer -r passes the LF raw to claude which renders it as a stray `j`.
 -- send the message without trailing newline; rely on submit=true for actual Enter.
+-- Find the sidekick CLI window in current tabpage (marked via vim.w[win].sidekick_cli).
+local function find_sidekick_win()
+    for _, win in ipairs(vim.api.nvim_tabpage_list_wins(0)) do
+        if vim.api.nvim_win_is_valid(win) and vim.w[win].sidekick_cli ~= nil then
+            return win
+        end
+    end
+    return nil
+end
+
+-- Toggle sidekick window between zoomed (full width) and original width.
+-- Works regardless of which window currently holds focus.
+local function toggle_sidekick_width()
+    local win = find_sidekick_win()
+    if not win then
+        return false
+    end
+    if vim.w[win]._sk_zoomed then
+        local orig = vim.w[win]._sk_orig_w or math.floor(vim.o.columns / 2)
+        pcall(vim.api.nvim_win_set_width, win, orig)
+        vim.w[win]._sk_zoomed = false
+        vim.w[win]._sk_orig_w = nil
+    else
+        vim.w[win]._sk_orig_w = vim.api.nvim_win_get_width(win)
+        pcall(vim.api.nvim_win_set_width, win, vim.o.columns)
+        vim.w[win]._sk_zoomed = true
+    end
+    vim.cmd("redraw")
+    return true
+end
+
+vim.keymap.set({ "n", "t", "i" }, "<C-z>", function()
+    if not toggle_sidekick_width() then
+        -- No sidekick window: fall back to vim default (suspend).
+        vim.cmd("stopinsert")
+        vim.cmd("suspend")
+    end
+end, { desc = "Toggle sidekick full width (fallback: suspend)" })
+
 local function send_no_newline(opts)
     opts = type(opts) == "string" and { msg = opts } or opts
     opts.submit = opts.submit ~= false
@@ -48,24 +87,9 @@ return {
             win = {
                 layout = "right",
                 keys = {
-                    full_width = {
-                        "<C-z>",
-                        function(self)
-                            local w = vim.api.nvim_win_get_width(self.win)
-                            local total = vim.o.columns
-                            if w < total - 5 then
-                                vim.b[self.buf]._sk_orig_w = w
-                                vim.api.nvim_win_set_width(self.win, total)
-                            else
-                                vim.api.nvim_win_set_width(
-                                    self.win,
-                                    vim.b[self.buf]._sk_orig_w or math.floor(total / 2)
-                                )
-                            end
-                        end,
-                        mode = { "n", "t" },
-                        desc = "Toggle full width",
-                    },
+                    -- disable sidekick default: <C-z> -> blur (jumps to previous window),
+                    -- which shadows our global <C-z> zoom toggle in the terminal buffer.
+                    hide_ctrl_z = false,
                 },
             },
             tools = {

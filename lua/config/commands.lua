@@ -104,6 +104,13 @@ u.lua_command("WipeReg", "global.commands.wipe_registers()")
 -- start vim with clean registers
 u.augroup("WipeRegisters", "VimEnter", "WipeReg")
 
+-- spell check
+commands.toggle_spell = function()
+    vim.wo.spell = not vim.wo.spell
+end
+
+u.lua_command("ToggleSpell", "global.commands.toggle_spell()")
+
 -- get help for word under cursor
 u.command("Help", 'execute ":help" expand("<cword>")')
 

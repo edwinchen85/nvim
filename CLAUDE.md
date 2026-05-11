@@ -4,74 +4,93 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Overview
 
-This is a personal Neovim configuration written in Lua, using **lazy.nvim** as the plugin manager. It targets modern web development (TypeScript, Vue, React) with extensive LSP support, Git integration, and AI assistance.
+Personal Neovim configuration written in Lua, using **lazy.nvim** as the plugin manager. Targets modern web development (TypeScript, Vue, React) with extensive LSP support, Git integration, and AI assistance.
 
 ## Code Style
 
-Lua formatting is governed by `stylua.toml`:
+Lua formatting governed by `stylua.toml`:
 
 - Column width: 120
 - Indentation: 4 spaces
 - Line endings: Unix
 - Quote style: auto
 
+Formatting on save is wired up via **conform.nvim** (`lua/plugins/formatting.lua`) with `lsp_format = "fallback"` — conform runs the configured formatter (prettier, stylua, etc.) and falls back to LSP formatting if none is mapped for the filetype.
+
 ## Architecture
 
 ### Entry Point & Loading Order
 
-`init.lua` is the entry point. It requires modules in this order:
+`init.lua` requires modules in this order:
 
-1. `lua/config/options.lua` — editor options (vim.opt settings)
-2. `lua/config/utils.lua` — shared utility functions used by other modules
-3. `lua/core/lazy.lua` — bootstraps lazy.nvim, imports `plugins` and `plugins.lsp`
-4. `lua/config/keymaps.lua` — keybindings
-5. `lua/config/commands.lua` — custom `:` commands
-6. `lua/config/settings.lua` — autocmds and filetype behaviors
+1. `lua/config/options.lua` — editor options (`vim.opt`, `vim.g.loaded_*` disables)
+2. `lua/core/lazy.lua` — bootstraps lazy.nvim, imports `plugins` and `plugins.lsp`
+3. `lua/core/lsp.lua` — global `LspAttach` autocmd (keymaps), diagnostic config, notify filter
+4. `lua/config/commands.lua` — custom `:` commands
+5. `lua/config/keymaps.lua` — global keybindings
+6. `lua/config/settings.lua` — autocmds, filetype behaviors, extra commands
+7. `pcall(require, "config.theme")` — optional theme module kept in a separate repo
+
+`lua/config/utils.lua` is **not** required directly from `init.lua`; it is loaded transitively by `commands.lua`/`keymaps.lua`/etc. It exposes `map()`, `buf_map()`, `command()`, `lua_command()`, and other helpers — read it before adding new keymaps or commands.
 
 ### Plugin Structure
 
-All plugin specs live in `lua/plugins/`. Each file exports a table (or list of tables) consumed by lazy.nvim. LSP-specific plugin specs are in `lua/plugins/lsp/` and imported separately via the `plugins.lsp` import in lazy setup.
+All plugin specs live in `lua/plugins/`. Each file returns a lazy.nvim spec table (or list of tables). LSP-related specs live in `lua/plugins/lsp/` and are imported as a second import group (`{ import = "plugins.lsp" }`) by `lua/core/lazy.lua`.
 
 ### LSP Configuration
 
-- `lua/lsp/init.lua` — shared `on_attach`, capabilities, and diagnostic config
-- `lua/lsp/<server>.lua` — per-server setup called from plugin specs in `lua/plugins/lsp/`
-- LSP servers: bashls, cssls, emmetls, eslint, jsonls, null-ls, pyright, lua_ls, tailwindcss, ts_ls, vuels
-- Auto-format on save is enabled per-client in `on_attach`
-- Virtual text is disabled by default (toggle via `:ToggleVirtualText`)
+LSP is configured with the modern `vim.lsp.config(name, ...)` / mason-lspconfig flow — there is **no** `lua/lsp/` directory.
 
-### Core LSP Keybindings (set in on_attach)
+- `lua/core/lsp.lua` — `LspAttach` keymaps, diagnostic signs/float, notify filter that suppresses noisy lspconfig warnings, per-buffer auto-enable of inlay hints
+- `lua/plugins/lsp/lsp.lua` — `vim.lsp.config(...)` blocks per server: `ts_ls`, `vtsls`, `vue_ls`, `jsonls`, `emmet_language_server`, `eslint`, `cssls`, `lua_ls`, `tailwindcss`
+- `lua/plugins/lsp/mason.lua` — `mason-lspconfig` `ensure_installed` list (adds `html`, `svelte`, `graphql`, `prismals`, `pyright`, `gopls`) and `mason-tool-installer` for `prettier` + `stylua`
 
-`gr`=references, `gd`=definition, `gD`=declaration, `gi`=implementation, `gt`=type definition, `ga`=code actions, `gR`=rename, `gl`=line diagnostics, `K`=hover, `<leader>rs`=restart LSP
+Vue/TS split (important context, see comments in `lsp.lua`):
+
+- `ts_ls` handles `.ts`/`.js`/`.tsx`/`.jsx` only and is pinned to its bundled tsserver (workaround for a TS 5.7.2 bug with vue re-exports).
+- `vtsls` handles `.vue` files and loads `@vue/typescript-plugin` from mason's `vue-language-server` package; `vue_ls` bridges to vtsls via the tsserver request channel.
+
+Diagnostic virtual text is off by default — toggle via `:ToggleVirtualText`. Inlay hints auto-enable per buffer when the attached client supports them.
+
+### Core LSP Keybindings (set on `LspAttach`)
+
+`gr`=references, `gd`=definition, `gD`=declaration, `gi`=implementation, `gt`=type definition, `ga`=code actions, `gR`=rename, `gl`=line diagnostics, `K`=hover, `[d`/`]d`=prev/next diagnostic, `<leader>rs`=`:LspRestart`
 
 ### AI Plugins
 
-- **avante.nvim** — AI chat sidebar, enabled, uses OpenAI (`gpt-4o-mini`)
-- **GitHub Copilot** — installed in `pack/github/start/copilot.vim/` (manual git clone, not via lazy)
-- **supermaven-nvim** — disabled via `condition = function() return false end`
-- **codeium.nvim** — disabled (empty spec)
+- **sidekick.nvim** (`lua/plugins/sidekick.lua`) — primary AI sidebar / CLI integration (Folke)
+- **supermaven-nvim** (`lua/plugins/supermaven.lua`) — installed but `condition = function() return false end` keeps inline completion disabled; cmp source still references it
+- **GitHub Copilot** — installed manually in `pack/github/start/copilot.vim/`, not via lazy
 
-### Notable Utilities (`lua/config/utils.lua`)
-
-Provides `map()`, `buf_map()`, `command()`, and other helpers used throughout config files. Read this before adding keymaps or commands.
+(`avante.nvim` and `codeium.nvim` have been removed.)
 
 ## Key Custom Commands
 
-| Command              | Purpose                                    |
-| -------------------- | ------------------------------------------ |
-| `:LspFormatting`     | Format buffer via LSP                      |
-| `:LspRestart`        | Restart LSP server                         |
-| `:ToggleVirtualText` | Toggle LSP virtual text                    |
-| `:ToggleDiagnostics` | Toggle diagnostics                         |
-| `:ToggleInlayHint`   | Toggle inlay hints                         |
-| `:R`                 | Reload file + reset treesitter/diagnostics |
-| `:S`                 | Syntax sync clear                          |
-| `:RotateWindows`     | Rotate window layout                       |
+Defined across `lua/config/commands.lua` and `lua/config/settings.lua`.
 
-## File Conventions
+| Command              | Purpose                              |
+| -------------------- | ------------------------------------ |
+| `:LspRestart`        | Restart LSP server (buffer-scoped)   |
+| `:ToggleVirtualText` | Toggle LSP diagnostic virtual text   |
+| `:ToggleDiagnostics` | Toggle diagnostics on/off            |
+| `:ToggleInlayHint`   | Toggle inlay hints                   |
+| `:ToggleTailwindFold`| Toggle Tailwind class folding        |
+| `:ToggleLocList`     | Toggle location list                 |
+| `:ToggleQuickFix`    | Toggle quickfix list                 |
+| `:WipeReg`           | Wipe all registers                   |
+| `:Help`              | `:help` for word under cursor        |
+| `:R`                 | `w | :e` — save + reload buffer      |
+| `:S`                 | `syntax sync clear`                  |
+| `:RotateWindows`     | Rotate window layout                 |
 
-- Plugin files in `lua/plugins/` should return a lazy.nvim spec table
-- LSP server files in `lua/lsp/` should expose a `setup()` function called from the corresponding plugin spec
-- `after/` directory contains post-init scripts (filetype overrides, etc.)
-- `ftplugin/` contains filetype-specific settings loaded automatically by Neovim
-- `snippets/` contains custom LuaSnip snippet files
+## Directory Conventions
+
+- `lua/plugins/*.lua` — each returns a lazy.nvim spec table
+- `lua/plugins/lsp/` — LSP plugin specs (imported as separate group)
+- `after/` — `after/ftplugin/`, `after/queries/`, `after/syntax/`, plus root-level overrides loaded after their counterparts
+- `ftplugin/` — filetype-specific buffer settings loaded automatically by Neovim
+- `plugin/ft.lua` — early filetype detection overrides
+- `queries/` — custom treesitter queries
+- `snippets/` — custom LuaSnip snippet files
+- `spell/` — spellfile additions
+- `pack/` — manual (non-lazy) packages (e.g. Copilot)

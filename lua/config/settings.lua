@@ -324,7 +324,7 @@ vim.api.nvim_create_autocmd("User", {
     pattern = "FugitiveIndex",
     callback = function(ev)
         local buf = ev.buf
-        vim.defer_fn(function()
+        local function detach()
             if not vim.api.nvim_buf_is_valid(buf) then
                 return
             end
@@ -332,10 +332,22 @@ vim.api.nvim_create_autocmd("User", {
             if ok then
                 wk_buf.clear({ buf = buf })
             end
-            for _, mode in ipairs({ "n", "v", "x", "o" }) do
-                pcall(vim.keymap.del, mode, "g", { buffer = buf })
+            -- Belt-and-braces: scan buffer-local keymaps in every relevant mode and
+            -- delete anything tagged as a which-key trigger. Covers all triggers
+            -- (`<leader>`, `g`, `z`, `<C-w>`, `"`, `'`, `` ` ``, `<C-r>`, ...).
+            for _, mode in ipairs({ "n", "v", "x", "o", "i", "c", "t" }) do
+                for _, km in ipairs(vim.api.nvim_buf_get_keymap(buf, mode)) do
+                    if km.desc and km.desc:find("which-key-trigger", 1, true) then
+                        pcall(vim.keymap.del, mode, km.lhs, { buffer = buf })
+                    end
+                end
             end
-        end, 50)
+        end
+        -- Run synchronously (covers triggers already installed), then again on
+        -- next ticks to catch whichkey's deferred re-install scheduler.
+        detach()
+        vim.schedule(detach)
+        vim.defer_fn(detach, 50)
     end,
 })
 

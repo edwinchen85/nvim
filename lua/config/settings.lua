@@ -237,6 +237,38 @@ vim.api.nvim_create_autocmd("BufWritePre", {
     end,
 })
 
+-- Warn on deletion conflicts (DU/UD/DD) in fugitive status buffer.
+-- Modern fugitive only renders the single-char status (e.g. `U file.txt`),
+-- so the two-letter porcelain XY codes are unavailable in the buffer.
+-- Read `git status --porcelain` directly to detect deletion conflicts.
+local function warn_fugitive_deletion_conflicts()
+    vim.system(
+        { "git", "status", "--porcelain" },
+        { text = true },
+        vim.schedule_wrap(function(result)
+            if result.code ~= 0 or not result.stdout or result.stdout == "" then
+                return
+            end
+            for line in result.stdout:gmatch("[^\r\n]+") do
+                local xy = line:sub(1, 2)
+                if xy == "DU" or xy == "UD" or xy == "DD" then
+                    vim.notify(
+                        "⚠️  Deletion conflict detected: " .. line .. "\nUse :Git rm instead of staging",
+                        vim.log.levels.WARN,
+                        { timeout = 5000 }
+                    )
+                end
+            end
+        end)
+    )
+end
+
+vim.api.nvim_create_autocmd("User", {
+    group = vim.api.nvim_create_augroup("FugitiveDeletionConflict", { clear = true }),
+    pattern = { "FugitiveIndex", "FugitiveChanged" },
+    callback = warn_fugitive_deletion_conflicts,
+})
+
 -- auto capitalize in markdown file
 -- vim.api.nvim_create_autocmd("InsertCharPre", {
 --     pattern = "*.md",

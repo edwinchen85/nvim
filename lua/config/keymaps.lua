@@ -150,6 +150,9 @@ end
 u.xmap("g+", "g<C-a>", { remap = true })
 u.xmap("g-", "g<C-x>", { remap = true })
 
+-- Notification history (Snacks notifier)
+u.nmap("<leader>nh", "<cmd>lua Snacks.notifier.show_history()<cr>")
+
 -- Open current file in Finder
 local function open_in_file_manager()
     local file_path = vim.fn.expand("%:p")

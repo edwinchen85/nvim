@@ -104,6 +104,14 @@ return {
         { "<leader>W", "<cmd>noa w<cr>", desc = "Save (No Format)" },
         { "<leader><leader>", "<C-^>", desc = "Previous Buffer" },
         { "<leader>a", group = "AI", desc = "AI Agent" },
+        { "<leader>n", group = "Notification" },
+        {
+            "<leader>nh",
+            function()
+                Snacks.notifier.show_history()
+            end,
+            desc = "Notification History",
+        },
         { "<leader><tab>", group = "Tab", desc = "Tab" },
         { "<leader><tab>c", "<cmd>set cursorline!<cr>", desc = "Cursor Line" },
         { "<leader><tab>d", "<cmd>ToggleDiagnostics<cr>", desc = "Diagnostics" },

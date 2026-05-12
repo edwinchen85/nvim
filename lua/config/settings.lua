@@ -310,6 +310,35 @@ vim.api.nvim_create_autocmd("User", {
     end,
 })
 
+-- Detach which-key triggers from fugitive status buffer.
+-- which-key's BufEnter runs before fugitive sets `filetype=fugitive`, so its
+-- `disable.ft = { "fugitive" }` check misses and a `g` trigger gets installed,
+-- shadowing fugitive's buffer-local `g?`, `gO`, `gq`, etc. The trigger install
+-- itself is queued via `M.timer:start(0, 0, vim.schedule_wrap(...))` from
+-- BufEnter, so a synchronous clear inside `User FugitiveIndex` runs BEFORE the
+-- trigger keymap exists — and gets undone when the timer fires.
+-- Defer the clear past the next event-loop tick so it runs AFTER the install,
+-- then nuke any matching buffer-local `g` triggers directly to be safe.
+vim.api.nvim_create_autocmd("User", {
+    group = vim.api.nvim_create_augroup("FugitiveWhichKeyDetach", { clear = true }),
+    pattern = "FugitiveIndex",
+    callback = function(ev)
+        local buf = ev.buf
+        vim.defer_fn(function()
+            if not vim.api.nvim_buf_is_valid(buf) then
+                return
+            end
+            local ok, wk_buf = pcall(require, "which-key.buf")
+            if ok then
+                wk_buf.clear({ buf = buf })
+            end
+            for _, mode in ipairs({ "n", "v", "x", "o" }) do
+                pcall(vim.keymap.del, mode, "g", { buffer = buf })
+            end
+        end, 50)
+    end,
+})
+
 -- auto capitalize in markdown file
 -- vim.api.nvim_create_autocmd("InsertCharPre", {
 --     pattern = "*.md",

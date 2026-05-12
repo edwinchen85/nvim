@@ -31,10 +31,7 @@ u.nmap("J", "mzJ`z")
 u.xmap("<", "<gv")
 u.xmap(">", ">gv")
 
--- Better window navigation
-for _, d in ipairs({ "h", "j", "k", "l" }) do
-    u.nmap("<C-" .. d .. ">", "<C-w>" .. d)
-end
+-- Window navigation: <C-hjkl> bound by smart-splits plugin (nvim + tmux fallthrough)
 
 -- Page up down and center
 for _, d in ipairs({ "f", "b", "u", "d" }) do

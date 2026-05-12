@@ -263,10 +263,51 @@ local function warn_fugitive_deletion_conflicts()
     )
 end
 
+-- Warn on binary file conflicts (UU/AA/AU/UA with no text merge markers).
+-- Heuristic: any unmerged path whose working-tree content has a NUL byte AND
+-- no `<<<<<<<` conflict marker is treated as a binary conflict — git can't
+-- text-merge it, so user must `:Git checkout --ours/--theirs <path>`.
+local function warn_fugitive_binary_conflicts()
+    vim.system(
+        { "git", "status", "--porcelain" },
+        { text = true },
+        vim.schedule_wrap(function(result)
+            if result.code ~= 0 or not result.stdout or result.stdout == "" then
+                return
+            end
+            for line in result.stdout:gmatch("[^\r\n]+") do
+                local xy = line:sub(1, 2)
+                if xy == "UU" or xy == "AA" or xy == "AU" or xy == "UA" then
+                    local path = line:sub(4):gsub('^"(.*)"$', "%1")
+                    local f = io.open(path, "rb")
+                    if f then
+                        local chunk = f:read(8192) or ""
+                        f:close()
+                        local has_marker = chunk:find("<<<<<<<", 1, true)
+                        local has_nul = chunk:find("\0", 1, true)
+                        if has_nul and not has_marker then
+                            vim.notify(
+                                "⚠️  Binary file conflict: "
+                                    .. path
+                                    .. "\nResolve via :Git checkout --ours/--theirs <path>",
+                                vim.log.levels.WARN,
+                                { timeout = 5000 }
+                            )
+                        end
+                    end
+                end
+            end
+        end)
+    )
+end
+
 vim.api.nvim_create_autocmd("User", {
     group = vim.api.nvim_create_augroup("FugitiveDeletionConflict", { clear = true }),
     pattern = { "FugitiveIndex", "FugitiveChanged" },
-    callback = warn_fugitive_deletion_conflicts,
+    callback = function()
+        warn_fugitive_deletion_conflicts()
+        warn_fugitive_binary_conflicts()
+    end,
 })
 
 -- auto capitalize in markdown file

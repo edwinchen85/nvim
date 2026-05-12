@@ -64,3 +64,10 @@ Resolve git conflict of deleted files
 :Git rm path/to/your/deleted/file
 :Git add path/to/your/deleted/file
 ```
+
+Open file from git blob
+
+```
+gf path/to/your/file
+:Gedit
+```

@@ -1,10 +1,24 @@
 return {
     "stevearc/conform.nvim",
     event = { "BufReadPre", "BufNewFile" },
+    dependencies = { "tpope/vim-sleuth" },
     config = function()
         local conform = require("conform")
 
         conform.setup({
+            formatters = {
+                prettier = {
+                    prepend_args = function(_, ctx)
+                        local sw = vim.bo[ctx.buf].shiftwidth
+                        local et = vim.bo[ctx.buf].expandtab
+                        local args = { "--tab-width=" .. sw }
+                        if not et then
+                            table.insert(args, "--use-tabs")
+                        end
+                        return args
+                    end,
+                },
+            },
             formatters_by_ft = {
                 javascript = { "prettier" },
                 typescript = { "prettier" },

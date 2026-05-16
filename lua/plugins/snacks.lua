@@ -11,7 +11,7 @@ return {
         dashboard = { enabled = false },
         explorer = { enabled = false },
         image = {
-            enabled = false,
+            enabled = true,
             force = true, -- try displaying the image, even if the terminal does not support it
             doc = {
                 -- Personally I set this to false, I don't want to render all the

@@ -1,6 +1,15 @@
 return {
     "nvim-tree/nvim-tree.lua",
     cmd = { "NvimTreeToggle", "NvimTreeOpen", "NvimTreeFocus", "NvimTreeClose" },
+    dependencies = {
+        {
+            "b0o/nvim-tree-preview.lua",
+            opts = {
+                -- auto-detect snacks.image → image.nvim → nil
+                image_backend = "snacks",
+            },
+        },
+    },
     config = function()
         local function on_attach(bufnr)
             local api = require("nvim-tree.api")

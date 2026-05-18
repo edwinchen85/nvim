@@ -310,6 +310,9 @@ vim.api.nvim_create_autocmd("User", {
     end,
 })
 
+-- GitHub-style word-level diff highlights in fugitive status / git diff buffers.
+require("config.fugitive_word_diff").attach()
+
 -- Detach which-key triggers from fugitive status buffer.
 -- which-key's BufEnter runs before fugitive sets `filetype=fugitive`, so its
 -- `disable.ft = { "fugitive" }` check misses and a `g` trigger gets installed,

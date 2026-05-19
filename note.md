@@ -54,7 +54,7 @@ Minify json code
 Resolve git conflict of binary files such as png
 
 ```
-:Git checkout --theirs path/to/your/image.png
+:Git checkout --theirs -- path/to/your/image.png
 :Git add path/to/your/image.png
 ```
 

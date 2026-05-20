@@ -175,3 +175,18 @@ vim.keymap.set("c", "\\>s/", "\\>smagic/", { silent = true })
 -- nvim 0.12 defaults.lua overwrites [n/]n in xmode with treesitter node select
 u.xmap("[n", "<Plug>(unimpaired-context-previous)", { remap = true })
 u.xmap("]n", "<Plug>(unimpaired-context-next)", { remap = true })
+
+-- Merge conflict resolution keybindings
+require("which-key").add({ { "<leader>x", group = "Conflict" } })
+
+vim.keymap.set("n", "<leader>xo", function()
+    vim.cmd("%s/^<<<<<<<.*\\n\\(\\_.\\{-}\\)=======.*\\n\\_.\\{-}>>>>>>>.*\\n/\\1/e")
+end, { desc = "Accept ours (current branch)" })
+
+vim.keymap.set("n", "<leader>xt", function()
+    vim.cmd("%s/^<<<<<<<.*\\n\\_.\\{-}=======.*\\n\\(\\_.\\{-}\\)>>>>>>>.*\\n/\\1/e")
+end, { desc = "Accept theirs (incoming branch)" })
+
+vim.keymap.set("n", "<leader>xb", function()
+    vim.cmd("%s/^<<<<<<<.*\\n\\(\\_.\\{-}\\)=======.*\\n\\(\\_.\\{-}\\)>>>>>>>.*\\n/\\1\\2/e")
+end, { desc = "Accept both" })

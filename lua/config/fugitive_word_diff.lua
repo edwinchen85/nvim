@@ -126,7 +126,7 @@ local function set_default_hl()
     -- Tokyonight night palette: rose #f7768e, green #9ece6a; line bg ~#37222c/#20303b.
     -- Pick mid-saturation bg clearly brighter than fugitive's line bg, no fg override
     -- so original syntax colors stay readable.
-    vim.api.nvim_set_hl(0, "FugitiveWordDelete", { bg = "#523040", default = true })
+    vim.api.nvim_set_hl(0, "FugitiveWordDelete", { bg = "#6b1e1e", default = true })
     vim.api.nvim_set_hl(0, "FugitiveWordAdd", { bg = "#2a4f37", default = true })
 end
 

@@ -70,10 +70,34 @@ return {
                 end,
                 desc = "Undo Last Stage Hunk",
             },
-            { "<leader>go", "<cmd>Telescope git_status<cr>", desc = "Open Changed File" },
-            { "<leader>gb", "<cmd>Telescope git_branches<cr>", desc = "Checkout Branch" },
-            { "<leader>gc", "<cmd>Telescope git_commits<cr>", desc = "Checkout Commit" },
-            { "<leader>gC", "<cmd>Telescope git_bcommits<cr>", desc = "Checkout Commit(For Current File)" },
+            {
+                "<leader>go",
+                function()
+                    Snacks.picker.git_status()
+                end,
+                desc = "Open Changed File",
+            },
+            {
+                "<leader>gb",
+                function()
+                    Snacks.picker.git_branches()
+                end,
+                desc = "Checkout Branch",
+            },
+            {
+                "<leader>gc",
+                function()
+                    Snacks.picker.git_log()
+                end,
+                desc = "Checkout Commit",
+            },
+            {
+                "<leader>gC",
+                function()
+                    Snacks.picker.git_log_file()
+                end,
+                desc = "Checkout Commit(For Current File)",
+            },
             { "<leader>gd", "<cmd>:Gdiff!<cr>", desc = "Git Diff" },
             { "<leader>gD", "<cmd>Gtabedit @:% | Gdiff :<cr>", desc = "Git Diff Staged" },
             { "<leader>gh", "<cmd>diffget //2<cr>", desc = "Diffget Target Branch" },

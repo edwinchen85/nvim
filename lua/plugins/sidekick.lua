@@ -90,6 +90,9 @@ return {
                     -- disable sidekick default: <C-z> -> blur (jumps to previous window),
                     -- which shadows our global <C-z> zoom toggle in the terminal buffer.
                     hide_ctrl_z = false,
+                    -- disable sidekick default <C-b> -> buffer picker; conflicts with
+                    -- claude-code's <C-b> shortcut inside the CLI session.
+                    buffers = false,
                 },
             },
             tools = {

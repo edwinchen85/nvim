@@ -133,8 +133,6 @@ return {
                 {
                     name = "buffer",
                     keyword_length = 1,
-                    -- strip leading vim regex flags (\v \V \m \M \c \C) from keyword
-                    option = { keyword_pattern = [[\(\\[vVmMcC]\)*\zs\k\+]] },
                 },
             },
             completion = { completeopt = "menu,menuone,noinsert,noselect" },

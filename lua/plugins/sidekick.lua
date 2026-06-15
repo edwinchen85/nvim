@@ -96,12 +96,16 @@ return {
                 },
             },
             tools = {
+                claude = {
+                    cmd = { "headroom", "wrap", "claude" },
+                    is_proc = "\\<claude\\>",
+                },
                 claude_continue = {
-                    cmd = { "claude", "--continue" },
+                    cmd = { "headroom", "wrap", "claude", "--continue" },
                     is_proc = "\\<claude\\>",
                 },
                 claude_resume = {
-                    cmd = { "claude", "--resume" },
+                    cmd = { "headroom", "wrap", "claude", "--resume" },
                     is_proc = "\\<claude\\>",
                 },
             },

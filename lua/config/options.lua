@@ -2,6 +2,10 @@ vim.keymap.set("n", "<space>", "", { noremap = true, silent = true })
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 
+-- CURL_CA_BUNDLE points to a missing Zscaler cert; redirect to system bundle
+-- so all plugin subprocesses (mason, kulala, treesitter) use a valid CA path
+vim.env.CURL_CA_BUNDLE = "/etc/ssl/cert.pem"
+
 -- Disable builtin plugins that bog down speed (including netrw)
 for _, p in ipairs({
     "matchparen",

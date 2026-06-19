@@ -98,7 +98,7 @@ return {
         },
         { "<leader>e", "<cmd>NvimTreeToggle<cr>", desc = "Explorer" },
         { "<leader>q", "<cmd>ToggleQuickFix<cr>", desc = "Toggle Quickfix" },
-        { "<leader>R", "<cmd>RotateWindows<cr>", desc = "Rotate Windows" },
+        { "<leader>rw", "<cmd>RotateWindows<cr>", desc = "Rotate Windows" },
         { "<leader>v", "<cmd>vsp #<cr>", desc = "Vsplit Last" },
         { "<leader>w", "<cmd>w<cr>", desc = "Save" },
         { "<leader>W", "<cmd>noa w<cr>", desc = "Save (No Format)" },

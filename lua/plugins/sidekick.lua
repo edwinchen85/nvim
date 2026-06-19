@@ -97,15 +97,15 @@ return {
             },
             tools = {
                 claude = {
-                    cmd = { "headroom", "wrap", "claude" },
+                    cmd = { "env", "ANTHROPIC_BASE_URL=http://127.0.0.1:8787", "claude" },
                     is_proc = "\\<claude\\>",
                 },
                 claude_continue = {
-                    cmd = { "headroom", "wrap", "claude", "--continue" },
+                    cmd = { "env", "ANTHROPIC_BASE_URL=http://127.0.0.1:8787", "claude", "--continue" },
                     is_proc = "\\<claude\\>",
                 },
                 claude_resume = {
-                    cmd = { "headroom", "wrap", "claude", "--resume" },
+                    cmd = { "env", "ANTHROPIC_BASE_URL=http://127.0.0.1:8787", "claude", "--resume" },
                     is_proc = "\\<claude\\>",
                 },
             },

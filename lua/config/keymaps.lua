@@ -172,12 +172,15 @@ require("which-key").add({ { "<leader>x", group = "Conflict" } })
 
 vim.keymap.set("n", "<leader>xo", function()
     vim.cmd("%s/^<<<<<<<.*\\n\\(\\_.\\{-}\\)=======.*\\n\\_.\\{-}>>>>>>>.*\\n/\\1/e")
+    vim.cmd("nohlsearch")
 end, { desc = "Accept ours (current branch)" })
 
 vim.keymap.set("n", "<leader>xt", function()
     vim.cmd("%s/^<<<<<<<.*\\n\\_.\\{-}=======.*\\n\\(\\_.\\{-}\\)>>>>>>>.*\\n/\\1/e")
+    vim.cmd("nohlsearch")
 end, { desc = "Accept theirs (incoming branch)" })
 
 vim.keymap.set("n", "<leader>xb", function()
     vim.cmd("%s/^<<<<<<<.*\\n\\(\\_.\\{-}\\)=======.*\\n\\(\\_.\\{-}\\)>>>>>>>.*\\n/\\1\\2/e")
+    vim.cmd("nohlsearch")
 end, { desc = "Accept both" })

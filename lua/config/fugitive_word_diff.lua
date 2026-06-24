@@ -87,35 +87,40 @@ function M.highlight_buf(buf)
 
     local i = 1
     while i <= #lines do
-        local cur = lines[i]
-        local nxt = lines[i + 1]
-        if is_hunk_minus(cur) and is_hunk_plus(nxt) then
-            -- collect consecutive `-` lines then consecutive `+` lines (same hunk block)
+        -- Start of a `-` run: collect the whole run, then require a `+` run right after.
+        -- (Anchoring on the run start, not on a `-` immediately followed by `+`, is what
+        -- makes multi-line blocks pair line-by-line instead of collapsing the last `-`
+        -- line against the first `+` line.)
+        if is_hunk_minus(lines[i]) then
             local minus_start = i
             local minus_end = i
             while is_hunk_minus(lines[minus_end + 1]) do
                 minus_end = minus_end + 1
             end
-            local plus_start = minus_end + 1
-            local plus_end = plus_start
-            while is_hunk_plus(lines[plus_end + 1]) do
-                plus_end = plus_end + 1
-            end
+            if is_hunk_plus(lines[minus_end + 1]) then
+                local plus_start = minus_end + 1
+                local plus_end = plus_start
+                while is_hunk_plus(lines[plus_end + 1]) do
+                    plus_end = plus_end + 1
+                end
 
-            -- pair line-by-line when counts match; else only diff first pair (cheap heuristic)
-            local m_count = minus_end - minus_start + 1
-            local p_count = plus_end - plus_start + 1
-            local pair_count = math.min(m_count, p_count)
-            for k = 0, pair_count - 1 do
-                local rem = lines[minus_start + k]:sub(2)
-                local add = lines[plus_start + k]:sub(2)
-                local rem_toks = tokenize(rem)
-                local add_toks = tokenize(add)
-                local rem_changed, add_changed = diff_tokens(rem_toks, add_toks)
-                paint_ranges(buf, minus_start + k - 1, rem_toks, rem_changed, "FugitiveWordDelete")
-                paint_ranges(buf, plus_start + k - 1, add_toks, add_changed, "FugitiveWordAdd")
+                -- pair line-by-line up to the shorter run (cheap heuristic)
+                local m_count = minus_end - minus_start + 1
+                local p_count = plus_end - plus_start + 1
+                local pair_count = math.min(m_count, p_count)
+                for k = 0, pair_count - 1 do
+                    local rem = lines[minus_start + k]:sub(2)
+                    local add = lines[plus_start + k]:sub(2)
+                    local rem_toks = tokenize(rem)
+                    local add_toks = tokenize(add)
+                    local rem_changed, add_changed = diff_tokens(rem_toks, add_toks)
+                    paint_ranges(buf, minus_start + k - 1, rem_toks, rem_changed, "FugitiveWordDelete")
+                    paint_ranges(buf, plus_start + k - 1, add_toks, add_changed, "FugitiveWordAdd")
+                end
+                i = plus_end + 1
+            else
+                i = minus_end + 1
             end
-            i = plus_end + 1
         else
             i = i + 1
         end

@@ -2,6 +2,12 @@ vim.keymap.set("n", "<space>", "", { noremap = true, silent = true })
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 
+-- Run :Git commands over a pipe instead of a pty. The pty makes hook tools
+-- (husky -> yarn/lint-staged/next) detect a TTY and emit cursor/color escapes
+-- (^[[2K^[[1G^[[1m...) that fugitive's output buffer shows raw instead of
+-- rendering. Pipe mode = clean hook output; trade-off is no push/fetch progress bars.
+vim.g.fugitive_pty_debug_override = 0
+
 -- CURL_CA_BUNDLE points to a missing Zscaler cert; redirect to system bundle
 -- so all plugin subprocesses (mason, kulala, treesitter) use a valid CA path
 vim.env.CURL_CA_BUNDLE = "/etc/ssl/cert.pem"

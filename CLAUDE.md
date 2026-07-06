@@ -60,9 +60,8 @@ Diagnostic virtual text is off by default — toggle via `:ToggleVirtualText`. I
 
 - **sidekick.nvim** (`lua/plugins/sidekick.lua`) — primary AI sidebar / CLI integration (Folke)
 - **supermaven-nvim** (`lua/plugins/supermaven.lua`) — installed but `condition = function() return false end` keeps inline completion disabled; cmp source still references it
-- **GitHub Copilot** — installed manually in `pack/github/start/copilot.vim/`, not via lazy
 
-(`avante.nvim` and `codeium.nvim` have been removed.)
+(`avante.nvim`, `codeium.nvim`, and GitHub Copilot have been removed.)
 
 ## Key Custom Commands
 
@@ -93,4 +92,3 @@ Defined across `lua/config/commands.lua` and `lua/config/settings.lua`.
 - `queries/` — custom treesitter queries
 - `snippets/` — custom LuaSnip snippet files
 - `spell/` — spellfile additions
-- `pack/` — manual (non-lazy) packages (e.g. Copilot)

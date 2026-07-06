@@ -171,8 +171,4 @@ M.make_floating_window = function(custom_window_config, height_ratio, width_rati
     return winnr, bufnr
 end
 
-M.get_system_output = function(cmd)
-    return vim.split(vim.fn.system(cmd), "\n")
-end
-
 return M

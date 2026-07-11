@@ -184,3 +184,107 @@ vim.keymap.set("n", "<leader>xb", function()
     vim.cmd("%s/^<<<<<<<.*\\n\\(\\_.\\{-}\\)=======.*\\n\\(\\_.\\{-}\\)>>>>>>>.*\\n/\\1\\2/e")
     vim.cmd("nohlsearch")
 end, { desc = "Accept both" })
+
+-- Git group. Defined here (not in gitsigns config) so maps exist at startup;
+-- gitsigns is lazy and each hunk action lazy-loads it via require on first use.
+require("which-key").add({
+    { "<leader>g", group = "Git" },
+    { "<leader>gg", "<cmd>Gedit :<cr>", desc = "Fugitive" },
+    {
+        "<leader>gi",
+        function()
+            require("gitsigns").preview_hunk_inline()
+        end,
+        desc = "Preview Hunk Inline",
+    },
+    {
+        "<leader>gj",
+        function()
+            require("gitsigns").next_hunk()
+        end,
+        desc = "Next Hunk",
+    },
+    {
+        "<leader>gk",
+        function()
+            require("gitsigns").prev_hunk()
+        end,
+        desc = "Prev Hunk",
+    },
+    {
+        "<leader>gp",
+        function()
+            require("gitsigns").preview_hunk()
+        end,
+        desc = "Preview Hunk",
+    },
+    {
+        "<leader>gr",
+        function()
+            require("gitsigns").reset_hunk()
+        end,
+        desc = "Reset Hunk",
+    },
+    {
+        "<leader>gR",
+        function()
+            require("gitsigns").reset_buffer()
+        end,
+        desc = "Reset Buffer",
+    },
+    {
+        "<leader>gs",
+        function()
+            require("gitsigns").stage_hunk()
+        end,
+        desc = "Stage Hunk",
+    },
+    {
+        "<leader>gS",
+        function()
+            require("gitsigns").stage_buffer()
+        end,
+        desc = "Stage Buffer",
+    },
+    {
+        "<leader>gu",
+        function()
+            require("gitsigns").undo_stage_hunk()
+        end,
+        desc = "Undo Last Stage Hunk",
+    },
+    {
+        "<leader>go",
+        function()
+            Snacks.picker.git_status()
+        end,
+        desc = "Open Changed File",
+    },
+    {
+        "<leader>gb",
+        function()
+            Snacks.picker.git_branches()
+        end,
+        desc = "Checkout Branch",
+    },
+    {
+        "<leader>gc",
+        function()
+            Snacks.picker.git_log()
+        end,
+        desc = "Checkout Commit",
+    },
+    {
+        "<leader>gC",
+        function()
+            Snacks.picker.git_log_file()
+        end,
+        desc = "Checkout Commit(For Current File)",
+    },
+    { "<leader>gd", "<cmd>:Gdiff!<cr>", desc = "Git Diff" },
+    { "<leader>gD", "<cmd>Gtabedit @:% | Gdiff :<cr>", desc = "Git Diff Staged" },
+    { "<leader>gh", "<cmd>diffget //2<cr>", desc = "Diffget Target Branch" },
+    { "<leader>gl", "<cmd>diffget //3<cr>", desc = "Diffget Merge Branch" },
+    { "<leader>gv", "<cmd>GV<cr>", desc = "Git Commit Browser" },
+    { "<leader>gx", "<cmd>Gitsigns toggle_deleted<cr>", desc = "Toggle deleted" },
+})

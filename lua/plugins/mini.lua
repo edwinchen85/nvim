@@ -2,6 +2,7 @@ return {
     -- Icons
     {
         "echasnovski/mini.icons",
+        lazy = true,
         version = false,
         opts = {},
         init = function()
@@ -14,6 +15,7 @@ return {
     -- Split & join
     {
         "echasnovski/mini.splitjoin",
+        keys = { "gJ", "gS" },
         config = function()
             local miniSplitJoin = require("mini.splitjoin")
             miniSplitJoin.setup({

@@ -1,5 +1,6 @@
 return {
     "kevinhwang91/nvim-hlslens",
+    lazy = true,
     config = function()
         require("hlslens").setup({
             override_lens = function(render, posList, nearest, idx, relIdx)
@@ -30,15 +31,5 @@ return {
                 render.setVirt(0, lnum - 1, col - 1, chunks, nearest)
             end,
         })
-
-        local kopts = { noremap = true, silent = true }
-        local map = vim.keymap.set
-
-        map("n", "n", [[<Cmd>execute('normal! ' . v:count1 . 'n')<CR><Cmd>lua require('hlslens').start()<CR>]], kopts)
-        map("n", "N", [[<Cmd>execute('normal! ' . v:count1 . 'N')<CR><Cmd>lua require('hlslens').start()<CR>]], kopts)
-        map("n", "*", [[*<Cmd>lua require('hlslens').start()<CR>]], kopts)
-        map("n", "#", [[#<Cmd>lua require('hlslens').start()<CR>]], kopts)
-        map("n", "g*", [[g*<Cmd>lua require('hlslens').start()<CR>]], kopts)
-        map("n", "g#", [[g#<Cmd>lua require('hlslens').start()<CR>]], kopts)
     end,
 }

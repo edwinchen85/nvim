@@ -1,5 +1,6 @@
 return {
     "bkad/camelcasemotion",
+    keys = { ",w", ",b", ",e", ",ge" },
     config = function()
         vim.cmd([[
             map <silent> ,w <Plug>CamelCaseMotion_w

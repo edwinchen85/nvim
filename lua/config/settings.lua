@@ -77,6 +77,24 @@ api.nvim_create_autocmd("TextYankPost", {
     end,
 })
 
+-- start hlslens immediately after a `/` or `?` search (not just on n/N)
+vim.api.nvim_create_autocmd("CmdlineLeave", {
+    group = vim.api.nvim_create_augroup("hlslens_search", { clear = true }),
+    callback = function()
+        if vim.v.event.abort then
+            return
+        end
+        local ct = vim.fn.getcmdtype()
+        if ct == "/" or ct == "?" then
+            vim.schedule(function()
+                pcall(function()
+                    require("hlslens").start()
+                end)
+            end)
+        end
+    end,
+})
+
 -- vimdows to close with 'q'
 vim.cmd(
     [[autocmd FileType help,lspinfo,man,qf,fugitiveblame,netrw,tsplayground nnoremap <buffer><silent> q :close<CR>]]

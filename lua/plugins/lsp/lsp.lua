@@ -128,7 +128,14 @@ return {
         vim.lsp.config("jsonls", {
             settings = {
                 json = {
-                    schemas = require("schemastore").json.schemas(),
+                    -- SIMPLIFIED: only the schemas that match real files here.
+                    -- The full 1412-entry catalog gave manifest.json 3 competing
+                    -- schemas (Foxx | WebExtensions | Web App Manifest) and typed
+                    -- snippets/*/package.json as npm manifests. Add names here as
+                    -- new file types show up.
+                    schemas = require("schemastore").json.schemas({
+                        select = { "package.json", "tsconfig.json" },
+                    }),
                     validate = { enable = true },
                 },
             },

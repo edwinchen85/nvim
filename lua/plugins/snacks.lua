@@ -1,3 +1,7 @@
+-- Files dismissed from the recent picker with <c-d>. Session-scoped on purpose:
+-- see the note on `remove_recent` in the <leader>fr keymap below.
+local recent_hidden = {}
+
 return {
     "folke/snacks.nvim",
     priority = 1000,
@@ -230,7 +234,46 @@ return {
                     -- returns nil outside a repo, which leaves recent unfiltered.
                     -- Merges with the source's default `filter.paths`, so nvim's
                     -- data/cache/state dirs stay excluded either way.
-                    filter = { cwd = Snacks.git.get_root() },
+                    filter = {
+                        cwd = Snacks.git.get_root(),
+                        filter = function(item)
+                            return not recent_hidden[item.file]
+                        end,
+                    },
+                    actions = {
+                        -- Dismiss the item(s) under the cursor from the list.
+                        --
+                        -- Filtering rather than editing `v:oldfiles`, because the
+                        -- recent finder feeds in open buffers too
+                        -- (source/recent.lua builds `extra` from nvim_list_bufs),
+                        -- so pruning oldfiles alone would let open files reappear
+                        -- on refresh.
+                        --
+                        -- SIMPLIFIED: session-scoped. There is no way to delete a
+                        -- single shada entry -- `:h v:oldfiles` says changes have
+                        -- "no effect on what is stored in the shada file later",
+                        -- and `:wshada!` overwrites wholesale (verified on a copy
+                        -- of main.shada: it zeroed oldfiles rather than dropping
+                        -- one). Dismissed files return next launch. Upgrade path if
+                        -- that grates: persist `recent_hidden` to a file under
+                        -- stdpath("data") and load it here.
+                        remove_recent = function(picker)
+                            for _, item in ipairs(picker:selected({ fallback = true })) do
+                                if item.file then
+                                    recent_hidden[item.file] = true
+                                end
+                            end
+                            picker.list:set_selected()
+                            picker:refresh()
+                        end,
+                    },
+                    -- <c-d> is list_scroll_down by default (picker/config/defaults
+                    -- .lua:248,303). Overridden for this source only, so it still
+                    -- scrolls in every other picker.
+                    win = {
+                        input = { keys = { ["<c-d>"] = { "remove_recent", mode = { "n", "i" } } } },
+                        list = { keys = { ["<c-d>"] = "remove_recent" } },
+                    },
                 })
             end,
             desc = "Recent",

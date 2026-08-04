@@ -1,5 +1,9 @@
 return {
     "mistweaverco/kulala.nvim",
+    -- Temporarily off: not using the HTTP client for now. `cond` (not `enabled`)
+    -- keeps it installed and pinned in lazy-lock.json, so re-enabling is just
+    -- deleting this line -- no re-download, no `:Lazy clean` prompt.
+    cond = false,
     event = "VeryLazy",
     opts = {
         global_keymaps = false,

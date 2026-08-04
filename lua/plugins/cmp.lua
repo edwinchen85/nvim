@@ -13,6 +13,36 @@ return {
         local cmp = require("cmp")
         local luasnip = require("luasnip")
 
+        -- Horizontal padding for cmp's documentation window. Only the completion
+        -- menu has `side_padding`; the docs window has no padding option, and it
+        -- builds its own float instead of going through
+        -- `vim.lsp.util.open_floating_preview`, so the padding wired up in
+        -- `core/lsp.lua` never reaches it.
+        --
+        -- Padding the doc source works because cmp stylizes these lines into the
+        -- buffer and only *then* measures it to size the window
+        -- (view/docs_view.lua:65 then :72) -- so the window grows instead of
+        -- clipping. Hooking `vim.lsp.util.stylize_markdown` would be the other
+        -- option, but it is deprecated for removal in 0.14.
+        --
+        -- Fence and blank lines are left alone: padding a fence would break code
+        -- block detection, and padding a blank line is just trailing whitespace.
+        local entry = require("cmp.entry")
+        local get_documentation = entry.get_documentation
+        ---@diagnostic disable-next-line: duplicate-set-field
+        entry.get_documentation = function(self)
+            -- Returns a flat string[]; it ends in
+            -- `vim.lsp.util.convert_input_to_markdown_lines(documents)`, not the
+            -- {kind, value} tables it builds internally.
+            local lines = get_documentation(self)
+            for i, line in ipairs(lines) do
+                if line ~= "" and not line:match("^```") then
+                    lines[i] = " " .. line .. " "
+                end
+            end
+            return lines
+        end
+
         local kind_icons = {
             Class = " ",
             Color = " ",
@@ -82,6 +112,16 @@ return {
                         buffer = "[Buffer]",
                         path = "[Path]",
                     })[entry.source.name]
+                    -- One space of right-edge padding. `menu` is the last entry in
+                    -- `fields`, and its column width IS folded into the window
+                    -- width (view/custom_entries_view.lua:176), so trailing spaces
+                    -- genuinely widen the window -- unlike `side_padding`, which is
+                    -- rendered but not measured. Add spaces here to widen further.
+                    -- Guarded because sources absent from the map above (nvim_lua,
+                    -- calc) leave `menu` nil.
+                    if vim_item.menu then
+                        vim_item.menu = vim_item.menu .. " "
+                    end
                     return vim_item
                 end,
             },
@@ -113,10 +153,37 @@ return {
                 completion = {
                     border = "rounded",
                     scrollbar = false,
-                    winhighlight = "FloatBorder:NormalFloat",
+                    -- Empty, not "FloatBorder:NormalFloat": that remap is why the
+                    -- cmp borders were NormalFloat's #c0caf5 instead of
+                    -- FloatBorder's #565f89. With no remap, FloatBorder resolves
+                    -- to itself and Normal still falls back to NormalFloat in a
+                    -- float, so the transparent background is unchanged. Note
+                    -- omitting the key entirely would NOT work -- cmp would then
+                    -- apply its own default, which remaps to Pmenu.
+                    winhighlight = "",
+                    -- Left at cmp's default. Raising this does not add padding: it
+                    -- is rendered on both sides (view/custom_entries_view.lua:299,
+                    -- 304) but never measured -- the width math hardcodes 1 cell
+                    -- per side (:173, :177). So the window does not grow and the
+                    -- content just shifts right, trading right gutter for left
+                    -- (measured at 2: leading 3->4, trailing 7->6, total
+                    -- unchanged). Nothing but whitespace is clipped, so it is safe
+                    -- to raise -- just pointless. Pad `menu` for real right-hand
+                    -- padding; see `formatting`.
+                    side_padding = 1,
                 },
                 documentation = {
                     border = "rounded",
+                    -- cmp's default here is also "FloatBorder:NormalFloat".
+                    winhighlight = "",
+                    -- 0 leaves the docs where cmp puts them: flush against the menu
+                    -- (`right_col = view.col + view.width`, view/docs_view.lua:81),
+                    -- so the two borders touch. A positive value opens a gap
+                    -- (:111), but only while the docs sit to the right -- when
+                    -- there is more room to the left cmp flips them over and the
+                    -- same offset pushes them *toward* the menu instead. Hence
+                    -- staying at 0 rather than papering over the touching borders.
+                    col_offset = 0,
                 },
             },
             experimental = {

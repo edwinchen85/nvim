@@ -117,15 +117,15 @@ return {
             },
             tools = {
                 claude = {
-                    cmd = { "env", "ANTHROPIC_BASE_URL=http://127.0.0.1:8787", "claude" },
+                    cmd = { "claude" },
                     is_proc = "\\<claude\\>",
                 },
                 claude_continue = {
-                    cmd = { "env", "ANTHROPIC_BASE_URL=http://127.0.0.1:8787", "claude", "--continue" },
+                    cmd = { "claude", "--continue" },
                     is_proc = "\\<claude\\>",
                 },
                 claude_resume = {
-                    cmd = { "env", "ANTHROPIC_BASE_URL=http://127.0.0.1:8787", "claude", "--resume" },
+                    cmd = { "claude", "--resume" },
                     is_proc = "\\<claude\\>",
                 },
             },

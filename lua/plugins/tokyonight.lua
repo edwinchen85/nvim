@@ -113,6 +113,24 @@ return {
                 -- opaque while the float around it would go translucent.
                 hl.RenderMarkdownCode = { bg = c.bg }
 
+                -- Unused code (LSP DiagnosticTag.Unnecessary, e.g. ts 6133).
+                --
+                -- VS Code dims these by lowering opacity, so each token keeps its
+                -- own hue. That is not reproducible here: `blend` applies only
+                -- inside the popupmenu and floating windows (:h highlight-blend),
+                -- and a highlight group resolves to one concrete colour, so every
+                -- unused token must share it.
+                --
+                -- The closest single-colour approximation is a faded version of the
+                -- normal foreground. tokyonight's `terminal_black` (#414868) sits
+                -- only ~24% of the way from bg to fg by luminance (73 against bg 28
+                -- and fg 203), which reads as blacked-out rather than dimmed;
+                -- blending fg halfway to bg gives #6d738e -- muted but still
+                -- legible. Lower the 0.5 to dim harder.
+                --
+                -- fg only, so the undercurl from DiagnosticUnderlineHint survives.
+                hl.DiagnosticUnnecessary = { fg = require("tokyonight.util").blend_bg(c.fg, 0.5) }
+
                 -- local prompt = "#2d3149"
                 -- hl.LineNr = {
                 --     fg = c.comment,

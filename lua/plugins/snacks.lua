@@ -224,7 +224,14 @@ return {
         {
             "<leader>fr",
             function()
-                Snacks.picker.recent()
+                Snacks.picker.recent({
+                    -- Scope to the current repo. `get_root()` resolves from the
+                    -- current buffer, so it stays correct even if cwd drifted;
+                    -- returns nil outside a repo, which leaves recent unfiltered.
+                    -- Merges with the source's default `filter.paths`, so nvim's
+                    -- data/cache/state dirs stay excluded either way.
+                    filter = { cwd = Snacks.git.get_root() },
+                })
             end,
             desc = "Recent",
         },

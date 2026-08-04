@@ -96,13 +96,22 @@ return {
                 hl.FloatBorder = { fg = c.comment, bg = c.bg_float }
 
                 -- render-markdown draws the fenced code block inside LSP hover
-                -- (hover buffers are filetype=markdown). tokyonight backs that
-                -- block with `bg_dark`, not `bg_float`, so `styles.floats =
-                -- "transparent"` does not reach it and it shows as an opaque
-                -- rectangle inside the float. Note this also flattens code block
-                -- backgrounds in real markdown buffers -- highlight groups are
-                -- global, so hover-only is not possible without winhighlight.
-                hl.RenderMarkdownCode = { bg = c.none }
+                -- (hover buffers are filetype=markdown) with an `hl_eol` extmark,
+                -- so it paints the whole content rectangle. tokyonight backs that
+                -- group with `bg_dark`, not `bg_float`, so `styles.floats =
+                -- "transparent"` never reaches it.
+                --
+                -- Must be `c.bg`, NOT `c.none`: render-markdown registers its own
+                -- groups as `{ link = "ColorColumn", default = true }`, and
+                -- `default` only defers to an *existing* definition. `{ bg =
+                -- "NONE" }` alone is an empty definition, which nvim treats as
+                -- undefined -- so the ColorColumn link (#15161e) won once
+                -- render-markdown lazy-loaded on the hover buffer. `c.bg` is a
+                -- real definition and matches both the editor and ghostty's
+                -- `background = 1a1b26`, so the block disappears into the float.
+                -- If ghostty ever gets `background-opacity`, revisit: this stays
+                -- opaque while the float around it would go translucent.
+                hl.RenderMarkdownCode = { bg = c.bg }
 
                 -- local prompt = "#2d3149"
                 -- hl.LineNr = {

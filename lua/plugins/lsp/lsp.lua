@@ -2,7 +2,8 @@ return {
     "neovim/nvim-lspconfig",
     lazy = false,
     dependencies = {
-        { "antosha417/nvim-lsp-file-operations", config = true },
+        -- nvim-lsp-file-operations moved to plugins/nvimtree.lua: requiring it here
+        -- pulled in nvim-tree.api at startup and defeated nvim-tree's lazy loading.
         {
             "folke/lazydev.nvim",
             opts = {

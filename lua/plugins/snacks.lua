@@ -49,6 +49,11 @@ return {
         picker = {
             enabled = true,
 
+            -- SIMPLIFIED: snacks caps live searches via limit_live but leaves non-live
+            -- finders (files, recent) at math.huge -> from $HOME that is ~2.4M items /
+            -- 15s. Ceiling: 10k results; raise if a real repo exceeds it.
+            limit = 10000,
+
             transform = function(item)
                 if not item.file then
                     return item
@@ -233,7 +238,6 @@ return {
                     show_empty = true,
                     hidden = true,
                     supports_live = true,
-                    exclude_dirs = { ".git" },
                     -- exclude = { "yarn.lock", "package-lock.json" },
                     -- In case you want to override the layout for this keymap
                     -- layout = "vscode",

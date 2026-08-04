@@ -22,5 +22,5 @@ return {
 
     -- development
     "nvim-lua/plenary.nvim",
-    "nvim-treesitter/nvim-treesitter-textobjects",
+    -- nvim-treesitter-textobjects is specced in plugins/textobjects.lua
 }

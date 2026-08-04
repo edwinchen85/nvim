@@ -9,34 +9,66 @@ return { -- Highlight, edit, and navigate code
         vim.treesitter.language.register("tsx", "typescriptreact")
     end,
     config = function(_, opts)
-        require("nvim-treesitter").setup(opts)
+        local ts = require("nvim-treesitter")
+        ts.setup(opts)
 
-        -- The new nvim-treesitter (v1.0+) only handles parser installation.
-        -- Highlighting, indentation, etc. must be enabled via neovim's native
-        -- treesitter API. Enable highlighting for all buffers with a parser.
-        vim.api.nvim_create_autocmd("FileType", {
-            desc = "Enable treesitter highlighting",
-            callback = function(args)
-                local ok = pcall(vim.treesitter.start, args.buf)
-                if ok and vim.tbl_contains(opts.highlight.additional_vim_regex_highlighting or {}, vim.bo[args.buf].filetype) then
-                    vim.bo[args.buf].syntax = "on"
-                end
-            end,
-        })
+        -- nvim-treesitter v1.0+ only handles parser installation, and its setup()
+        -- reads nothing but install_dir — ensure_installed, auto_install, highlight
+        -- and indent are all ours to honour from here.
+        local installed = {}
+        local function refresh_installed()
+            installed = {}
+            for _, lang in ipairs(ts.get_installed("parsers")) do
+                installed[lang] = true
+            end
+        end
+        refresh_installed()
 
-        -- Enable treesitter-based indentation (respecting disable list)
+        local missing = vim.tbl_filter(function(lang)
+            return not installed[lang]
+        end, opts.ensure_installed)
+        if #missing > 0 then
+            ts.install(missing):await(vim.schedule_wrap(refresh_installed))
+        end
+
+        local additional_regex = opts.highlight and opts.highlight.additional_vim_regex_highlighting or {}
         local indent_disable = {}
         for _, lang in ipairs(opts.indent and opts.indent.disable or {}) do
             indent_disable[lang] = true
         end
+
         vim.api.nvim_create_autocmd("FileType", {
-            desc = "Enable treesitter indentation",
+            desc = "Enable treesitter highlighting and indentation",
             callback = function(args)
-                if not indent_disable[vim.bo[args.buf].filetype] then
-                    local ok = pcall(vim.treesitter.get_parser, args.buf)
-                    if ok then
+                local ft = vim.bo[args.buf].filetype
+                local lang = vim.treesitter.language.get_lang(ft)
+                if not lang then
+                    return
+                end
+
+                local function start()
+                    if not vim.api.nvim_buf_is_valid(args.buf) then
+                        return
+                    end
+                    if not pcall(vim.treesitter.start, args.buf) then
+                        return
+                    end
+                    -- some languages still need vim's regex engine for indent rules
+                    if vim.tbl_contains(additional_regex, ft) then
+                        vim.bo[args.buf].syntax = "on"
+                    end
+                    if not indent_disable[ft] then
                         vim.bo[args.buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
                     end
+                end
+
+                if installed[lang] then
+                    start()
+                elseif opts.auto_install and vim.tbl_contains(ts.get_available(), lang) then
+                    ts.install({ lang }):await(vim.schedule_wrap(function()
+                        refresh_installed()
+                        start()
+                    end))
                 end
             end,
         })
@@ -73,43 +105,7 @@ return { -- Highlight, edit, and navigate code
             additional_vim_regex_highlighting = { "ruby" },
         },
         indent = { enable = true, disable = { "ruby", "vue" } },
-        matchup = { enable = true },
-        textobjects = {
-            select = {
-                enable = true,
-                lookahead = true, -- Automatically jump forward to textobj, similar to targets.vim
-                keymaps = {
-                    -- You can use the capture groups defined in textobjects.scm
-                    ["aa"] = "@parameter.outer",
-                    ["ia"] = "@parameter.inner",
-                    ["af"] = "@function.outer",
-                    ["if"] = "@function.inner",
-                    ["ac"] = "@class.outer",
-                    ["ic"] = "@class.inner",
-                    ["ax"] = "@attribute.outer",
-                    ["ix"] = "@attribute.inner",
-                },
-            },
-            move = {
-                enable = true,
-                set_jumps = true,
-                goto_next_start = {
-                    ["]m"] = "@function.outer",
-                    ["]]"] = "@class.outer",
-                },
-                goto_next_end = {
-                    ["]M"] = "@function.outer",
-                    ["]["] = "@class.outer",
-                },
-                goto_previous_start = {
-                    ["[m"] = "@function.outer",
-                    ["[["] = "@class.outer",
-                },
-                goto_previous_end = {
-                    ["[M"] = "@function.outer",
-                    ["[]"] = "@class.outer",
-                },
-            },
-        },
+        -- matchup is driven by its own plugin spec; textobjects live in
+        -- plugins/textobjects.lua — v1.0's setup() ignores both keys.
     },
 }

@@ -255,11 +255,20 @@ vim.api.nvim_create_autocmd("BufWritePre", {
     end,
 })
 
--- Warn on deletion conflicts (DU/UD/DD) in fugitive status buffer.
--- Modern fugitive only renders the single-char status (e.g. `U file.txt`),
--- so the two-letter porcelain XY codes are unavailable in the buffer.
--- Read `git status --porcelain` directly to detect deletion conflicts.
-local function warn_fugitive_deletion_conflicts()
+-- Warn on conflicts fugitive's status buffer cannot show:
+--   * deletion conflicts (DU/UD/DD) — stage with `:Git rm`, not `-`
+--   * binary conflicts (UU/AA/AU/UA with no text merge markers) — git cannot
+--     text-merge them, so resolve via `:Git checkout --ours/--theirs <path>`.
+--     Heuristic: unmerged path whose content has a NUL byte and no `<<<<<<<`.
+-- Modern fugitive only renders the single-char status (e.g. `U file.txt`), so
+-- the two-letter porcelain XY codes are unavailable in the buffer -- read them
+-- from git directly.
+--
+-- Both checks share ONE `git status --porcelain`; the XY sets are disjoint, so a
+-- single pass covers both. Process spawn costs ~44ms here (CrowdStrike Falcon
+-- hooks exec via the Endpoint Security framework), and `:Gedit :` already pays
+-- for ~17 git subprocesses -- this ran the identical command twice per refresh.
+local function warn_fugitive_conflicts()
     vim.system(
         { "git", "status", "--porcelain" },
         { text = true },
@@ -275,27 +284,7 @@ local function warn_fugitive_deletion_conflicts()
                         vim.log.levels.WARN,
                         { timeout = 5000 }
                     )
-                end
-            end
-        end)
-    )
-end
-
--- Warn on binary file conflicts (UU/AA/AU/UA with no text merge markers).
--- Heuristic: any unmerged path whose working-tree content has a NUL byte AND
--- no `<<<<<<<` conflict marker is treated as a binary conflict — git can't
--- text-merge it, so user must `:Git checkout --ours/--theirs <path>`.
-local function warn_fugitive_binary_conflicts()
-    vim.system(
-        { "git", "status", "--porcelain" },
-        { text = true },
-        vim.schedule_wrap(function(result)
-            if result.code ~= 0 or not result.stdout or result.stdout == "" then
-                return
-            end
-            for line in result.stdout:gmatch("[^\r\n]+") do
-                local xy = line:sub(1, 2)
-                if xy == "UU" or xy == "AA" or xy == "AU" or xy == "UA" then
+                elseif xy == "UU" or xy == "AA" or xy == "AU" or xy == "UA" then
                     local path = line:sub(4):gsub('^"(.*)"$', "%1")
                     local f = io.open(path, "rb")
                     if f then
@@ -322,10 +311,7 @@ end
 vim.api.nvim_create_autocmd("User", {
     group = vim.api.nvim_create_augroup("FugitiveDeletionConflict", { clear = true }),
     pattern = { "FugitiveIndex", "FugitiveChanged" },
-    callback = function()
-        warn_fugitive_deletion_conflicts()
-        warn_fugitive_binary_conflicts()
-    end,
+    callback = warn_fugitive_conflicts,
 })
 
 -- GitHub-style word-level diff highlights in fugitive status / git diff buffers.

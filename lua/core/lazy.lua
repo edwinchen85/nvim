@@ -30,4 +30,6 @@ require("lazy").setup({ { import = "plugins" }, { import = "plugins.lsp" } }, {
     },
     -- Plugin disabling handled by vim.g.loaded_* in options.lua
     performance = {},
+    -- no plugin here needs luarocks; skip the hererocks bootstrap entirely
+    rocks = { enabled = false },
 })

@@ -78,9 +78,29 @@ local function send_no_newline(opts)
     end, { attach = true, filter = opts.filter, show = true })
 end
 
+-- `nes` is disabled below, so the Copilot LSP is unused -- but sidekick's health check
+-- reports its absence as an ERROR unconditionally, with no config gate. health.lua binds
+-- `local error = vim.health.error` at module load, so the filter has to be installed
+-- before the module is first required (i.e. before :checkhealth pulls it in).
+local function silence_copilot_health()
+    local real_error = vim.health.error
+    vim.health.error = function(msg, ...)
+        if type(msg) == "string" and msg:find("No Copilot LSP server", 1, true) then
+            return vim.health.ok("Copilot LSP not enabled (`nes` is disabled)")
+        end
+        return real_error(msg, ...)
+    end
+    require("sidekick.health") -- captures the wrapper as its module-local `error`
+    vim.health.error = real_error -- every other healthcheck keeps the real one
+end
+
 return {
     "folke/sidekick.nvim",
     event = "VeryLazy",
+    config = function(_, opts)
+        require("sidekick").setup(opts)
+        silence_copilot_health()
+    end,
     opts = {
         nes = { enabled = false },
         cli = {

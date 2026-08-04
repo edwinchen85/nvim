@@ -44,7 +44,8 @@ return {
         },
         gitbrowse = { enabled = false },
         indent = { enabled = false },
-        input = { enabled = false },
+        -- took over vim.ui.input from dressing.nvim, which was removed
+        input = { enabled = true },
         picker = {
             enabled = true,
 

@@ -89,6 +89,12 @@ return {
                 highlight_treesitter_context(hl, c)
                 -- highlight_telescope(hl, c)
 
+                -- Neutral float chrome. tokyonight's default FloatBorder uses
+                -- `border_highlight` (#27a1b9), which reads as a cyan accent on
+                -- every hover/diagnostic/cmp float. `comment` (#565f89) keeps the
+                -- rounded border visible without the accent.
+                hl.FloatBorder = { fg = c.comment, bg = c.bg_float }
+
                 -- local prompt = "#2d3149"
                 -- hl.LineNr = {
                 --     fg = c.comment,

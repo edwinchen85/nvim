@@ -20,8 +20,28 @@ return {
         -- vue_ls provides correct diagnostics; vtsls only needed for tsserver bridge
 
         -- capabilities for all servers
+        --
+        -- fileOperations declares what nvim-lsp-file-operations relies on. Per LSP
+        -- spec a server may withhold workspace.fileOperations.willRename (which that
+        -- plugin gates on) unless the client advertises support -- ts_ls happens to
+        -- send it either way, so this is correctness insurance rather than a fix for
+        -- observed breakage. Inlined rather than calling the plugin's
+        -- default_capabilities(), because requiring it here would trip lazy.nvim's
+        -- auto_load and drag nvim-tree back into startup. These six flags are the
+        -- complete LSP fileOperations set and match that function's output.
         vim.lsp.config("*", {
-            capabilities = vim.lsp.protocol.make_client_capabilities(),
+            capabilities = vim.tbl_deep_extend("force", vim.lsp.protocol.make_client_capabilities(), {
+                workspace = {
+                    fileOperations = {
+                        willCreate = true,
+                        didCreate = true,
+                        willRename = true,
+                        didRename = true,
+                        willDelete = true,
+                        didDelete = true,
+                    },
+                },
+            }),
         })
 
         -- ts_ls: JS/TS only — vue files handled by vtsls

@@ -30,7 +30,7 @@ local border_opts = {
     border = "rounded",
     focusable = true,
     style = "minimal",
-    source = "always",
+    source = true,
     scope = "line",
     header = "",
     prefix = "",
@@ -49,11 +49,18 @@ vim.diagnostic.config({
     },
 })
 
+-- servers are chatty at the default WARN level; the log is otherwise unbounded
+vim.lsp.log.set_level(vim.log.levels.ERROR)
+
 -- suppress irrelevant lspconfig messages
 local _notify = vim.notify
 vim.notify = function(msg, ...)
-    if msg:match("%[lspconfig%]") or msg:match("warning: multiple different client offset_encodings") then
+    -- msg is not always a string (callers pass tables/numbers), so guard before matching
+    if
+        type(msg) == "string"
+        and (msg:match("%[lspconfig%]") or msg:match("warning: multiple different client offset_encodings"))
+    then
         return
     end
-    _notify(msg, ...)
+    return _notify(msg, ...)
 end

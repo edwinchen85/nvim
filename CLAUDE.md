@@ -41,7 +41,7 @@ All plugin specs live in `lua/plugins/`. Each file returns a lazy.nvim spec tabl
 
 LSP is configured with the modern `vim.lsp.config(name, ...)` / mason-lspconfig flow — there is **no** `lua/lsp/` directory.
 
-- `lua/core/lsp.lua` — `LspAttach` keymaps, diagnostic signs/float, notify filter that suppresses noisy lspconfig warnings, per-buffer auto-enable of inlay hints
+- `lua/core/lsp.lua` — `LspAttach` keymaps, diagnostic signs/float, notify filter that suppresses noisy lspconfig warnings, horizontal padding for LSP floats
 - `lua/plugins/lsp/lsp.lua` — `vim.lsp.config(...)` blocks per server: `ts_ls`, `vtsls`, `vue_ls`, `jsonls`, `emmet_language_server`, `eslint`, `cssls`, `lua_ls`, `tailwindcss`
 - `lua/plugins/lsp/mason.lua` — `mason-lspconfig` `ensure_installed` list (adds `html`, `svelte`, `graphql`, `prismals`, `pyright`, `gopls`) and `mason-tool-installer` for `prettier` + `stylua`
 
@@ -50,7 +50,7 @@ Vue/TS split (important context, see comments in `lsp.lua`):
 - `ts_ls` handles `.ts`/`.js`/`.tsx`/`.jsx` only and is pinned to its bundled tsserver (workaround for a TS 5.7.2 bug with vue re-exports).
 - `vtsls` handles `.vue` files and loads `@vue/typescript-plugin` from mason's `vue-language-server` package; `vue_ls` bridges to vtsls via the tsserver request channel.
 
-Diagnostic virtual text is off by default — toggle via `:ToggleVirtualText`. Inlay hints auto-enable per buffer when the attached client supports them.
+Diagnostic virtual text is off by default — toggle via `:ToggleVirtualText`. Inlay hints are also off by default — toggle per buffer via `:ToggleInlayHint` (`<leader><tab>i`). The `inlayHints` settings on `ts_ls`/`vtsls` control which hints arrive once enabled, not whether they show.
 
 ### Core LSP Keybindings (set on `LspAttach`)
 

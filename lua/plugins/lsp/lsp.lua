@@ -268,21 +268,10 @@ return {
             },
         })
 
-        -- auto-enable inlay hints when server supports them
-        -- Per-buffer flag prevents repeated enable() calls from resetting bufstate
-        -- when multiple clients attach to same buffer (e.g. vue: vtsls + vue_ls).
-        vim.api.nvim_create_autocmd("LspAttach", {
-            callback = function(args)
-                local client = vim.lsp.get_client_by_id(args.data.client_id)
-                if not (client and client:supports_method("textDocument/inlayHint", args.buf)) then
-                    return
-                end
-                if vim.b[args.buf].inlay_hint_enabled then
-                    return
-                end
-                vim.b[args.buf].inlay_hint_enabled = true
-                vim.lsp.inlay_hint.enable(true, { bufnr = args.buf })
-            end,
-        })
+        -- Inlay hints stay off by default (nvim's own default) -- there used to be an
+        -- LspAttach autocmd here enabling them per buffer. Turn them on for the
+        -- current buffer with `:ToggleInlayHint` / `<leader><tab>i`. The
+        -- ts_ls/vtsls `inlayHints` settings above are still what decides *which*
+        -- hints arrive once toggled on.
     end,
 }

@@ -26,6 +26,33 @@ vim.api.nvim_create_autocmd("LspAttach", {
     end,
 })
 
+-- Horizontal padding for LSP floats (hover, signature help).
+--
+-- There is no padding option: `open_floating_preview` only takes offset_x/y,
+-- which move the window rather than pad it, and `nvim_open_win` rejects
+-- multi-cell border strings ("Invalid 'border'"), so a side can be a line char
+-- or a blank -- never both. render-markdown's `code.left_pad` is worse: the
+-- window is sized from the raw text *before* it draws, so padding shifts
+-- characters past the right edge and `wrap=false` silently eats them.
+--
+-- Padding the contents is what works, because open_floating_preview measures
+-- them to size the window -- so the float grows instead of clipping (measured:
+-- content 54 -> 56 with 1 space each side). Fence lines are left alone so
+-- render-markdown still recognises the code block.
+local FLOAT_PAD = (" "):rep(1)
+local open_floating_preview = vim.lsp.util.open_floating_preview
+---@diagnostic disable-next-line: duplicate-set-field
+vim.lsp.util.open_floating_preview = function(contents, syntax, opts, ...)
+    if type(contents) == "table" then
+        local padded = {}
+        for i, line in ipairs(contents) do
+            padded[i] = line:match("^```") and line or (FLOAT_PAD .. line .. FLOAT_PAD)
+        end
+        contents = padded
+    end
+    return open_floating_preview(contents, syntax, opts, ...)
+end
+
 local border_opts = {
     border = "rounded",
     focusable = true,

@@ -66,7 +66,7 @@ return {
                 variables = { italic = true },
                 -- Background styles. Can be "dark", "transparent" or "normal"
                 sidebars = "dark", -- style for sidebars, see below
-                floats = "dark", -- style for floating windows
+                floats = "transparent", -- style for floating windows
             },
             sidebars = { "qf", "help", "terminal", "packer" }, -- Set a darker background on sidebar-like windows. For example: `["qf", "vista_kind", "terminal", "packer"]`
             day_brightness = 0.3, -- Adjusts the brightness of the colors of the **Day** style. Number between 0 and 1, from dull to vibrant colors
@@ -94,6 +94,15 @@ return {
                 -- every hover/diagnostic/cmp float. `comment` (#565f89) keeps the
                 -- rounded border visible without the accent.
                 hl.FloatBorder = { fg = c.comment, bg = c.bg_float }
+
+                -- render-markdown draws the fenced code block inside LSP hover
+                -- (hover buffers are filetype=markdown). tokyonight backs that
+                -- block with `bg_dark`, not `bg_float`, so `styles.floats =
+                -- "transparent"` does not reach it and it shows as an opaque
+                -- rectangle inside the float. Note this also flattens code block
+                -- backgrounds in real markdown buffers -- highlight groups are
+                -- global, so hover-only is not possible without winhighlight.
+                hl.RenderMarkdownCode = { bg = c.none }
 
                 -- local prompt = "#2d3149"
                 -- hl.LineNr = {

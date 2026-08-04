@@ -1,5 +1,9 @@
 local M = {
     "RRethy/vim-illuminate",
+    -- Temporarily off. `cond` rather than `enabled` for the same reason as
+    -- kulala: it keeps the plugin installed and pinned in lazy-lock.json, so
+    -- re-enabling is just deleting this line. Re-enable by removing it.
+    cond = false,
     event = "VeryLazy",
 }
 

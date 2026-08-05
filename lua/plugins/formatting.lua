@@ -15,6 +15,9 @@ return {
                         if not et then
                             table.insert(args, "--use-tabs")
                         end
+                        if vim.bo[ctx.buf].filetype == "markdown" then
+                            table.insert(args, "--prose-wrap=always")
+                        end
                         return args
                     end,
                 },

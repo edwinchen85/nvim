@@ -2,3 +2,4 @@ pack/
 plugin/
 .claude/
 lazy-lock.json
+spell/*.spl

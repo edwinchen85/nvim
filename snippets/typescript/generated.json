@@ -161,9 +161,7 @@
   "consoleLogAsdf": {
     "key": "consoleLogAsdf",
     "prefix": "cll",
-    "body": [
-      "console.log(\"asdf ${1:label}\", ${2:value})"
-    ],
+    "body": ["console.log(\"asdf ${1:label}\", ${2:value})"],
     "description": "Displays a message in the console with asdf",
     "scope": "typescript,typescriptreact,javascript,javascriptreact"
   },

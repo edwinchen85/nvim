@@ -158,7 +158,9 @@ return {
         {
             "<leader>at",
             function()
-                send_no_newline({ msg = "{this}" })
+                -- submit=false: leave cursor right after the mention so the
+                -- prompt can be typed on the same line instead of a new one.
+                send_no_newline({ msg = "{this}", submit = false })
             end,
             mode = { "x", "n" },
             desc = "Send This",
@@ -166,7 +168,7 @@ return {
         {
             "<leader>af",
             function()
-                send_no_newline({ msg = "{file}" })
+                send_no_newline({ msg = "{file}", submit = false })
             end,
             desc = "Send File",
         },

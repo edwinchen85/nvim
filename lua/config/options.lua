@@ -69,6 +69,7 @@ vim.opt.smartcase = true -- Do not ignore case with capitals
 vim.opt.smartindent = true -- Insert indents automatically
 vim.opt.breakindent = true -- wrap lines with indent
 vim.opt.spelllang = "en"
+vim.opt.spellfile = vim.fn.stdpath("config") .. "/spell/en.utf-8.add" -- zg defaults to stdpath("data")/site, not this repo
 vim.opt.splitbelow = true -- Put new windows below current
 vim.opt.splitright = true -- Put new windows right of current
 vim.opt.diffopt = "algorithm:histogram,closeoff,hiddenoff,filler,indent-heuristic,internal,vertical,linematch:60"

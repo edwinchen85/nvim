@@ -43,7 +43,7 @@ LSP is configured with the modern `vim.lsp.config(name, ...)` / mason-lspconfig 
 
 - `lua/core/lsp.lua` — `LspAttach` keymaps, diagnostic signs/float, notify filter that suppresses noisy lspconfig warnings, horizontal padding for LSP floats
 - `lua/plugins/lsp/lsp.lua` — `vim.lsp.config(...)` blocks per server: `ts_ls`, `vtsls`, `vue_ls`, `jsonls`, `emmet_language_server`, `eslint`, `cssls`, `lua_ls`, `tailwindcss`
-- `lua/plugins/lsp/mason.lua` — `mason-lspconfig` `ensure_installed` list (adds `html`, `svelte`, `graphql`, `prismals`, `pyright`, `gopls`) and `mason-tool-installer` for `prettier` + `stylua`
+- `lua/plugins/lsp/mason.lua` — `mason-lspconfig` `ensure_installed` list (adds `html`, `svelte`, `graphql`, `prismals`, `pyright`, `gopls`) and `mason-tool-installer` for `prettier`, `stylua`, `shellcheck`, `shfmt`
 
 Vue/TS split (important context, see comments in `lsp.lua`):
 
@@ -76,6 +76,7 @@ Defined across `lua/config/commands.lua` and `lua/config/settings.lua`.
 | `:ToggleTailwindFold`| Toggle Tailwind class folding        |
 | `:ToggleLocList`     | Toggle location list                 |
 | `:ToggleQuickFix`    | Toggle quickfix list                 |
+| `:ToggleSpell`       | Toggle spell check                   |
 | `:WipeReg`           | Wipe all registers                   |
 | `:Help`              | `:help` for word under cursor        |
 | `:R`                 | `w | :e` — save + reload buffer      |

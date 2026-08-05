@@ -95,6 +95,11 @@ return {
                 -- rounded border visible without the accent.
                 hl.FloatBorder = { fg = c.comment, bg = c.bg_float }
 
+                -- Default WinSeparator is near-black, reading as a heavy line
+                -- between splits. `comment` (#565f89) matches FloatBorder above
+                -- for a subtle grey divider instead.
+                hl.WinSeparator = { fg = c.comment }
+
                 -- render-markdown draws the fenced code block inside LSP hover
                 -- (hover buffers are filetype=markdown) with an `hl_eol` extmark,
                 -- so it paints the whole content rectangle. tokyonight backs that

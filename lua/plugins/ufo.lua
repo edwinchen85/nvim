@@ -61,12 +61,6 @@ function M.config()
         return newVirtText
     end
 
-    local ftMap = {
-        typescriptreact = { "lsp", "treesitter" },
-        python = { "indent" },
-        git = "",
-    }
-
     require("ufo").setup({
         enable_get_fold_virt_text = false,
         fold_virt_text_handler = handler,

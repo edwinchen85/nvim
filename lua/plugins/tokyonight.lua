@@ -1,10 +1,9 @@
 return {
     "folke/tokyonight.nvim",
-    lazy = "false",
+    lazy = false,
     priority = 1000,
     config = function()
         local function highlight_treesitter_context(hl, c)
-            local prompt = "#2d3149"
             hl.TreesitterContext = {
                 bg = c.bg,
                 fg = "NONE",
@@ -12,41 +11,6 @@ return {
             hl.TreesitterContextBottom = {
                 underline = true,
                 sp = c.comment,
-            }
-        end
-
-        local function highlight_telescope(hl, c)
-            local prompt = c.bg
-            hl.TelescopeNormal = {
-                bg = c.bg,
-                fg = c.fg,
-            }
-            hl.TelescopeBorder = {
-                bg = c.bg,
-                fg = c.bg,
-            }
-            hl.TelescopePromptNormal = {
-                bg = prompt,
-            }
-            hl.TelescopePromptBorder = {
-                bg = prompt,
-                fg = prompt,
-            }
-            hl.TelescopePromptTitle = {
-                bg = c.bg_highlight,
-                fg = c.fg,
-            }
-            hl.TelescopePreviewTitle = {
-                bg = c.bg,
-                fg = c.bg,
-            }
-            hl.TelescopeResultsTitle = {
-                bg = c.bg,
-                fg = c.bg,
-            }
-            hl.NoiceCmdlinePopupBorder = {
-                bg = c.bg,
-                fg = c.bg,
             }
         end
 
@@ -87,7 +51,6 @@ return {
             ---@param c ColorScheme
             on_highlights = function(hl, c)
                 highlight_treesitter_context(hl, c)
-                -- highlight_telescope(hl, c)
 
                 -- Neutral float chrome. tokyonight's default FloatBorder uses
                 -- `border_highlight` (#27a1b9), which reads as a cyan accent on
@@ -135,48 +98,6 @@ return {
                 --
                 -- fg only, so the undercurl from DiagnosticUnderlineHint survives.
                 hl.DiagnosticUnnecessary = { fg = require("tokyonight.util").blend_bg(c.fg, 0.5) }
-
-                -- local prompt = "#2d3149"
-                -- hl.LineNr = {
-                --     fg = c.comment,
-                -- }
-                -- hl.TelescopeNormal = {
-                --     bg = c.bg_dark,
-                --     fg = c.fg_dark,
-                -- }
-                -- hl.TelescopeBorder = {
-                --     bg = c.bg_dark,
-                --     fg = c.bg_dark,
-                -- }
-                -- hl.TelescopePromptNormal = {
-                --     bg = prompt,
-                -- }
-                -- hl.TelescopePromptBorder = {
-                --     bg = prompt,
-                --     fg = prompt,
-                -- }
-                -- hl.TelescopePromptTitle = {
-                --     bg = prompt,
-                --     fg = prompt,
-                -- }
-                -- hl.TelescopePreviewTitle = {
-                --     bg = c.bg_dark,
-                --     fg = c.bg_dark,
-                -- }
-                -- hl.TelescopeResultsTitle = {
-                --     bg = c.bg_dark,
-                --     fg = c.bg_dark,
-                -- }
-                -- hl.FloatBorder = {
-                --     bg = c.none,
-                --     fg = c.comment,
-                -- }
-                -- hl.NormalFloat = {
-                --     bg = c.none,
-                -- }
-                -- hl.WhichKeyFloat = {
-                --     bg = c.none,
-                -- }
             end,
 
             cache = true, -- When set to true, the theme will be cached for better performance

@@ -1,3 +1,8 @@
+local function relpath(abs)
+    local ok, rel = pcall(vim.fs.relpath, vim.uv.cwd(), abs)
+    return (ok and rel and rel ~= "" and rel ~= ".") and rel or abs
+end
+
 return {
     "nvim-tree/nvim-tree.lua",
     cmd = { "NvimTreeToggle", "NvimTreeOpen", "NvimTreeFocus", "NvimTreeClose" },
@@ -54,6 +59,19 @@ return {
             vim.keymap.set("n", "l", api.node.open.edit, opts("Open"))
             vim.keymap.set("n", "h", api.node.navigate.parent_close, opts("Close Directory"))
             vim.keymap.set("n", "v", api.node.open.vertical, opts("Open: Vertical Split"))
+
+            -- send the file under cursor to the sidekick AI panel as an @mention,
+            -- overriding the buffer-based <leader>af (nvim-tree's buffer isn't a real file)
+            vim.keymap.set("n", "<leader>af", function()
+                local node = api.tree.get_node_under_cursor()
+                if not node or node.type ~= "file" then
+                    return
+                end
+                require("util.sidekick").send_no_newline({
+                    msg = "@" .. relpath(node.absolute_path),
+                    submit = false,
+                })
+            end, opts("Send File to Sidekick"))
         end
 
         require("nvim-tree").setup({

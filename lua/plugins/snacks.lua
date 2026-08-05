@@ -288,7 +288,24 @@ return {
                     show_empty = true,
                     hidden = true,
                     supports_live = true,
-                    -- exclude = { "yarn.lock", "package-lock.json" },
+                    -- `.env.local` is gitignored, so fd never emitted it -- `exclude`
+                    -- only subtracts, it can't add it back. fd has no per-pattern
+                    -- un-ignore (a negation in --ignore-file loses to .gitignore), so
+                    -- drop --no-ignore and re-exclude the noise by hand.
+                    ignored = true,
+                    exclude = {
+                        "*.log",
+                        ".git",
+                        ".next",
+                        ".nuxt",
+                        ".turbo",
+                        "build",
+                        "coverage",
+                        "dist",
+                        "node_modules",
+                        "target",
+                        "vendor",
+                    },
                     -- In case you want to override the layout for this keymap
                     -- layout = "vscode",
                 })

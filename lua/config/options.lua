@@ -105,15 +105,8 @@ vim.opt.confirm = true -- Ask for confirmation instead of erroring
 vim.opt.completeopt = { "menu", "menuone", "noselect" } -- Set completeopt to have a better completion experience
 
 vim.filetype.add({
-    extension = {
-        env = "dotenv",
-    },
-    filename = {
-        [".env"] = "dotenv",
-        ["env"] = "dotenv",
-    },
     pattern = {
         ["[jt]sconfig.*.json"] = "jsonc",
-        ["%.env%.[%w_.-]+"] = "dotenv",
+        ["%.env%.[%w_.-]+"] = "env",
     },
 })

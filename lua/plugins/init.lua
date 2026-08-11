@@ -14,7 +14,6 @@ return {
     "szw/vim-maximizer",
 
     -- text objects
-    "wellle/targets.vim", -- many useful additional text objects
     "machakann/vim-swap", -- swap delimited items
 
     -- lsp

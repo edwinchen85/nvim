@@ -2,7 +2,7 @@ return {
     "catgoose/nvim-colorizer.lua",
     event = "BufReadPre",
     opts = {
-        filetypes = { "*", "!gitcommit", "!fugitive", "!NvimTree", "!toggleterm", "!markdown" },
+        filetypes = { "*", "!git", "!gitcommit", "!fugitive", "!NvimTree", "!toggleterm", "!markdown" },
         user_commands = true,
         options = {
             parsers = {

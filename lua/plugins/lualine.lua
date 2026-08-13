@@ -85,6 +85,15 @@ return {
                         cond = lazy_status.has_updates,
                         color = { fg = "#ff9e64" },
                     },
+                    {
+                        function()
+                            return "noeol"
+                        end,
+                        cond = function()
+                            return not vim.bo.endofline and vim.bo.buftype == ""
+                        end,
+                        color = { fg = "#ff9e64" },
+                    },
                     { "filetype" },
                 },
             },

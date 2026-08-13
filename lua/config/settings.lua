@@ -317,6 +317,72 @@ vim.api.nvim_create_autocmd("User", {
 -- GitHub-style word-level diff highlights in fugitive status / git diff buffers.
 require("config.fugitive_word_diff").attach()
 
+-- Mark "\ No newline at end of file" inside conflict markers.
+-- Git's merge driver has to append a newline to the last line of a side before
+-- it can write "=======" / ">>>>>>>", so two sides that differ ONLY in their
+-- trailing newline render as identical text. Read the real bytes back from the
+-- index stages and hang the missing-newline note off the line it belongs to.
+local noeol_ns = vim.api.nvim_create_namespace("conflict_noeol")
+
+local function mark_conflict_noeol(buf)
+    vim.api.nvim_buf_clear_namespace(buf, noeol_ns, 0, -1)
+
+    local lines = vim.api.nvim_buf_get_lines(buf, 0, -1, false)
+    local last = #lines
+    -- A missing final newline can only ever affect the file's last line, so this
+    -- is only decidable when the conflict block runs to EOF.
+    if last == 0 or not lines[last]:match("^>>>>>>>") then
+        return
+    end
+
+    -- Walk back over: theirs, [base (diff3/zdiff3)], ours.
+    local sep, base, start
+    for i = last - 1, 1, -1 do
+        local l = lines[i]
+        if l:match("^<<<<<<<") then
+            start = i
+            break
+        elseif l:match("^|||||||") then
+            base = i
+        elseif l:match("^=======$") and not sep then
+            sep = i
+        end
+    end
+    if not (start and sep) then
+        return
+    end
+
+    -- ":<stage>:<path>" resolves against the repo root, so run git from the
+    -- file's own directory and let "./name" do the resolving.
+    local name = vim.api.nvim_buf_get_name(buf)
+    local cwd = vim.fn.fnamemodify(name, ":h")
+    local sides = {
+        { stage = 2, line = (base or sep) - 1, label = "ours" },
+        { stage = 3, line = last - 1, label = "theirs" },
+    }
+    for _, side in ipairs(sides) do
+        local res = vim.system({ "git", "show", ":" .. side.stage .. ":./" .. vim.fn.fnamemodify(name, ":t") }, {
+            cwd = cwd,
+            text = true,
+        }):wait()
+        if res.code == 0 and res.stdout ~= "" and not res.stdout:match("\n$") then
+            vim.api.nvim_buf_set_extmark(buf, noeol_ns, side.line - 1, 0, {
+                virt_text = { { "  \\ No newline at end of file (" .. side.label .. ")", "DiagnosticVirtualTextWarn" } },
+                virt_text_pos = "eol",
+            })
+        end
+    end
+end
+
+vim.api.nvim_create_autocmd({ "BufReadPost", "BufWritePost" }, {
+    group = vim.api.nvim_create_augroup("ConflictNoEol", { clear = true }),
+    callback = function(ev)
+        if vim.bo[ev.buf].buftype == "" then
+            pcall(mark_conflict_noeol, ev.buf)
+        end
+    end,
+})
+
 -- Detach which-key triggers from fugitive status buffer.
 -- which-key's BufEnter runs before fugitive sets `filetype=fugitive`, so its
 -- `disable.ft = { "fugitive" }` check misses and a `g` trigger gets installed,

@@ -33,6 +33,9 @@ function M.send_no_newline(opts)
         Util.exit_visual_mode()
         vim.schedule(function()
             msg = state.tool:format(text)
+            if not opts.submit then
+                msg = msg .. " " -- keep the cursor off the mention when typing continues on the same line
+            end
             state.session:send(msg) -- no trailing \n
             if opts.submit then
                 state.session:submit()

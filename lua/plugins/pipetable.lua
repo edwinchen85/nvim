@@ -39,6 +39,27 @@ function M.config(_, opts)
 
         return on_cursor(buf)
     end
+
+    -- pipetable prints cell text verbatim, so a link shows as `[label](url)`
+    -- while prose a few lines down renders it as `󰌹 label`. Rewrite links for
+    -- display only: `width.fit` is the sole display-side consumer of cell text
+    -- (layout.lua:118), while `format.lua` rewrites the buffer through
+    -- `width.align`, so this can never reach the file. fit() still pads to the
+    -- column width, so columns stay aligned.
+    -- SIMPLIFIED: plain patterns, no nested brackets or escaped `\]`; icons are
+    -- render-markdown's defaults, restated because it exposes no accessor.
+    local width = require("pipetable.width")
+    local fit = width.fit
+    local ICON = { link = "󰌹 ", image = "󰥶 " }
+
+    width.fit = function(s, n, side, ellipsis)
+        if type(s) == "string" and s:find("](", 1, true) then
+            s = s:gsub("!%[([^%]]*)%]%([^%)]*%)", ICON.image .. "%1")
+            s = s:gsub("%[([^%]]*)%]%([^%)]*%)", ICON.link .. "%1")
+        end
+
+        return fit(s, n, side, ellipsis)
+    end
 end
 
 return M

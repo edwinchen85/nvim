@@ -6,5 +6,8 @@ return {
     main = "pipetable",
     -- render-markdown's `pipe_table` is disabled to match -- both on stacks two
     -- sets of borders and they fight over `concealcursor`.
-    opts = {},
+    -- `format_on_edit` repads the table source on commit; without it the raw
+    -- text stays ragged even though the overlay renders aligned, which shows up
+    -- in diffs and anywhere the file is read outside Neovim.
+    opts = { format_on_edit = true },
 }

@@ -67,21 +67,21 @@ Diagnostic virtual text is off by default — toggle via `:ToggleVirtualText`. I
 
 Defined across `lua/config/commands.lua` and `lua/config/settings.lua`.
 
-| Command              | Purpose                              |
-| -------------------- | ------------------------------------ |
-| `:LspRestart`        | Restart LSP server (buffer-scoped)   |
-| `:ToggleVirtualText` | Toggle LSP diagnostic virtual text   |
-| `:ToggleDiagnostics` | Toggle diagnostics on/off            |
-| `:ToggleInlayHint`   | Toggle inlay hints                   |
-| `:ToggleTailwindFold`| Toggle Tailwind class folding        |
-| `:ToggleLocList`     | Toggle location list                 |
-| `:ToggleQuickFix`    | Toggle quickfix list                 |
-| `:ToggleSpell`       | Toggle spell check                   |
-| `:WipeReg`           | Wipe all registers                   |
-| `:Help`              | `:help` for word under cursor        |
-| `:R`                 | `w \| :e` — save + reload buffer     |
-| `:S`                 | `syntax sync clear`                  |
-| `:RotateWindows`     | Rotate window layout                 |
+| Command               | Purpose                            |
+| --------------------- | ---------------------------------- |
+| `:LspRestart`         | Restart LSP server (buffer-scoped) |
+| `:ToggleVirtualText`  | Toggle LSP diagnostic virtual text |
+| `:ToggleDiagnostics`  | Toggle diagnostics on/off          |
+| `:ToggleInlayHint`    | Toggle inlay hints                 |
+| `:ToggleTailwindFold` | Toggle Tailwind class folding      |
+| `:ToggleLocList`      | Toggle location list               |
+| `:ToggleQuickFix`     | Toggle quickfix list               |
+| `:ToggleSpell`        | Toggle spell check                 |
+| `:WipeReg`            | Wipe all registers                 |
+| `:Help`               | `:help` for word under cursor      |
+| `:R`                  | `w \| :e` — save + reload buffer   |
+| `:S`                  | `syntax sync clear`                |
+| `:RotateWindows`      | Rotate window layout               |
 
 ## Directory Conventions
 

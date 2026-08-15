@@ -71,3 +71,12 @@ Open file from git blob
 gf path/to/your/file
 :Gedit
 ```
+
+Table management
+
+```
+# yank table
+yip
+# delete table
+dip
+```

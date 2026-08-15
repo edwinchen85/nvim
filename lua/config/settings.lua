@@ -374,11 +374,48 @@ local function mark_conflict_noeol(buf)
     end
 end
 
+-- Flag a file that has no final newline at all, conflict or not. The block
+-- above only fires when a conflict block runs to EOF; this covers the plain
+-- case, including the file you are left holding once the markers are gone.
+--
+-- Reads the last byte rather than checking 'endofline' on purpose: after a
+-- write with 'fixendofline' on (the default) Neovim appends the newline to the
+-- file but leaves &eol at 0, so the option keeps reporting a state that is no
+-- longer true and the mark would linger on a file that is already fixed.
+local noeol_ns_buf = vim.api.nvim_create_namespace("buf_noeol")
+
+local function mark_buf_noeol(buf)
+    vim.api.nvim_buf_clear_namespace(buf, noeol_ns_buf, 0, -1)
+
+    local path = vim.api.nvim_buf_get_name(buf)
+    local f = path ~= "" and io.open(path, "rb")
+    if not f then
+        return
+    end
+    local size = f:seek("end")
+    if size == 0 then
+        f:close()
+        return
+    end
+    f:seek("set", size - 1)
+    local last = f:read(1)
+    f:close()
+    if last == "\n" then
+        return
+    end
+
+    vim.api.nvim_buf_set_extmark(buf, noeol_ns_buf, vim.api.nvim_buf_line_count(buf) - 1, 0, {
+        virt_text = { { "  \\ No newline at end of file", "DiagnosticVirtualTextWarn" } },
+        virt_text_pos = "eol",
+    })
+end
+
 vim.api.nvim_create_autocmd({ "BufReadPost", "BufWritePost" }, {
     group = vim.api.nvim_create_augroup("ConflictNoEol", { clear = true }),
     callback = function(ev)
         if vim.bo[ev.buf].buftype == "" then
             pcall(mark_conflict_noeol, ev.buf)
+            pcall(mark_buf_noeol, ev.buf)
         end
     end,
 })

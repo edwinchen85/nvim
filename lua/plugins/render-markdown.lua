@@ -7,6 +7,10 @@ return {
     opts = {
         render_modes = { "n", "c" },
         anti_conceal = { enabled = false },
+        -- pipetable owns table rendering; leaving both on stacks two sets of
+        -- borders and they fight over `concealcursor`. See `plugins/pipetable.lua`.
+        pipe_table = { enabled = false },
+        win_options = { concealcursor = { rendered = "nvic" } },
         overrides = {
             buftype = {
                 -- LSP floats are buftype=nofile, filetype=markdown, so they land

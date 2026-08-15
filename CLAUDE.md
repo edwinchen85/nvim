@@ -79,7 +79,7 @@ Defined across `lua/config/commands.lua` and `lua/config/settings.lua`.
 | `:ToggleSpell`       | Toggle spell check                   |
 | `:WipeReg`           | Wipe all registers                   |
 | `:Help`              | `:help` for word under cursor        |
-| `:R`                 | `w | :e` — save + reload buffer      |
+| `:R`                 | `w \| :e` — save + reload buffer     |
 | `:S`                 | `syntax sync clear`                  |
 | `:RotateWindows`     | Rotate window layout                 |
 

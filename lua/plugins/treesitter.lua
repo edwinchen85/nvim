@@ -2,6 +2,10 @@ return { -- Highlight, edit, and navigate code
     "nvim-treesitter/nvim-treesitter",
     build = ":TSUpdate",
     init = function()
+        -- Diff-hunk language injection for fugitive's :Git buffers; drives
+        -- after/queries/diff/injections.scm.
+        require("config.diff_lang").setup()
+
         -- Register html parser for the html_tags pseudo-language used by vue's
         -- injection queries ("; inherits: html_tags"). Without this, neovim 0.12+
         -- fails to resolve the inheritance and all vue injections silently break.
@@ -102,9 +106,9 @@ return { -- Highlight, edit, and navigate code
             -- Some languages depend on vim's regex highlighting system (such as Ruby) for indent rules.
             --  If you are experiencing weird indenting issues, add the language to
             --  the list of additional_vim_regex_highlighting and disabled languages for indent.
-            additional_vim_regex_highlighting = { "ruby" },
+            additional_vim_regex_highlighting = { "ruby", "fugitive", "git" },
         },
-        indent = { enable = true, disable = { "ruby", "vue" } },
+        indent = { enable = true, disable = { "ruby", "vue", "fugitive", "git" } },
         -- matchup is driven by its own plugin spec; textobjects live in
         -- plugins/textobjects.lua — v1.0's setup() ignores both keys.
     },

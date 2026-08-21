@@ -60,6 +60,49 @@ vim.api.nvim_create_autocmd({ "BufWinEnter" }, {
     end,
 })
 
+-- the empty [No Name] buffer nvim opens with (shown as "[Scratch]" in snacks'
+-- buffer picker) outlives its usefulness once a real buffer exists; wipe it
+-- rather than let it clutter the buffer list forever. Deleting it while it's
+-- still the buffer on screen would close the last window (E444), so this only
+-- ever touches copies that aren't displayed anywhere.
+local function wipe_stale_scratch(keep)
+    for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+        -- no line-count/content check: a buffer that's fallen out of every
+        -- window unloads, and an unloaded buffer reports 0 lines regardless
+        -- of what it held -- unnamed + normal buftype + unmodified is already
+        -- specific enough (real unsaved scratch text would be "modified")
+        if
+            buf ~= keep
+            and vim.api.nvim_buf_is_loaded(buf)
+            and vim.bo[buf].buftype == ""
+            and vim.api.nvim_buf_get_name(buf) == ""
+            and not vim.bo[buf].modified
+            and #vim.fn.win_findbuf(buf) == 0
+        then
+            vim.api.nvim_buf_delete(buf, {})
+        end
+    end
+end
+
+vim.api.nvim_create_autocmd("BufAdd", {
+    callback = function(args)
+        -- deferred: the new buffer hasn't landed in its window yet at BufAdd
+        -- time, so the old empty buffer may still be on screen right now
+        vim.schedule(function()
+            wipe_stale_scratch(args.buf)
+        end)
+    end,
+})
+
+-- catches the case BufAdd's defer missed: the empty buffer was still on
+-- screen a tick later too, and only freed up once the window actually
+-- switched onto the new buffer
+vim.api.nvim_create_autocmd("BufEnter", {
+    callback = function(args)
+        wipe_stale_scratch(args.buf)
+    end,
+})
+
 vim.api.nvim_create_autocmd("FileType", {
     group = vim.api.nvim_create_augroup("vertical_help", { clear = true }),
     pattern = "help",

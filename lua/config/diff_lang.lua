@@ -66,6 +66,16 @@ local function resolve(match, _, source, pred, metadata)
         rows[row] = ft
     end
 
+    if ft == "vue" then
+        -- Vue's grammar only highlights content wrapped in <script>/<template>/
+        -- <style> tags; a lone hunk line has none of that structure and parses
+        -- to a bare ERROR node with no captures. Sniff the line itself instead
+        -- of trusting the file's language -- cheap enough to redo every call,
+        -- unlike the file-name walk above, so it isn't part of the row cache.
+        local text = vim.treesitter.get_node_text(node, source)
+        ft = text:match("^.%s*<") and "html" or "typescript"
+    end
+
     if ft then
         metadata["injection.language"] = ft
     end

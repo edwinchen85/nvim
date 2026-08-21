@@ -86,6 +86,26 @@ assert(caps(unknown, 3, 1):match("lua:@"), "sanity, the lua hunk above: " .. cap
 assert(caps(unknown, 6, 1) == "diff:@diff.minus", "language leaked forward: " .. caps(unknown, 6, 1))
 assert(caps(unknown, 7, 1) == "diff:@diff.plus", "language leaked forward: " .. caps(unknown, 7, 1))
 
+-- Vue's own grammar only highlights inside <script>/<template>/<style> tags;
+-- a bare hunk line has none of that structure and parses to an ERROR node with
+-- no captures, so vue files get a per-line sniff instead of the raw filetype.
+local vue = attach([[
+Unstaged (1)
+M src/components/Foo.vue
+@@ -10,3 +10,3 @@
+ const a = 1
+-const b = 2
++const b: number = 2
+M src/components/Bar.vue
+@@ -1,3 +1,3 @@
+ <div class="wrap">
+-  <span>old</span>
++  <span>new</span>
+ </div>]])
+
+assert(caps(vue, 5, 3):match("typescript:@"), "vue script hunk with no <script> tag: " .. caps(vue, 5, 3))
+assert(caps(vue, 9, 3):match("html:@"), "vue template hunk: " .. caps(vue, 9, 3))
+
 -- Resolving the language per hunk line used to walk to the file line every time,
 -- calling vim.filetype.match at each step: ~1900ms for the buffer below. Anything
 -- near that means the row cache or the boundary stop is gone.

@@ -110,3 +110,6 @@ vim.filetype.add({
         ["%.env%.[%w_.-]+"] = "env",
     },
 })
+
+-- "env" has no treesitter grammar of its own; KEY=VALUE lines parse fine as bash.
+vim.treesitter.language.register("bash", "env")

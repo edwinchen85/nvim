@@ -58,7 +58,15 @@ local function resolve(match, _, source, pred, metadata)
                 break
             end
             if NAMES_FILE[n:type()] then
-                ft = vim.filetype.match({ filename = vim.treesitter.get_node_text(n, source) }) or false
+                local text = vim.treesitter.get_node_text(n, source)
+                -- fugitive's status line is "<status-char> <filename>" (see its
+                -- `dict.status . ' ' . dict.filename` format); strip that prefix
+                -- or filetype detection never matches a dotfile like `.env.development`,
+                -- since "M .env.development" satisfies no filetype pattern at all.
+                if n:type() == "unrecognized" then
+                    text = text:match("^%S+%s+(.*)$") or text
+                end
+                ft = vim.filetype.match({ filename = text }) or false
                 break
             end
             n = n:prev_sibling() or n:parent()

@@ -1,7 +1,26 @@
+-- Gitsigns captures hunk-preview highlights (removed side, deleted-preview
+-- virt_lines) from scratch buffers that are never shown in a window.
+-- Treesitter only parses ranges an actual redraw touches, so an off-screen
+-- buffer's tree stays empty and those lines render with no syntax highlight
+-- at all. Force a sync parse right before gitsigns reads captures back out --
+-- every capture path (preview_hunk, preview_hunk_inline, deleted_preview)
+-- routes through this one function.
+local function patch_scratch_buf_highlighting()
+    local capture = require("gitsigns.render.capture")
+    local capture_node = capture.capture_node
+    capture.capture_node = function(bufnr, ...)
+        pcall(function()
+            vim.treesitter.get_parser(bufnr):parse(true)
+        end)
+        return capture_node(bufnr, ...)
+    end
+end
+
 return {
     "lewis6991/gitsigns.nvim",
     event = { "BufReadPre", "BufNewFile" },
     config = function()
+        patch_scratch_buf_highlighting()
         require("gitsigns").setup({
             signs = {
                 add = { text = "▎" },

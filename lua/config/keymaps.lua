@@ -21,6 +21,21 @@ u.map({ "n", "x", "o" }, "<Tab>", "%", { remap = true })
 -- Terminal
 u.tmap("<C-o>", "<C-\\><C-n>")
 
+-- ...but let claude-code's own <C-o> (expand output) and <C-e> (expand/collapse
+-- all) through in CLI terminals -- from normal mode too, so browsing scrollback
+-- doesn't mean typing `i` first.
+vim.api.nvim_create_autocmd("FileType", {
+    pattern = "sidekick_terminal",
+    callback = function(ev)
+        for key, code in pairs({ ["<C-o>"] = "\15", ["<C-e>"] = "\5" }) do
+            vim.keymap.set("t", key, key, { buffer = ev.buf })
+            vim.keymap.set("n", key, function()
+                vim.api.nvim_chan_send(vim.bo[ev.buf].channel, code)
+            end, { buffer = ev.buf })
+        end
+    end,
+})
+
 -- Maximizer
 u.nmap("<C-w>m", ":MaximizerToggle!<cr>")
 

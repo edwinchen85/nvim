@@ -25,6 +25,7 @@ return {
         opts = {
             hl = { grep_match = "FFFGrepMatch" },
             prompt = "❯ ",
+            title = "Files",
             lazy_sync = true,
             wrap_around = false, -- matches snacks `cycle = false`
             -- Mirrors the snacks "ivy" layout: bottom-anchored, half height, preview right.

@@ -8,7 +8,22 @@ return {
             require("fff.download").download_or_build_binary()
         end,
         lazy = false, -- the plugin lazy-initialises itself
+        config = function(_, opts)
+            -- fff pins CursorLine on the preview's target line via a `line_hl_group`
+            -- extmark, and nvim lets that bg override the match extmark's bg
+            -- regardless of priority -- IncSearch degrades to dark-on-CursorLine.
+            -- Swap fg/bg and `reverse` so the surviving fg becomes the visible bg.
+            local function define_hl()
+                local inc = vim.api.nvim_get_hl(0, { name = "IncSearch", link = false })
+                vim.api.nvim_set_hl(0, "FFFGrepMatch", { fg = inc.bg, bg = inc.fg, reverse = true })
+            end
+            define_hl()
+            -- `:colorscheme` (config.theme runs after plugins) wipes custom groups.
+            vim.api.nvim_create_autocmd("ColorScheme", { callback = define_hl })
+            require("fff").setup(opts)
+        end,
         opts = {
+            hl = { grep_match = "FFFGrepMatch" },
             prompt = "❯ ",
             lazy_sync = true,
             wrap_around = false, -- matches snacks `cycle = false`

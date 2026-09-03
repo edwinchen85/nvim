@@ -136,7 +136,36 @@ return {
             {
                 "<leader>fb",
                 function()
-                    require("fff_plus").buffers()
+                    -- Buffer picker renders "[bufnr] % icon path"; restyle to fff's
+                    -- find_files look: "icon name  dir" with the dir dimmed.
+                    local buffers = require("fff_plus.pickers.buffers")
+                    if buffers.state and buffers.state.active then
+                        return
+                    end
+                    local inst = buffers.create()
+                    -- Match text must share the rendered order so fuzzy highlights line up.
+                    local function label(item)
+                        local dir = vim.fn.fnamemodify(item.display_name, ":h")
+                        return item.name .. "  " .. (dir ~= "." and dir or "")
+                    end
+                    inst.spec.text = label
+                    inst.spec.format = function(item)
+                        local icon, icon_hl =
+                            require("fff.file_picker.icons").get_icon(item.name, item.extension, false)
+                        local prefix = (icon or "") .. " "
+                        local flags = (item.modified and " [+]" or "") .. (item.readonly and " [RO]" or "")
+                        return {
+                            text = prefix .. label(item) .. flags,
+                            highlights = {
+                                { group = icon_hl or "Normal", start = 0, finish = #prefix - 1 },
+                                { group = inst.config.hl.directory_path, start = #prefix + #item.name + 2 },
+                            },
+                            match_offset = #prefix,
+                            sign = item.current and { text = "▎", hl = "Conditional" } or nil,
+                        }
+                    end
+                    buffers.state = inst
+                    inst:open()
                 end,
                 desc = "Buffers", -- <C-d> deletes the buffer under cursor
             },
@@ -151,7 +180,13 @@ return {
                 -- buffers + oldfiles + indexed files, deduped and frecency-ranked.
                 "<leader>fr",
                 function()
-                    require("fff_plus").smart()
+                    -- oldfiles is global; keep only entries under cwd so results stay in-repo.
+                    local cwd = vim.fs.normalize(vim.fn.getcwd()) .. "/"
+                    require("fff_plus").smart({
+                        recent_files = vim.tbl_filter(function(p)
+                            return vim.startswith(vim.fs.normalize(p), cwd) and vim.fn.filereadable(p) == 1
+                        end, vim.v.oldfiles),
+                    })
                 end,
                 desc = "Recent",
             },

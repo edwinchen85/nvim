@@ -18,8 +18,13 @@ return {
     keys = {
         {
             "<leader>ft",
+            -- live_grep on todo-comments' keyword regex. Pinned to regex mode: the
+            -- picker defaults to "plain", which matches the pattern literally.
             function()
-                Snacks.picker.todo_comments({ hidden = true })
+                require("fff").live_grep({
+                    query = [[\b(TODO|FIXME|HACK|WARN|PERF|NOTE|TEST)\b:?]],
+                    grep = { modes = { "regex" } },
+                })
             end,
             desc = "Todo",
         },

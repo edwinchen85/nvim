@@ -271,30 +271,9 @@ require("which-key").add({
     {
         "<leader>go",
         function()
-            Snacks.picker.git_status()
+            require("fff_plus").git_status()
         end,
         desc = "Open Changed File",
-    },
-    {
-        "<leader>gb",
-        function()
-            Snacks.picker.git_branches()
-        end,
-        desc = "Checkout Branch",
-    },
-    {
-        "<leader>gc",
-        function()
-            Snacks.picker.git_log()
-        end,
-        desc = "Checkout Commit",
-    },
-    {
-        "<leader>gC",
-        function()
-            Snacks.picker.git_log_file()
-        end,
-        desc = "Checkout Commit(For Current File)",
     },
     { "<leader>gd", "<cmd>:Gdiff!<cr>", desc = "Git Diff" },
     { "<leader>gD", "<cmd>Gtabedit @:% | Gdiff :<cr>", desc = "Git Diff Staged" },

@@ -21,13 +21,9 @@ function M.config()
     }
 
     dashboard.section.buttons.val = {
-        dashboard.button("r", "  Recent files", "<cmd>lua Snacks.picker.recent()<CR>"),
-        dashboard.button(
-            "f",
-            "󰱼  Find file",
-            "<cmd>lua Snacks.picker.files({ finder = 'files', format = 'file', hidden = true, show_empty = true, supports_live = true })<CR>"
-        ),
-        dashboard.button("t", "  Find text", "<cmd>lua Snacks.picker.grep()<CR>"),
+        dashboard.button("r", "  Recent files", "<cmd>lua require('fff_plus').smart()<CR>"),
+        dashboard.button("f", "󰱼  Find file", "<cmd>lua require('fff').find_files()<CR>"),
+        dashboard.button("t", "  Find text", "<cmd>lua require('fff').live_grep()<CR>"),
         dashboard.button("c", "  Configuration", "<cmd>e ~/.config/nvim/init.lua<CR>"),
         dashboard.button("q", "  Quit dashboard", "<cmd>Alpha<CR>"),
     }

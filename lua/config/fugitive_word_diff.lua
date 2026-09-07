@@ -132,7 +132,7 @@ local function set_default_hl()
     -- Pick mid-saturation bg clearly brighter than fugitive's line bg, no fg override
     -- so original syntax colors stay readable.
     vim.api.nvim_set_hl(0, "FugitiveWordDelete", { bg = "#6b1e1e", default = true })
-    vim.api.nvim_set_hl(0, "FugitiveWordAdd", { bg = "#2a4f37", default = true })
+    vim.api.nvim_set_hl(0, "FugitiveWordAdd", { bg = "#11351d", default = true })
 end
 
 local function schedule_highlight(buf)

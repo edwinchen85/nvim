@@ -282,3 +282,43 @@ require("which-key").add({
     { "<leader>gv", "<cmd>GV<cr>", desc = "Git Commit Browser" },
     { "<leader>gx", "<cmd>Gitsigns toggle_deleted<cr>", desc = "Toggle deleted" },
 })
+
+-- Copy a file:line reference to the system clipboard, for pasting into an
+-- agent running OUTSIDE neovim (the workmux "agent" tmux window). Sidekick's
+-- <leader>at covers the in-editor case; this covers the pane next door.
+local function copy_agent_ref(opts)
+    -- "%:." is the current file, relative to cwd
+    local ref = vim.fn.expand("%:.")
+    if opts.visual then
+        -- '< and '> are only set after leaving visual mode, so read the
+        -- live selection: "v" is the anchor, "." is where the cursor is now
+        local s, e = vim.fn.line("v"), vim.fn.line(".")
+        if s > e then
+            s, e = e, s
+        end
+        ref = ref .. ":" .. s .. ":" .. e
+        vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Esc>", true, false, true), "nx", false)
+    end
+    if opts.prompt then
+        local note = vim.fn.input("Prompt (optional): ")
+        if note ~= "" then
+            ref = ref .. " " .. note
+        end
+    else
+        -- trailing space so the paste is ready to type after
+        ref = ref .. " "
+    end
+    vim.fn.setreg("+", ref)
+    vim.notify("Copied: " .. ref)
+end
+for _, m in ipairs({
+    { "<leader>ay", false, "Yank file ref for agent" },
+    { "<leader>aY", true, "Yank file ref for agent + prompt" },
+}) do
+    vim.keymap.set("n", m[1], function()
+        copy_agent_ref({ prompt = m[2] })
+    end, { desc = m[3] })
+    vim.keymap.set("x", m[1], function()
+        copy_agent_ref({ visual = true, prompt = m[2] })
+    end, { desc = m[3]:gsub("file ref", "file + range ref") })
+end

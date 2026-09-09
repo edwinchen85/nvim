@@ -1,13 +1,8 @@
-local api = vim.api
-
-local get_map_options = function(custom_options)
-    return vim.tbl_extend("force", { silent = true }, custom_options or {})
-end
-
 local M = {}
 
-M.map = function(mode, target, source, opts)
-    vim.keymap.set(mode, target, source, get_map_options(opts))
+-- vim.keymap.set with `silent = true` by default.
+M.map = function(mode, lhs, rhs, opts)
+    vim.keymap.set(mode, lhs, rhs, vim.tbl_extend("force", { silent = true }, opts or {}))
 end
 
 for _, mode in ipairs({ "c", "i", "n", "o", "t", "u", "v", "x" }) do
@@ -16,159 +11,9 @@ for _, mode in ipairs({ "c", "i", "n", "o", "t", "u", "v", "x" }) do
     end
 end
 
-M.buf_map = function(bufnr, mode, target, source, opts)
-    opts = opts or {}
-    opts.buffer = bufnr
-
-    M.map(mode, target, source, get_map_options(opts))
-end
-
-M.for_each = function(tbl, cb)
-    for _, v in ipairs(tbl) do
-        cb(v)
-    end
-end
-
-M.replace = function(str, original, replacement)
-    local found, found_end = string.find(str, original, nil, true)
-    if not found then
-        return
-    end
-    return string.sub(str, 0, found - 1) .. replacement .. string.sub(str, found_end + 1)
-end
-
--- make global to make ex commands easier
+-- :lua inspect(vim.lsp.get_clients())
 _G.inspect = function(...)
     print(vim.inspect(...))
-end
-
-M.command = function(name, fn, opts)
-    api.nvim_create_user_command(name, fn, opts or {})
-end
-
-M.buf_command = function(bufnr, name, fn, opts)
-    api.nvim_buf_create_user_command(bufnr, name, fn, opts or {})
-end
-
-M.gfind = function(str, substr, cb, init)
-    local pos = init or 1
-    while true do
-        local s, e = str:find(substr, pos)
-        if not s then
-            break
-        end
-        cb(s, e)
-        pos = e + 1
-    end
-end
-
-M.table = {
-    some = function(tbl, cb)
-        for k, v in pairs(tbl) do
-            if cb(k, v) then
-                return true
-            end
-        end
-        return false
-    end,
-}
-
-M.lua_command = function(name, fn)
-    M.command(name, "lua " .. fn)
-end
-
-M.augroup = function(name, event, fn, ft)
-    local group = api.nvim_create_augroup(name, { clear = true })
-    api.nvim_create_autocmd(event, { group = group, pattern = ft or "*", command = fn })
-end
-
-M.t = function(str)
-    return vim.api.nvim_replace_termcodes(str, true, true, true)
-end
-
-M.input = function(keys, mode)
-    vim.api.nvim_feedkeys(M.t(keys), mode or "i", true)
-end
-
-M.buf_augroup = function(name, event, fn)
-    local group = api.nvim_create_augroup(name, { clear = true })
-    api.nvim_create_autocmd(event, { group = group, pattern = "<buffer>", command = fn })
-end
-
-M.timer = function(timeout, interval, should_start, callback)
-    local close_handle = function(handle)
-        if handle and not handle:is_closing() then
-            handle:close()
-        end
-    end
-
-    interval = interval or 0
-
-    local timer = vim.uv.new_timer()
-    local wrapped = vim.schedule_wrap(callback)
-
-    local start = function()
-        timer:start(timeout, interval, wrapped)
-    end
-    local close = function()
-        close_handle(timer)
-    end
-    local stop = function(should_close)
-        timer:stop()
-        if should_close then
-            close()
-        end
-    end
-    local restart = function(new_timeout, new_interval)
-        timer:stop()
-        timer:start(new_timeout or timeout, new_interval or interval, wrapped)
-    end
-
-    if should_start then
-        timer:start(timeout, interval, wrapped)
-    end
-    return {
-        _timer = timer,
-        start = start,
-        stop = stop,
-        restart = restart,
-        close = close,
-    }
-end
-
-M.warn = function(msg)
-    vim.notify(msg, vim.log.levels.WARN)
-end
-
-M.is_file = function(path)
-    if path == "" then
-        return false
-    end
-
-    local stat = vim.uv.fs_stat(path)
-    return stat and stat.type == "file"
-end
-
-M.make_floating_window = function(custom_window_config, height_ratio, width_ratio)
-    height_ratio = height_ratio or 0.8
-    width_ratio = width_ratio or 0.8
-
-    local height = math.ceil(vim.opt.lines:get() * height_ratio)
-    local width = math.ceil(vim.opt.columns:get() * width_ratio)
-    local window_config = {
-        relative = "editor",
-        style = "minimal",
-        border = "double",
-        width = width,
-        height = height,
-        row = math.ceil((vim.opt.lines:get() - height) / 2),
-        col = math.ceil((vim.opt.columns:get() - width) / 2),
-    }
-    window_config = vim.tbl_extend("force", window_config, custom_window_config or {})
-
-    local bufnr = api.nvim_create_buf(false, true)
-    local winnr = api.nvim_open_win(bufnr, true, window_config)
-    return winnr, bufnr
 end
 
 return M

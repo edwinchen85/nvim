@@ -1,6 +1,3 @@
--- Initialize global object for config
-global = {}
-
 -- macOS: a parent (login env, figterm/Amazon Q, Xcode/Instruments) may export
 -- MallocStackLogging via `launchctl setenv`. nvim inherits it, and when nvim
 -- forks a git job, the child tries to disable logging that was never enabled and

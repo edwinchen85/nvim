@@ -54,9 +54,9 @@ pure core with a check under `lua/config/checks/` (run with `nvim -l <file>`):
   `lua/config/diff_lang.lua` (treesitter diff injections) and the zdiff patch
 
 `lua/config/utils.lua` is **not** required directly from `init.lua`; it is
-loaded transitively by `commands.lua`/`keymaps.lua`/etc. It exposes `map()`,
-`buf_map()`, `command()`, `lua_command()`, and other helpers — read it before
-adding new keymaps or commands.
+loaded by `commands.lua`/`keymaps.lua`. It only holds `map()` and the
+`nmap`/`xmap`/... shorthands (which add `silent = true`) plus a global
+`inspect()`. Commands use `vim.api.nvim_create_user_command` directly.
 
 ### Plugin Structure
 

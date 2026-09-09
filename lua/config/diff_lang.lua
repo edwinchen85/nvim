@@ -29,6 +29,48 @@ local NAMES_FILE = {
 -- alternation, which is just a cold parse; key it by bufnr if that ever shows up.
 local cache = {}
 
+local VUE_BLOCK = { template = "html", script = "javascript", style = "css" }
+local VUE_TAG = "^%s*<(/?)(%a+)([^>]*)>"
+
+-- `<script setup lang="ts">` -> typescript, `<style lang="scss">` -> scss, etc.
+local function vue_block_lang(tag, attrs)
+    local lang = attrs:match("lang=[\"']?(%w+)")
+    return lang and vim.filetype.match({ filename = "x." .. lang }) or VUE_BLOCK[tag]
+end
+
+-- Block open just before post-image line `lnum` of `path`, read from the working
+-- tree; hunks that start mid-block show no tag to go on. Staged diffs may differ
+-- from the working tree by a few lines, which almost never crosses a block tag.
+local function vue_block_before(source, path, lnum)
+    local lines = cache.files[path]
+    if lines == nil then
+        local root = type(source) == "number" and vim.fn.FugitiveWorkTree(source) or ""
+        if root == "" then
+            root = vim.uv.cwd()
+        end
+        lines = vim.fn.filereadable(root .. "/" .. path) == 1 and vim.fn.readfile(root .. "/" .. path) or false
+        cache.files[path] = lines
+    end
+    for i = math.min(lnum - 1, lines and #lines or 0), 1, -1 do
+        local close, tag, attrs = lines[i]:match(VUE_TAG)
+        if VUE_BLOCK[tag] then
+            return close == "" and vue_block_lang(tag, attrs) or false
+        end
+    end
+end
+
+-- fugitive's status line is "<status-char> <filename>" (see its
+-- `dict.status . ' ' . dict.filename` format); strip that prefix or filetype
+-- detection never matches a dotfile like `.env.development`, since
+-- "M .env.development" satisfies no filetype pattern at all. Real diff headers
+-- carry the `+++ b/` prefix, which only matters for reading the file back.
+local function file_path(ty, text)
+    if ty == "unrecognized" then
+        return text:match("^%S+%s+(.*)$") or text
+    end
+    return text:match("^[-+]+ [ab]/(.*)$") or text
+end
+
 local function resolve(match, _, source, pred, metadata)
     local node = match[pred[2]] and match[pred[2]][1]
     if not node then
@@ -39,49 +81,67 @@ local function resolve(match, _, source, pred, metadata)
     if type(source) == "number" then
         local tick = vim.b[source].changedtick
         if cache.buf ~= source or cache.tick ~= tick then
-            cache = { buf = source, tick = tick, rows = {} }
+            cache = { buf = source, tick = tick, rows = {}, files = {} }
         end
         rows = cache.rows
     else
-        rows = {}
+        cache = { rows = {}, files = {} }
+        rows = cache.rows
     end
 
     local row = node:range()
-    local ft = rows[row]
-    if ft == nil then
-        ft = false
+    local info = rows[row]
+    if info == nil then
+        info = { ft = false }
+        local hunk -- post-image start line when the walk crosses a `@@` header
         local n = node:prev_sibling() or node:parent()
         while n do
             local cached = rows[(n:range())]
             if cached ~= nil then
-                ft = cached
+                info.ft, info.path = cached.ft, cached.path
+                if not hunk then
+                    info.block = cached.block
+                end
                 break
             end
-            if NAMES_FILE[n:type()] then
-                local text = vim.treesitter.get_node_text(n, source)
-                -- fugitive's status line is "<status-char> <filename>" (see its
-                -- `dict.status . ' ' . dict.filename` format); strip that prefix
-                -- or filetype detection never matches a dotfile like `.env.development`,
-                -- since "M .env.development" satisfies no filetype pattern at all.
-                if n:type() == "unrecognized" then
-                    text = text:match("^%S+%s+(.*)$") or text
-                end
-                ft = vim.filetype.match({ filename = text }) or false
+            local ty = n:type()
+            if ty == "location" then
+                hunk = tonumber(vim.treesitter.get_node_text(n, source):match("%+(%d+)"))
+            elseif NAMES_FILE[ty] then
+                info.path = file_path(ty, vim.treesitter.get_node_text(n, source))
+                info.ft = vim.filetype.match({ filename = info.path }) or false
                 break
             end
             n = n:prev_sibling() or n:parent()
         end
-        rows[row] = ft
+        if info.ft == "vue" and info.block == nil and hunk then
+            info.block = vue_block_before(source, info.path, hunk)
+        end
+        rows[row] = info
     end
 
+    local ft = info.ft
     if ft == "vue" then
         -- Vue's grammar only highlights content wrapped in <script>/<template>/
-        -- <style> tags; a lone hunk line has none of that structure and parses
-        -- to a bare ERROR node with no captures. Sniff the line itself instead
-        -- of trusting the file's language -- cheap enough to redo every call,
-        -- unlike the file-name walk above, so it isn't part of the row cache.
-        local text = vim.treesitter.get_node_text(node, source)
-        ft = text:match("^.%s*<") and "html" or "typescript"
+        -- <style> tags, and a hunk rarely shows both ends of a block, so inject
+        -- each line with the language of the SFC block it sits in instead.
+        -- `info.block` is the block open after this row; lines inherit it from
+        -- the previous row (matches arrive in document order, so it is cached).
+        -- A block-tag line itself is parsed as html on its own, uncombined: a
+        -- `<script>` start tag inside the combined html tree would otherwise turn
+        -- every later template line into raw_text.
+        local text = vim.treesitter.get_node_text(node, source):sub(2)
+        local close, tag, attrs = text:match(VUE_TAG)
+        if VUE_BLOCK[tag] then
+            info.block = close == "" and vue_block_lang(tag, attrs) or false
+            metadata["injection.combined"] = nil
+            ft = "html"
+        elseif info.block ~= nil then
+            ft = info.block
+        else
+            -- file unreadable and no tag in sight: sniff the line itself
+            ft = text:match("^%s*<") and "html" or "typescript"
+        end
     end
 
     if ft then

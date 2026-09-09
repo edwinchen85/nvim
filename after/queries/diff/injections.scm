@@ -17,6 +17,9 @@
 ; additions) and one over the pre-image (context + deletions). Merging them into
 ; a single tree would interleave both versions of every changed line and parse as
 ; garbage. Context lines land in both trees and just get highlighted twice.
+;
+; `#set!` runs before `#diff-filename!` on purpose: the directive un-combines
+; vue SFC block-tag lines (see config/diff_lang.lua).
 
 ; post-image
 ([
@@ -24,8 +27,8 @@
   (addition)
 ] @injection.content
   (#offset! @injection.content 0 1 0 1)
-  (#diff-filename! @injection.content)
-  (#set! injection.combined))
+  (#set! injection.combined)
+  (#diff-filename! @injection.content))
 
 ; pre-image
 ([
@@ -33,5 +36,5 @@
   (deletion)
 ] @injection.content
   (#offset! @injection.content 0 1 0 1)
-  (#diff-filename! @injection.content)
-  (#set! injection.combined))
+  (#set! injection.combined)
+  (#diff-filename! @injection.content))

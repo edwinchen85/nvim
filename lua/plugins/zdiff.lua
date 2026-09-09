@@ -1,51 +1,23 @@
 -- Vue's own highlights query only covers the SFC tag structure; the actual
 -- script/template content is normally shown via treesitter language
 -- injection, which zdiff's homemade single-language highlighter never
--- resolves. Sniff out the <script>/<template>/<style> blocks ourselves and
--- re-highlight each with its real language.
--- SIMPLIFIED: blocks are found by matching literal opening/closing tag lines,
--- not by walking the vue tree; upgrade to a real query if a block ever shares
--- a line with its tag (e.g. prettier stops putting them on their own line).
-local block_lang = { script = "typescript", template = "html", style = "css" }
+-- resolves. Split the hunk into SFC blocks (config/vue_blocks, shared with the
+-- fugitive diff injections) and re-highlight each with its real language.
+local vue = require("config.vue_blocks")
 
 -- Zdiff paints once synchronously (bare hunk lines, no wrapper tags) before
--- its async git-show projection lands and repaints with the real thing. An
--- empty first pass here means a visible flash from blank to colored once the
--- projection resolves, so bare lines with no tags in sight get sniffed
--- per-line (same heuristic as lua/config/diff_lang.lua) instead of skipped.
-local function sniff_vue_line(line)
-    return line:match("^%s*<") and "html" or "typescript"
-end
-
+-- its async git-show projection lands and repaints with the real thing; lines
+-- before any tag get sniffed per line rather than skipped, so that first pass
+-- is not blank.
 local function vue_blocks(code)
-    local blocks, block, found_tag = {}, nil, false
+    local blocks, block = {}, nil
     for i, line in ipairs(code) do
-        if block then
-            if line:match("^%s*</" .. block.tag .. ">%s*$") then
-                if #block.lines > 0 then
-                    table.insert(blocks, block)
-                end
-                block = nil
-            else
-                table.insert(block.lines, line)
-            end
-        else
-            local tag = line:match("^%s*<(%a+)[^>]*>%s*$")
-            if tag and block_lang[tag] then
-                found_tag = true
-                block = { tag = tag, lang = block_lang[tag], lines = {}, line_offset = i }
-            end
-        end
-    end
-
-    if found_tag then
-        return blocks
-    end
-
-    for i, line in ipairs(code) do
-        local lang = sniff_vue_line(line)
+        local lang
+        lang, block = vue.step(block, line)
         local prev = blocks[#blocks]
-        if prev and prev.lang == lang then
+        if not lang then
+            -- outside any block: nothing to highlight
+        elseif prev and prev.lang == lang and prev.line_offset + #prev.lines == i - 1 then
             table.insert(prev.lines, line)
         else
             table.insert(blocks, { lang = lang, lines = { line }, line_offset = i - 1 })

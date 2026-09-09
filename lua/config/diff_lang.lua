@@ -29,14 +29,7 @@ local NAMES_FILE = {
 -- alternation, which is just a cold parse; key it by bufnr if that ever shows up.
 local cache = {}
 
-local VUE_BLOCK = { template = "html", script = "javascript", style = "css" }
-local VUE_TAG = "^%s*<(/?)(%a+)([^>]*)>"
-
--- `<script setup lang="ts">` -> typescript, `<style lang="scss">` -> scss, etc.
-local function vue_block_lang(tag, attrs)
-    local lang = attrs:match("lang=[\"']?(%w+)")
-    return lang and vim.filetype.match({ filename = "x." .. lang }) or VUE_BLOCK[tag]
-end
+local vue = require("config.vue_blocks")
 
 -- Block open just before post-image line `lnum` of `path`, read from the working
 -- tree; hunks that start mid-block show no tag to go on. Staged diffs may differ
@@ -44,7 +37,10 @@ end
 local function vue_block_before(source, path, lnum)
     local lines = cache.files[path]
     if lines == nil then
-        local root = type(source) == "number" and vim.fn.FugitiveWorkTree(source) or ""
+        local root = type(source) == "number"
+                and vim.fn.exists("*FugitiveWorkTree") == 1
+                and vim.fn.FugitiveWorkTree(source)
+            or ""
         if root == "" then
             root = vim.uv.cwd()
         end
@@ -52,9 +48,9 @@ local function vue_block_before(source, path, lnum)
         cache.files[path] = lines
     end
     for i = math.min(lnum - 1, lines and #lines or 0), 1, -1 do
-        local close, tag, attrs = lines[i]:match(VUE_TAG)
-        if VUE_BLOCK[tag] then
-            return close == "" and vue_block_lang(tag, attrs) or false
+        local block = vue.open_block(lines[i])
+        if block ~= nil then
+            return block
         end
     end
 end
@@ -133,21 +129,15 @@ local function resolve(match, _, source, pred, metadata)
         -- Vue's grammar only highlights content wrapped in <script>/<template>/
         -- <style> tags, and a hunk rarely shows both ends of a block, so inject
         -- each line with the language of the SFC block it sits in instead.
-        -- `info.block` is the block open after this row; lines inherit it from
+        -- `info.block` is the block state after this row; lines inherit it from
         -- the previous row (matches arrive in document order, so it is cached).
         -- A block-tag line itself is parsed as html on its own, uncombined: a
         -- `<script>` start tag inside the combined html tree would otherwise turn
         -- every later template line into raw_text.
-        local close, tag, attrs = text:match(VUE_TAG)
-        if VUE_BLOCK[tag] then
-            info.block = close == "" and vue_block_lang(tag, attrs) or false
+        local is_tag
+        ft, info.block, is_tag = vue.step(info.block, text)
+        if is_tag then
             metadata["injection.combined"] = nil
-            ft = "html"
-        elseif info.block ~= nil then
-            ft = info.block
-        else
-            -- file unreadable and no tag in sight: sniff the line itself
-            ft = text:match("^%s*<") and "html" or "typescript"
         end
     end
 

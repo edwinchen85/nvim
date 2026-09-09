@@ -374,20 +374,21 @@ local function mark_conflict_noeol(buf)
     local last = #lines
     -- A missing final newline can only ever affect the file's last line, so this
     -- is only decidable when the conflict block runs to EOF.
-    if last == 0 or not lines[last]:match("^>>>>>>>") then
+    local marker = require("config.conflict_markers").marker
+    if last == 0 or marker(lines[last]) ~= "end" then
         return
     end
 
     -- Walk back over: theirs, [base (diff3/zdiff3)], ours.
     local sep, base, start
     for i = last - 1, 1, -1 do
-        local l = lines[i]
-        if l:match("^<<<<<<<") then
+        local kind = marker(lines[i])
+        if kind == "start" then
             start = i
             break
-        elseif l:match("^|||||||") then
+        elseif kind == "base" then
             base = i
-        elseif l:match("^=======$") and not sep then
+        elseif kind == "sep" and not sep then
             sep = i
         end
     end

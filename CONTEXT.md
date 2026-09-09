@@ -15,3 +15,9 @@ avoid re-deriving or re-suggesting.
   patch. Block state is a language string, `false` (outside any block) or
   `nil` (unknown, sniff the line's shape). Bare `<script>` defaults to
   typescript.
+- **Conflict marker** — a `<<<<<<<`, `|||||||` (diff3 base), `=======` or
+  `>>>>>>>` line. Classified by `lua/config/conflict_markers.lua` (`marker(line)
+  -> start|base|sep|end`), used by the diff injections, the fugitive no-EOL
+  marks and the render-markdown patch. Not used by the `<leader>x` resolve
+  keymaps, which are whole-buffer `:s` regexes and do not yet handle the diff3
+  base section.

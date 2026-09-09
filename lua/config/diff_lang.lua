@@ -30,6 +30,7 @@ local NAMES_FILE = {
 local cache = {}
 
 local vue = require("config.vue_blocks")
+local conflict = require("config.conflict_markers")
 
 -- Block open just before post-image line `lnum` of `path`, read from the working
 -- tree; hunks that start mid-block show no tag to go on. Staged diffs may differ
@@ -120,7 +121,7 @@ local function resolve(match, _, source, pred, metadata)
     -- Conflict markers are valid markdown by accident (nested quotes, a setext
     -- heading) and garbage in every other language: leave them to the diff
     -- highlight alone so all three colour like the surrounding +/- lines.
-    if text:match("^([<=>])%1%1%1%1%1%1") then
+    if conflict.marker(text) then
         return
     end
 

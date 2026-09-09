@@ -41,6 +41,18 @@ if none is mapped for the filetype.
 7. `pcall(require, "config.theme")` — optional theme module kept in a separate
    repo
 
+Git/diff helpers required from `settings.lua`, each exposing `setup()` and a
+pure core with a check under `lua/config/checks/` (run with `nvim -l <file>`):
+
+- `lua/config/fugitive.lua` — status-buffer behaviours: conflict warnings
+  (`conflicts()` pure), which-key detach, `q` maps, and
+  `lua/config/fugitive_word_diff.lua` (word-level diff highlights)
+- `lua/config/noeol.lua` — "No newline at end of file" marks, plain and inside
+  conflict blocks
+- `lua/config/conflict_markers.lua` — `marker(line)` classifier
+- `lua/config/vue_blocks.lua` — Vue SFC block tracking shared by
+  `lua/config/diff_lang.lua` (treesitter diff injections) and the zdiff patch
+
 `lua/config/utils.lua` is **not** required directly from `init.lua`; it is
 loaded transitively by `commands.lua`/`keymaps.lua`/etc. It exposes `map()`,
 `buf_map()`, `command()`, `lua_command()`, and other helpers — read it before

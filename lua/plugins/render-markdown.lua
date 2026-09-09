@@ -53,6 +53,22 @@ function M.config(_, opts)
 
         return setup(self)
     end
+
+    -- Git conflict markers parse as markdown: `>>>>>>> branch` is seven nested
+    -- block quotes (a wall of quote bars), `<<<<<<< HEAD` over `=======` is a
+    -- setext H1. Skip rendering nodes whose first line is a marker.
+    for name, marker in pairs({ quote = "^>>>>>>> ", heading = "^<<<<<<< " }) do
+        local render = require("render-markdown.render.markdown." .. name)
+        local render_setup = render.setup
+        render.setup = function(self)
+            local row = self.node.start_row
+            local line = vim.api.nvim_buf_get_lines(self.context.buf, row, row + 1, false)[1] or ""
+            if line:match(marker) then
+                return false
+            end
+            return render_setup(self)
+        end
+    end
 end
 
 return M

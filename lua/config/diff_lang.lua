@@ -120,6 +120,14 @@ local function resolve(match, _, source, pred, metadata)
         rows[row] = info
     end
 
+    local text = vim.treesitter.get_node_text(node, source):sub(2)
+    -- Conflict markers are valid markdown by accident (nested quotes, a setext
+    -- heading) and garbage in every other language: leave them to the diff
+    -- highlight alone so all three colour like the surrounding +/- lines.
+    if text:match("^([<=>])%1%1%1%1%1%1") then
+        return
+    end
+
     local ft = info.ft
     if ft == "vue" then
         -- Vue's grammar only highlights content wrapped in <script>/<template>/
@@ -130,7 +138,6 @@ local function resolve(match, _, source, pred, metadata)
         -- A block-tag line itself is parsed as html on its own, uncombined: a
         -- `<script>` start tag inside the combined html tree would otherwise turn
         -- every later template line into raw_text.
-        local text = vim.treesitter.get_node_text(node, source):sub(2)
         local close, tag, attrs = text:match(VUE_TAG)
         if VUE_BLOCK[tag] then
             info.block = close == "" and vue_block_lang(tag, attrs) or false

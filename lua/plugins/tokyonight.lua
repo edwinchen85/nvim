@@ -58,6 +58,12 @@ return {
                 -- rounded border visible without the accent.
                 hl.FloatBorder = { fg = c.comment, bg = c.bg_float }
 
+                -- Git conflict markers in markdown, see after/queries/markdown/
+                -- highlights.scm. Needs a real fg: an empty group like @none
+                -- never overrides the quote/heading colour underneath, and the heading
+                -- bg and bold / quote italic only go away with an explicit bg and nocombine.
+                hl["@conflict.marker"] = { fg = c.fg, bg = c.bg, nocombine = true }
+
                 -- Default WinSeparator is near-black, reading as a heavy line
                 -- between splits. `comment` (#565f89) matches FloatBorder above
                 -- for a subtle grey divider instead.

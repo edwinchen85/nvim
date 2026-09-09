@@ -182,21 +182,23 @@ vim.keymap.set("n", "<M-o>", open_in_file_manager, { desc = "Open file" })
 u.xmap("[n", "<Plug>(unimpaired-context-previous)", { remap = true })
 u.xmap("]n", "<Plug>(unimpaired-context-next)", { remap = true })
 
--- Merge conflict resolution keybindings
+-- Merge conflict resolution keybindings. The optional `|||||||` group drops a
+-- diff3/zdiff3 base section along with whichever side is discarded.
+local BASE = "\\%(|||||||.*\\n\\_.\\{-}\\)\\?"
 require("which-key").add({ { "<leader>x", group = "Conflict" } })
 
 vim.keymap.set("n", "<leader>xo", function()
-    vim.cmd("%s/^<<<<<<<.*\\n\\(\\_.\\{-}\\)=======.*\\n\\_.\\{-}>>>>>>>.*\\n/\\1/e")
+    vim.cmd("%s/^<<<<<<<.*\\n\\(\\_.\\{-}\\)" .. BASE .. "=======.*\\n\\_.\\{-}>>>>>>>.*\\n/\\1/e")
     vim.cmd("nohlsearch")
 end, { desc = "Accept ours (current branch)" })
 
 vim.keymap.set("n", "<leader>xt", function()
-    vim.cmd("%s/^<<<<<<<.*\\n\\_.\\{-}=======.*\\n\\(\\_.\\{-}\\)>>>>>>>.*\\n/\\1/e")
+    vim.cmd("%s/^<<<<<<<.*\\n\\_.\\{-}" .. BASE .. "=======.*\\n\\(\\_.\\{-}\\)>>>>>>>.*\\n/\\1/e")
     vim.cmd("nohlsearch")
 end, { desc = "Accept theirs (incoming branch)" })
 
 vim.keymap.set("n", "<leader>xb", function()
-    vim.cmd("%s/^<<<<<<<.*\\n\\(\\_.\\{-}\\)=======.*\\n\\(\\_.\\{-}\\)>>>>>>>.*\\n/\\1\\2/e")
+    vim.cmd("%s/^<<<<<<<.*\\n\\(\\_.\\{-}\\)" .. BASE .. "=======.*\\n\\(\\_.\\{-}\\)>>>>>>>.*\\n/\\1\\2/e")
     vim.cmd("nohlsearch")
 end, { desc = "Accept both" })
 

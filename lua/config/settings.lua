@@ -1,29 +1,4 @@
 local api = vim.api
--- Use spelling for markdown files ]s to find next, [s for previous, z= for suggestions when on one.
--- Source: http:--thejakeharding.com/tutorial/2012/06/13/using-spell-check-in-vim.html
-vim.api.nvim_exec2(
-    [[
-        augroup markdownSpell
-        autocmd!
-        autocmd FileType markdown,md,txt setlocal spell
-        autocmd BufRead,BufNewFile *.md,*.txt,*.markdown setlocal spell
-        augroup END
-    ]],
-    {}
-)
-
--- format markdown
-vim.api.nvim_exec2(
-    [[
-        augroup markdownFormat
-        autocmd!
-        autocmd FileType md setlocal formatprg=pandoc\ -t\ commonmark_x
-        autocmd FileType md setlocal equalprg=pandoc\ -t\ commonmark_x
-        augroup END
-    ]],
-    {}
-)
-
 -- disable modifyOtherKeys after nvim terminal init (fixes Cmd+V paste in Ghostty+tmux)
 -- restore is handled by shell wrapper in ~/.zshrc after nvim exits
 vim.api.nvim_create_autocmd({ "VimEnter" }, {
@@ -44,12 +19,6 @@ vim.api.nvim_create_autocmd({ "BufWinEnter" }, {
 vim.api.nvim_create_autocmd({ "CmdWinEnter" }, {
     callback = function()
         vim.cmd("quit")
-    end,
-})
-
-vim.api.nvim_create_autocmd({ "VimResized" }, {
-    callback = function()
-        vim.cmd("tabdo wincmd =")
     end,
 })
 
@@ -142,17 +111,6 @@ vim.api.nvim_create_autocmd("CmdlineLeave", {
 vim.cmd([[autocmd FileType help,lspinfo,man,qf,netrw,tsplayground nnoremap <buffer><silent> q :close<CR>]])
 
 -- wrap and spell for commit messages
-vim.api.nvim_create_autocmd({ "FileType" }, {
-    group = vim.api.nvim_create_augroup("edit_text", { clear = true }),
-    pattern = { "markdown", "txt" },
-    desc = "Enable spell checking and text wrapping for certain filetypes",
-    callback = function()
-        vim.opt_local.wrap = true
-        vim.opt_local.spell = true
-        vim.opt_local.conceallevel = 2
-    end,
-})
-
 vim.api.nvim_create_autocmd({ "CursorHold" }, {
     callback = function()
         local status_ok, luasnip = pcall(require, "luasnip")
@@ -217,21 +175,8 @@ end, {})
 -- resize windows
 vim.api.nvim_create_autocmd("VimResized", {
     group = vim.api.nvim_create_augroup("WinResize", { clear = true }),
-    pattern = "*",
-    command = "wincmd =",
-    desc = "Auto-resize windows on terminal buffer resize.",
-})
-
--- diagnostic signs
-vim.diagnostic.config({
-    signs = {
-        text = {
-            [vim.diagnostic.severity.ERROR] = "",
-            [vim.diagnostic.severity.WARN] = "",
-            [vim.diagnostic.severity.INFO] = "",
-            [vim.diagnostic.severity.HINT] = "󰌵",
-        },
-    },
+    command = "tabdo wincmd =",
+    desc = "Auto-resize windows on terminal resize.",
 })
 
 -- toggle diagnostics

@@ -54,6 +54,10 @@ local function toggle_inlay_hint()
     if not was_enabled then
         local bufstates = get_bufstates()
         if not bufstates then
+            vim.notify_once(
+                "inlay hint: `bufstates` upvalue gone; drop the multi-client workaround",
+                vim.log.levels.WARN
+            )
             return
         end
         -- After each response window, clear applied[] and force redraw so newly arrived

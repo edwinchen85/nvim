@@ -138,5 +138,4 @@ Defined across `lua/config/commands.lua` and `lua/config/settings.lua`.
 - `ftplugin/` — filetype-specific buffer settings loaded automatically by Neovim
 - `plugin/ft.lua` — early filetype detection overrides
 - `queries/` — custom treesitter queries
-- `snippets/` — custom LuaSnip snippet files
 - `spell/` — spellfile additions

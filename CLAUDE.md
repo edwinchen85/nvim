@@ -99,12 +99,36 @@ hints arrive once enabled, not whether they show.
 `gt`=type definition, `ga`=code actions, `gR`=rename, `gl`=line diagnostics,
 `K`=hover, `[d`/`]d`=prev/next diagnostic, `<leader>rs`=`:LspRestart`
 
+### Completion
+
+**blink.cmp** (`lua/plugins/blink.lua`) drives completion; `version = "1.*"` so
+the prebuilt fuzzy binary is downloaded instead of built with cargo. It
+registers its own LSP client capabilities via `vim.lsp.config("*")`, so
+`lua/plugins/lsp/lsp.lua` carries no completion-related capability wiring.
+
+- sources: `lsp`, `path`, `snippets`, `buffer`, `ripgrep` (blink-ripgrep.nvim,
+  `prefix_min_len = 3`, gitgrep-or-ripgrep backend)
+- keymap preset is `none` — every key is spelled out, carried over from the old
+  cmp config: `<C-k>`/`<C-j>` select, `<C-b>`/`<C-f>` scroll docs, `<C-c>` show,
+  `<C-e>` hide, `<CR>` accept. `<Tab>`/`<S-Tab>`, `<C-p>`/`<C-n>` and
+  `<Up>`/`<Down>` are left unmapped in both modes. The cmdline keymap is the
+  same minus the docs scroll; its `<CR>` branches on `vim.fn.getcmdtype()` —
+  `/` and `?` accept *and* execute, `:` only inserts (a second `<CR>` runs it),
+  and with nothing selected both fall through to a plain `<CR>` that runs the
+  line as typed.
+- snippets come from **LuaSnip** (`lua/plugins/luasnip.lua`) plus
+  friendly-snippets, loaded with
+  `require("luasnip.loaders.from_vscode").lazy_load()`.
+
+`lua/plugins/cmp.lua` (nvim-cmp) is kept but `enabled = false` for rollback —
+flip that flag and disable blink to swap back. Its long comments describe cmp's
+float-padding internals and do not apply to blink.
+
 ### AI Plugins
 
 - **sidekick.nvim** (`lua/plugins/sidekick.lua`) — primary AI sidebar / CLI
-  integration (Folke)
-(`supermaven-nvim`, `avante.nvim`, `codeium.nvim`, and GitHub Copilot have been
-removed.)
+  integration (Folke) (`supermaven-nvim`, `avante.nvim`, `codeium.nvim`, and
+  GitHub Copilot have been removed.)
 
 ## Key Custom Commands
 

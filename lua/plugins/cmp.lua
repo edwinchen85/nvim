@@ -1,5 +1,8 @@
+-- Disabled: blink.cmp (lua/plugins/blink.lua) drives completion now. Kept for
+-- reference / easy rollback -- flip `enabled` to swap back and disable blink.
 return {
     "hrsh7th/nvim-cmp",
+    enabled = false,
     event = { "InsertEnter", "CmdlineEnter" },
     dependencies = {
         { "hrsh7th/cmp-nvim-lsp", event = "InsertEnter" },

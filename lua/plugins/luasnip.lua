@@ -1,7 +1,10 @@
--- Kept only as cmp's snippet engine: cmp.lua calls `luasnip.lsp_expand` to
--- expand LSP completion snippets, and cmp_luasnip is a source. No snippet
--- collections are loaded.
+-- blink.cmp's snippet engine (`snippets = { preset = "luasnip" }`).
+-- friendly-snippets supplies the only snippet collection.
 return {
     "L3MON4D3/LuaSnip",
     event = "InsertEnter",
+    dependencies = { "rafamadriz/friendly-snippets" },
+    config = function()
+        require("luasnip.loaders.from_vscode").lazy_load()
+    end,
 }

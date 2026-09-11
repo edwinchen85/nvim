@@ -68,10 +68,10 @@ vim.diagnostic.config({
     float = border_opts,
     signs = {
         text = {
-            [severity.ERROR] = "",
-            [severity.WARN] = "",
-            [severity.INFO] = "",
-            [severity.HINT] = "󰌵",
+            [severity.ERROR] = " ",
+            [severity.WARN] = " ",
+            [severity.INFO] = " ",
+            [severity.HINT] = " ",
         },
     },
 })

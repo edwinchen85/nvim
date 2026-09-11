@@ -19,9 +19,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
         map("n", "]d", function()
             vim.diagnostic.jump({ count = 1, on_jump = vim.diagnostic.open_float })
         end, "Go to next diagnostic")
-        map("n", "K", function()
-            vim.lsp.buf.hover({ border = "rounded" })
-        end, "Show documentation for what is under cursor")
+        map("n", "K", vim.lsp.buf.hover, "Show documentation for what is under cursor")
         map("n", "<leader>rs", ":LspRestart<CR>", "Restart LSP")
     end,
 })
@@ -53,8 +51,9 @@ vim.lsp.util.open_floating_preview = function(contents, syntax, opts, ...)
     return open_floating_preview(contents, syntax, opts, ...)
 end
 
+-- No `border`: open_floating_preview falls back to `vim.o.winborder`
+-- (lsp/util.lua:37), set to "rounded" in config/options.lua.
 local border_opts = {
-    border = "rounded",
     focusable = true,
     style = "minimal",
     source = true,

@@ -76,6 +76,7 @@ vim.opt.diffopt = "algorithm:histogram,closeoff,hiddenoff,filler,indent-heuristi
 vim.opt.tabstop = 4
 vim.opt.termguicolors = true -- You will have bad experience for diagnostic messages when it's default 4000.
 vim.opt.wrap = false -- display lines as one long line
+vim.opt.winborder = "rounded" -- default border for floats that do not set their own
 vim.opt.undofile = true
 vim.opt.redrawtime = 10000 -- Allow more time to for loading syntax on large files
 vim.opt.updatetime = 250

@@ -46,8 +46,8 @@ return {
             update_debounce = 200,
             status_formatter = nil, -- Use default
             preview_config = {
-                -- Options passed to nvim_open_win
-                border = "rounded",
+                -- Options passed to nvim_open_win; no `border`, so the popup
+                -- picks up `vim.o.winborder` (gitsigns/popup.lua:28).
                 style = "minimal",
                 relative = "cursor",
                 row = 0,

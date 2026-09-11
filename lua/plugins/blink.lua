@@ -34,29 +34,12 @@ return {
                 ["<C-j>"] = { "select_next", "fallback" },
                 ["<C-c>"] = { "show", "fallback" },
                 ["<C-e>"] = { "cancel", "fallback" },
-                -- One cmdline keymap covers `:`, `/` and `?`, so the split lives
-                -- inside the function -- it receives `require("blink.cmp")` and
-                -- a truthy return consumes the key, falsy falls through to the
-                -- next entry (keymap/apply.lua:170).
-                --
-                -- `:` inserts only, never executes: a completed command usually
-                -- takes more args, so it is two presses -- one to insert, one to
-                -- run. `/` and `?` execute straight away; there is nothing to
-                -- chain after a pattern.
-                --
-                -- Both `accept*` bail when nothing is selected (init.lua:160),
-                -- so a bare <CR> reaches "fallback" and runs the line as typed.
-                ["<CR>"] = {
-                    function(cmp)
-                        if vim.fn.getcmdtype() ~= ":" then
-                            return cmp.accept_and_enter()
-                        end
-                    end,
-                    "accept",
-                    "fallback",
-                },
+                ["<CR>"] = { "accept_and_enter", "fallback" },
             },
-            completion = { menu = { auto_show = true } },
+            completion = {
+                menu = { auto_show = true },
+                list = { selection = { preselect = false, auto_insert = false } },
+            },
         },
         appearance = {
             kind_icons = {
@@ -88,6 +71,7 @@ return {
             },
         },
         completion = {
+            list = { selection = { preselect = false, auto_insert = false } },
             menu = {
                 auto_show = true,
                 draw = {

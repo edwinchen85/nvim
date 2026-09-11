@@ -112,10 +112,15 @@ registers its own LSP client capabilities via `vim.lsp.config("*")`, so
   cmp config: `<C-k>`/`<C-j>` select, `<C-b>`/`<C-f>` scroll docs, `<C-c>` show,
   `<C-e>` hide, `<CR>` accept. `<Tab>`/`<S-Tab>`, `<C-p>`/`<C-n>` and
   `<Up>`/`<Down>` are left unmapped in both modes. The cmdline keymap is the
-  same minus the docs scroll; its `<CR>` branches on `vim.fn.getcmdtype()` —
-  `/` and `?` accept *and* execute, `:` only inserts (a second `<CR>` runs it),
-  and with nothing selected both fall through to a plain `<CR>` that runs the
-  line as typed.
+  same minus the docs scroll, with `<C-e>` = `cancel` and `<CR>` =
+  `accept_and_enter` (insert the selection _and_ execute). Note this diverges
+  from blink's own `cmdline` preset, whose `<Tab>`/`<S-Tab>` open the menu and
+  insert the first/last item — that would defeat the noselect setup below.
+- selection is `preselect = false, auto_insert = false` in both the insert and
+  cmdline menus (cmp's `noinsert,noselect`): nothing is highlighted until you
+  move with `<C-j>`/`<C-k>`, and moving does not write into the buffer. Since
+  `accept`/`accept_and_enter` bail when nothing is selected, `<CR>` falls
+  through to a plain `<CR>` until you have moved into the menu.
 - snippets come from **LuaSnip** (`lua/plugins/luasnip.lua`) plus
   friendly-snippets, loaded with
   `require("luasnip.loaders.from_vscode").lazy_load()`.

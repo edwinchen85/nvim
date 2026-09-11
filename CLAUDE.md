@@ -103,11 +103,8 @@ hints arrive once enabled, not whether they show.
 
 - **sidekick.nvim** (`lua/plugins/sidekick.lua`) — primary AI sidebar / CLI
   integration (Folke)
-- **supermaven-nvim** (`lua/plugins/supermaven.lua`) — installed but
-  `condition = function() return false end` keeps inline completion disabled;
-  cmp source still references it
-
-(`avante.nvim`, `codeium.nvim`, and GitHub Copilot have been removed.)
+(`supermaven-nvim`, `avante.nvim`, `codeium.nvim`, and GitHub Copilot have been
+removed.)
 
 ## Key Custom Commands
 

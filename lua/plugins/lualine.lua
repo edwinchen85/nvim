@@ -14,6 +14,9 @@ return {
             color6 = "#a1aab8",
             color7 = "#828697",
             color8 = "#ae81ff",
+            color9 = tokyonight_colors.yellow,
+            color10 = tokyonight_colors.green,
+            color11 = tokyonight_colors.orange,
         }
         local my_lualine_theme = {
             replace = {
@@ -36,6 +39,22 @@ return {
             },
             insert = {
                 a = { fg = colors.color0, bg = colors.color2, gui = "bold" },
+                b = { fg = colors.color2, bg = colors.color3 },
+            },
+            -- lualine renders select mode with the `visual` theme and has no
+            -- `select` key of its own; these three exist for the statusline
+            -- (command, terminal) and for modicator, which reads `a.bg` per mode
+            -- and otherwise falls back to `normal`'s grey for all three.
+            command = {
+                a = { fg = colors.color0, bg = colors.color9, gui = "bold" },
+                b = { fg = colors.color2, bg = colors.color3 },
+            },
+            terminal = {
+                a = { fg = colors.color0, bg = colors.color10, gui = "bold" },
+                b = { fg = colors.color2, bg = colors.color3 },
+            },
+            select = {
+                a = { fg = colors.color0, bg = colors.color11, gui = "bold" },
                 b = { fg = colors.color2, bg = colors.color3 },
             },
         }

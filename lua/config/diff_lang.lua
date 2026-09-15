@@ -147,10 +147,50 @@ local function resolve(match, _, source, pred, metadata)
     end
 end
 
+-- Row (0-based) of the first diff header (`diff --git`, `diff --cc`), or nil.
+-- Everything above it in an ft=git buffer is the commit object: header, blank
+-- line, then the message.
+function M.diff_start(lines)
+    for i, line in ipairs(lines) do
+        if line:match("^diff %-%-%a") then
+            return i - 1
+        end
+    end
+end
+
+-- Fugitive's ft=git commit buffers are a commit object followed by its diff, but
+-- the whole buffer goes through the diff parser, so a message bullet (`- Drop the
+-- cast.`) parses as a deletion and colours red. Clip the parser to the diff.
+local function clip_to_diff(buf)
+    local row = M.diff_start(vim.api.nvim_buf_get_lines(buf, 0, -1, false))
+    if not row or row == 0 then
+        return
+    end
+    local ok, parser = pcall(vim.treesitter.get_parser, buf, "diff")
+    if not ok or not parser then
+        return
+    end
+    local last = vim.api.nvim_buf_line_count(buf)
+    local offset = vim.api.nvim_buf_get_offset
+    parser:set_included_regions({ { { row, 0, offset(buf, row), last, 0, offset(buf, last) } } })
+end
+
 function M.setup()
     vim.treesitter.language.register("diff", "fugitive")
     vim.treesitter.language.register("diff", "git")
     vim.treesitter.query.add_directive("diff-filename!", resolve, { force = true })
+
+    -- Registered from the treesitter spec's `init`, so this runs before
+    -- nvim-treesitter's own FileType handler calls vim.treesitter.start and
+    -- reuses the parser we just clipped.
+    vim.api.nvim_create_autocmd("FileType", {
+        group = vim.api.nvim_create_augroup("DiffLang", { clear = true }),
+        pattern = "git",
+        desc = "Keep the diff parser off the commit message",
+        callback = function(ev)
+            clip_to_diff(ev.buf)
+        end,
+    })
 end
 
 return M

@@ -7,9 +7,13 @@
 vim.opt.rtp:append(vim.fn.stdpath("data") .. "/site")
 require("config.diff_lang").setup()
 
-local function attach(lines)
+local function attach(lines, ft)
     local buf = vim.api.nvim_create_buf(false, true)
     vim.api.nvim_buf_set_lines(buf, 0, -1, false, vim.split(lines, "\n"))
+    -- ft has to land before the parse: ft=git is what runs diff_lang's clip
+    if ft then
+        vim.bo[buf].filetype = ft
+    end
     vim.treesitter.get_parser(buf, "diff"):parse(true)
     vim.treesitter.start(buf, "diff")
     return buf
@@ -119,5 +123,26 @@ local started = vim.uv.hrtime()
 vim.treesitter.get_parser(buf, "diff"):parse(true)
 local ms = (vim.uv.hrtime() - started) / 1e6
 assert(ms < 300, ("2000-line status buffer took %.0fms to parse, expected well under 300ms"):format(ms))
+
+-- ft=git commit buffers: a `- bullet` in the message must not parse as a deletion,
+-- while a real deletion below the diff header still must.
+local commit = attach(
+    [[
+tree cbac246dd2d628668ec54a8d6ec9fbc5b7bc663f
+author Edwin Chen <edwin.chen@bit.com> Tue Sep 15 15:08:02 2026 +0800
+
+refactor: address review findings
+
+- Drop the needless cast by returning the local.
+
+diff --git a/lua/foo.lua b/lua/foo.lua
+@@ -1,1 +1,1 @@
+-local x = 1
++local x = 2]],
+    "git"
+)
+
+assert(caps(commit, 5, 0) == "", "commit message bullet highlighted as a diff line: " .. caps(commit, 5, 0))
+assert(caps(commit, 9, 0):match("@diff%.minus"), "real deletion lost its highlight: " .. caps(commit, 9, 0))
 
 print(("diff injections OK (2000-line buffer parsed in %.0fms)"):format(ms))

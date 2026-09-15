@@ -35,6 +35,12 @@ vim.api.nvim_create_autocmd({ "BufWinEnter" }, {
 -- still the buffer on screen would close the last window (E444), so this only
 -- ever touches copies that aren't displayed anywhere.
 local function wipe_stale_scratch(keep)
+    -- `:mksession` output (nvim 0.12's `:restart`, session managers) sets
+    -- SessionLoad while it runs and wipes the startup buffer itself on the last
+    -- lines; wiping it first makes that trailing `bwipe` fail with E517.
+    if vim.g.SessionLoad ~= nil then
+        return
+    end
     for _, buf in ipairs(vim.api.nvim_list_bufs()) do
         -- no line-count/content check: a buffer that's fallen out of every
         -- window unloads, and an unloaded buffer reports 0 lines regardless

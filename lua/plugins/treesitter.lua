@@ -86,6 +86,7 @@ return { -- Highlight, edit, and navigate code
             "html",
             "http",
             "javascript",
+            "json",
             "lua",
             "luadoc",
             "markdown",

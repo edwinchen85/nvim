@@ -77,15 +77,21 @@ return {
                 },
             },
             tools = {
+                -- Claude sees $TMUX and wraps OSC 52 copies in a tmux passthrough
+                -- code that nvim's terminal prints as base64 junk. Hide $TMUX;
+                -- pbcopy still copies, and workmux is told the backend directly.
                 claude = {
+                    env = { TMUX = false, WORKMUX_BACKEND = "tmux" },
                     cmd = { "claude" },
                     is_proc = "\\<claude\\>",
                 },
                 claude_continue = {
+                    env = { TMUX = false, WORKMUX_BACKEND = "tmux" },
                     cmd = { "claude", "--continue" },
                     is_proc = "\\<claude\\>",
                 },
                 claude_resume = {
+                    env = { TMUX = false, WORKMUX_BACKEND = "tmux" },
                     cmd = { "claude", "--resume" },
                     is_proc = "\\<claude\\>",
                 },

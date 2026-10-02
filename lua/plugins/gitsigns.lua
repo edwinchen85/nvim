@@ -42,7 +42,7 @@ return {
             numhl = false,
             linehl = false,
             watch_gitdir = { interval = 1000 },
-            sign_priority = 6,
+            sign_priority = 11, -- above diagnostics (10) so the git bar sits in the leftmost cell
             update_debounce = 200,
             status_formatter = nil, -- Use default
             preview_config = {

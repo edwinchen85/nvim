@@ -248,6 +248,7 @@ vim.api.nvim_create_autocmd("BufWritePre", {
 -- Fugitive status buffer behaviours and missing-final-newline marks.
 require("config.fugitive").setup()
 require("config.noeol").setup()
+require("config.signcolumn").setup()
 
 -- auto capitalize in markdown file
 -- vim.api.nvim_create_autocmd("InsertCharPre", {

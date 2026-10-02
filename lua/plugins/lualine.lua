@@ -79,9 +79,9 @@ return {
             "filename",
             file_status = true,
             path = 1,
-            -- the terminal buffer name is just the nvim:// job URI + command
+            -- these buffer names are just URIs (nvim:// job + command, fugitive:///.git//)
             cond = function()
-                return vim.bo.filetype ~= "sidekick_terminal"
+                return vim.bo.filetype ~= "sidekick_terminal" and vim.bo.filetype ~= "fugitive"
             end,
         }
 

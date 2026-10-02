@@ -79,6 +79,10 @@ return {
             "filename",
             file_status = true,
             path = 1,
+            -- the terminal buffer name is just the nvim:// job URI + command
+            cond = function()
+                return vim.bo.filetype ~= "sidekick_terminal"
+            end,
         }
 
         local branch = { "branch", icon = { "", color = { fg = "#A6D4DE" } }, "|" }

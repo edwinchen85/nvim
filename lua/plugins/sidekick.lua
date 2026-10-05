@@ -10,7 +10,33 @@ local function find_sidekick_win()
     return nil
 end
 
--- Toggle sidekick window between zoomed (full width) and original width.
+-- Full-screen float config, leaving the cmdline and global statusline visible.
+local function zoom_config()
+    return {
+        relative = "editor",
+        row = 0,
+        col = 0,
+        width = vim.o.columns,
+        height = vim.o.lines - vim.o.cmdheight - 1,
+    }
+end
+
+-- Floats don't reflow like splits, so refit a zoomed sidekick when the terminal resizes.
+vim.api.nvim_create_autocmd("VimResized", {
+    group = vim.api.nvim_create_augroup("sidekick_zoom_refit", { clear = true }),
+    callback = function()
+        for _, win in ipairs(vim.api.nvim_list_wins()) do
+            if vim.w[win]._sk_zoomed then
+                pcall(vim.api.nvim_win_set_config, win, zoom_config())
+            end
+        end
+    end,
+})
+
+-- Toggle sidekick window between zoomed and its original right split.
+-- Zoom turns the split into a full-screen float, so it is the only window on screen
+-- (no 1-column slivers of the others). Same window id both ways, so sidekick keeps
+-- tracking it, and the other windows' layout stays intact underneath.
 -- Works regardless of which window currently holds focus.
 local function toggle_sidekick_width()
     local win = find_sidekick_win()
@@ -19,12 +45,12 @@ local function toggle_sidekick_width()
     end
     if vim.w[win]._sk_zoomed then
         local orig = vim.w[win]._sk_orig_w or math.floor(vim.o.columns / 2)
-        pcall(vim.api.nvim_win_set_width, win, orig)
+        pcall(vim.api.nvim_win_set_config, win, { split = "right", win = -1, width = orig })
         vim.w[win]._sk_zoomed = false
         vim.w[win]._sk_orig_w = nil
     else
         vim.w[win]._sk_orig_w = vim.api.nvim_win_get_width(win)
-        pcall(vim.api.nvim_win_set_width, win, vim.o.columns)
+        pcall(vim.api.nvim_win_set_config, win, zoom_config())
         vim.w[win]._sk_zoomed = true
     end
     vim.cmd("redraw")

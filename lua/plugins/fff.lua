@@ -186,13 +186,6 @@ return {
                 desc = "Buffers", -- <C-d> deletes the buffer under cursor
             },
             {
-                "<leader>fl",
-                function()
-                    require("fff_plus").lines()
-                end,
-                desc = "Buffer Lines",
-            },
-            {
                 -- buffers + oldfiles + indexed files, deduped and frecency-ranked.
                 "<leader>fr",
                 function()

@@ -78,6 +78,33 @@ vim.api.nvim_create_autocmd("BufEnter", {
     end,
 })
 
+-- `:restart` sources its session from inside UIEnter, where nvim doesn't reset
+-- did_filetype() between buffers. When the first buffer read lazy-loads
+-- mason-lspconfig, vim.lsp.enable() runs `doautoall FileType`, which flips that
+-- flag, so filetypedetect's `setf` is skipped and the buffer comes back with no
+-- filetype (no treesitter). Setting 'filetype' directly isn't gated by the flag.
+vim.api.nvim_create_autocmd("SessionLoadPost", {
+    group = vim.api.nvim_create_augroup("session_redetect_filetype", { clear = true }),
+    callback = function()
+        for _, buf in ipairs(api.nvim_list_bufs()) do
+            if
+                api.nvim_buf_is_loaded(buf)
+                and vim.bo[buf].buftype == ""
+                and vim.bo[buf].filetype == ""
+                and api.nvim_buf_get_name(buf) ~= ""
+            then
+                local ft, on_detect = vim.filetype.match({ buf = buf })
+                if ft then
+                    if on_detect then
+                        on_detect(buf)
+                    end
+                    vim.bo[buf].filetype = ft
+                end
+            end
+        end
+    end,
+})
+
 vim.api.nvim_create_autocmd("FileType", {
     group = vim.api.nvim_create_augroup("vertical_help", { clear = true }),
     pattern = "help",

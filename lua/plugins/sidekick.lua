@@ -12,10 +12,11 @@ local function zoom_config()
     }
 end
 
--- Right-half float, same look as the zoomed one: full height, flush with the right edge.
+-- Right-side float, same look as the zoomed one: full height, flush with the right edge.
+-- Width is `cli.win.float.width` as a fraction of the screen (re-read on every refit).
 -- `width` excludes the 2 border columns. `title = ""` drops sidekick's " Sidekick " title.
-local function half_config()
-    local width = math.floor(vim.o.columns / 2)
+local function side_config()
+    local width = math.floor(vim.o.columns * require("sidekick.config").cli.win.float.width)
     return {
         relative = "editor",
         row = 0,
@@ -28,7 +29,7 @@ end
 
 -- Sidekick sizes its float once, from static opts: sidekick/cli/terminal.lua `Terminal:open_win`
 -- reads `cli.win.float` and opens the window into `self.win`, returning early (nothing
--- returned) when `self:is_open()`. Refit it to the right half every time it opens, so a
+-- returned) when `self:is_open()`. Refit it to the right side every time it opens, so a
 -- re-shown window follows the current terminal size.
 local function patch_open_win()
     local Terminal = require("sidekick.cli.terminal")
@@ -37,7 +38,7 @@ local function patch_open_win()
         local was_open = self:is_open()
         open_win(self)
         if not was_open and self.win and vim.api.nvim_win_is_valid(self.win) then
-            pcall(vim.api.nvim_win_set_config, self.win, half_config())
+            pcall(vim.api.nvim_win_set_config, self.win, side_config())
         end
     end
 end
@@ -48,14 +49,14 @@ vim.api.nvim_create_autocmd("VimResized", {
     callback = function()
         for _, win in ipairs(vim.api.nvim_list_wins()) do
             if sidekick_util.is_cli_win(win) then
-                local config = vim.w[win]._sk_zoomed and zoom_config() or half_config()
+                local config = vim.w[win]._sk_zoomed and zoom_config() or side_config()
                 pcall(vim.api.nvim_win_set_config, win, config)
             end
         end
     end,
 })
 
--- Toggle sidekick window between full-screen and right-half float.
+-- Toggle sidekick window between full-screen and right-side float.
 -- Same window id both ways, so sidekick keeps tracking it.
 -- Works regardless of which window currently holds focus.
 local function toggle_sidekick_zoom()
@@ -64,7 +65,7 @@ local function toggle_sidekick_zoom()
         return false
     end
     local zoomed = not vim.w[win]._sk_zoomed
-    pcall(vim.api.nvim_win_set_config, win, zoomed and zoom_config() or half_config())
+    pcall(vim.api.nvim_win_set_config, win, zoomed and zoom_config() or side_config())
     vim.w[win]._sk_zoomed = zoomed
     vim.cmd("redraw")
     return true
@@ -106,8 +107,9 @@ return {
         nes = { enabled = false },
         cli = {
             win = {
-                -- Right-half float (see half_config) instead of a split.
+                -- Right-side float (see side_config) instead of a split.
                 layout = "float",
+                float = { width = 0.5 }, -- fraction of the screen width
                 keys = {
                     -- disable sidekick default: <C-z> -> blur (jumps to previous window),
                     -- which shadows our global <C-z> zoom toggle in the terminal buffer.

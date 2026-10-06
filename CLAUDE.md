@@ -8,6 +8,8 @@ Personal Neovim config in Lua, plugins via **lazy.nvim**. Targets web developmen
 - **Checks**: `scripts/check.sh` runs stylua, luacheck and every
   `lua/config/checks/*.lua`; it is the pre-commit hook (`.githooks/`). Run it
   before reporting work as done.
+- **Trying keys by hand**: `scripts/drive.sh` runs a hidden nvim with the full
+  config and sends it keys as real typing (usage at its top).
 
 ## Layout
 
@@ -41,33 +43,10 @@ backdrop, `<M-,>`/`<M-.>`/`<M-=>` width. State is window-local
 - `lua/config/fugitive.lua`: leaving any terminal refreshes fugitive status.
 - `lua/config/checks/sidekick_float.lua`: drives all of the above headless.
 
-## LSP
+## LSP and completion
 
-`vim.lsp.config(name, ...)` + mason-lspconfig; servers in
-`lua/plugins/lsp/lsp.lua`, installs in `lua/plugins/lsp/mason.lua`, attach
-keymaps in `lua/core/lsp.lua`. Vue/TS split (see comments in `lsp.lua`):
-
-- `ts_ls` handles `.ts`/`.js`/`.tsx`/`.jsx` only, pinned to its bundled
-  tsserver (TS 5.7.2 bug with vue re-exports).
-- `vtsls` handles `.vue` with `@vue/typescript-plugin` from mason's
-  `vue-language-server`; `vue_ls` bridges to vtsls via the tsserver request
-  channel.
-
-Virtual text and inlay hints are off by default (`:ToggleVirtualText`,
-`:ToggleInlayHint`); the `inlayHints` server settings only pick which hints
-arrive once enabled.
-
-## Completion
-
-**blink.cmp** (`lua/plugins/blink.lua`), `version = "1.*"` so the prebuilt fuzzy
-binary downloads instead of building with cargo. It registers LSP capabilities
-itself, so `lsp.lua` has none.
-
-- Keymap preset `none`, every key spelled out. The cmdline keymap deliberately
-  skips blink's `cmdline` preset, whose `<Tab>` inserts the first item and
-  defeats noselect.
-- `preselect = false, auto_insert = false` in insert and cmdline (cmp's
-  `noinsert,noselect`): `<CR>` falls through to a plain `<CR>` until you move
-  into the menu.
-- `lua/plugins/cmp.lua` is kept with `enabled = false` for rollback; its
-  float-padding comments describe cmp, not blink.
+- Servers: `lua/plugins/lsp/lsp.lua`; its comments explain the `.vue` split
+  (`vtsls` + `vue_ls`, `ts_ls` for plain TS/JS). Installs:
+  `lua/plugins/lsp/mason.lua`. Attach keymaps: `lua/core/lsp.lua`.
+- Completion: blink.cmp, `lua/plugins/blink.lua`. `lua/plugins/cmp.lua` is the
+  disabled rollback; its comments describe cmp, not blink.

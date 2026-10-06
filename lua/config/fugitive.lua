@@ -106,6 +106,26 @@ function M.setup()
         end,
     })
 
+    -- Git run inside a terminal (e.g. the sidekick CLI float) is invisible to fugitive: no
+    -- ShellCmdPost, and no FocusGained since nvim never lost focus. Leaving a terminal window
+    -- is the cue: fugitive#DidChange(0, 1) expires the status cache and reloads every status
+    -- window in the tab; hidden ones reload on their next BufEnter. Scheduled to run after
+    -- the window switch. exists() is false until fugitive's autoload is sourced, and then
+    -- there are no status buffers to refresh anyway.
+    vim.api.nvim_create_autocmd("WinLeave", {
+        group = group,
+        callback = function()
+            if vim.bo.buftype ~= "terminal" then
+                return
+            end
+            vim.schedule(function()
+                if vim.fn.exists("*fugitive#DidChange") == 1 then
+                    vim.fn["fugitive#DidChange"](0, 1)
+                end
+            end)
+        end,
+    })
+
     -- close git windows with q
     vim.api.nvim_create_autocmd("FileType", {
         group = group,

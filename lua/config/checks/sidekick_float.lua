@@ -90,6 +90,24 @@ local ok, err = pcall(function()
     keys("<C-h>")
     check(vim.api.nvim_get_current_win() == start, "<C-h> stuck with no previous window")
 
+    -- <C-l> takes a visible split to the right before the float; one fully under the
+    -- float (cols 100+) is skipped. Three splits at 200 columns: ~0, ~67, ~134.
+    vim.cmd("vsplit | vsplit")
+    local splits = vim.tbl_filter(function(w)
+        return vim.api.nvim_win_get_config(w).relative == ""
+    end, vim.api.nvim_tabpage_list_wins(0))
+    vim.api.nvim_set_current_win(splits[1])
+    keys("<C-l>")
+    check(vim.api.nvim_get_current_win() == splits[2], "<C-l> skipped the visible split to the right")
+    keys("<C-l>")
+    check(vim.api.nvim_get_current_win() == win, "<C-l> entered a split hidden under the float")
+    for _, w in ipairs(splits) do
+        if w ~= start then
+            vim.api.nvim_win_close(w, true)
+        end
+    end
+    vim.api.nvim_set_current_win(start)
+
     keys("<C-l>")
     vim.api.nvim_win_close(win, true)
     check(backdrops() == 0, "backdrop left after closing the float")

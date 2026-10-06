@@ -15,6 +15,20 @@ function M.find_cli_win()
     end
 end
 
+-- True when the CLI float spans every column of `win` (floats here are full height), so
+-- the window is out of sight. nvim_win_get_position gives the float's outer (border) corner.
+function M.hidden_by_cli_win(win)
+    local cli = M.find_cli_win()
+    if not cli or cli == win then
+        return false
+    end
+    local config = vim.api.nvim_win_get_config(cli)
+    local left = vim.api.nvim_win_get_position(cli)[2]
+    local right = left + config.width + (config.border and 2 or 0)
+    local col = vim.api.nvim_win_get_position(win)[2]
+    return col >= left and col + vim.api.nvim_win_get_width(win) <= right
+end
+
 -- Jump into the CLI float (it sits outside the split layout, so `wincmd l` never reaches it).
 -- Returns false when there is no CLI window or it already has focus.
 function M.focus_cli_win()

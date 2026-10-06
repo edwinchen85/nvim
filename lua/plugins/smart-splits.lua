@@ -31,11 +31,15 @@ return {
             nav("k", "-U")
         end, { desc = "Nav up" })
         vim.keymap.set("n", "<C-l>", function()
-            -- The sidekick CLI is a right-side float, outside the split layout.
-            if require("util.sidekick").focus_cli_win() then
-                return
+            -- The sidekick CLI is a right-side float, outside the split layout: prefer the
+            -- split to the right, unless the float hides it, then the float, then tmux.
+            local sidekick = require("util.sidekick")
+            local right = vim.fn.win_getid(vim.fn.winnr("l"))
+            if right ~= vim.api.nvim_get_current_win() and not sidekick.hidden_by_cli_win(right) then
+                vim.api.nvim_set_current_win(right)
+            elseif not sidekick.focus_cli_win() then
+                nav("l", "-R")
             end
-            nav("l", "-R")
         end, { desc = "Nav right" })
     end,
 }

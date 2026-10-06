@@ -34,8 +34,9 @@ backdrop, `<M-,>`/`<M-.>`/`<M-=>` width. State is window-local
 (`vim.w._sk_zoomed`, `_sk_centered`). Spread across:
 
 - `lua/util/sidekick.lua`: find/focus/leave the CLI window.
-- `lua/plugins/smart-splits.lua`: `<C-l>` jumps into the float (floats sit
-  outside the split layout).
+- `lua/plugins/smart-splits.lua`: `<C-l>` takes the split to the right unless
+  the float hides it, else jumps into the float (floats sit outside the split
+  layout).
 - `lua/config/fugitive.lua`: leaving any terminal refreshes fugitive status.
 - `lua/config/checks/sidekick_float.lua`: drives all of the above headless.
 

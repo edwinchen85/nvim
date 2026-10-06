@@ -3,7 +3,7 @@
 # Runs as the pre-commit hook (.githooks/pre-commit, wired by `git config core.hooksPath .githooks`).
 cd "$(dirname "$0")/.." || exit 1
 MASON="$HOME/.local/share/nvim/mason"
-SRC="init.lua lua plugin after ftplugin"
+SRC="init.lua lua after ftplugin"
 status=0
 fail() {
     echo "FAIL: $1"

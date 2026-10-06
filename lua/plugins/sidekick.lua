@@ -1,14 +1,20 @@
 local sidekick_util = require("util.sidekick")
 local send_no_newline = sidekick_util.send_no_newline
 
--- Full-screen float config, leaving the cmdline and global statusline visible.
+-- Float height: everything above the cmdline, plus the global statusline's row while it
+-- is hidden (see the WinEnter/WinLeave autocmds below).
+local function float_height()
+    return vim.o.lines - vim.o.cmdheight - (vim.o.laststatus == 0 and 0 or 1)
+end
+
+-- Full-screen float config, leaving the cmdline visible.
 local function zoom_config()
     return {
         relative = "editor",
         row = 0,
         col = 0,
         width = vim.o.columns,
-        height = vim.o.lines - vim.o.cmdheight - 1,
+        height = float_height(),
     }
 end
 
@@ -22,17 +28,17 @@ local function side_config()
         row = 0,
         col = vim.o.columns - width,
         width = width - 2,
-        height = vim.o.lines - vim.o.cmdheight - 1,
+        height = float_height(),
         title = "",
     }
 end
 
--- Step the side float's width by `delta` (a fraction of the screen), kept in 0.1..0.9 on a 5% grid.
+-- Step the side float's width by `delta` (a fraction of the screen), kept in 0.1..1 on a 5% grid.
 -- Writes `cli.win.float.width` itself, so the new width sticks for re-shows and resizes.
 -- A zoomed window keeps its zoom and picks the new width up when it unzooms.
 local function resize_side_float(terminal, delta)
     local float = require("sidekick.config").cli.win.float
-    float.width = math.min(0.9, math.max(0.1, math.floor((float.width + delta) * 20 + 0.5) / 20))
+    float.width = math.min(1, math.max(0.1, math.floor((float.width + delta) * 20 + 0.5) / 20))
     if terminal.win and vim.api.nvim_win_is_valid(terminal.win) and not vim.w[terminal.win]._sk_zoomed then
         pcall(vim.api.nvim_win_set_config, terminal.win, side_config())
     end
@@ -54,15 +60,47 @@ local function patch_open_win()
     end
 end
 
+local function refit(win)
+    pcall(vim.api.nvim_win_set_config, win, vim.w[win]._sk_zoomed and zoom_config() or side_config())
+end
+
+local refit_group = vim.api.nvim_create_augroup("sidekick_float_refit", { clear = true })
+
 -- Floats don't reflow like splits, so refit sidekick floats when the terminal resizes.
 vim.api.nvim_create_autocmd("VimResized", {
-    group = vim.api.nvim_create_augroup("sidekick_float_refit", { clear = true }),
+    group = refit_group,
     callback = function()
         for _, win in ipairs(vim.api.nvim_list_wins()) do
             if sidekick_util.is_cli_win(win) then
-                local config = vim.w[win]._sk_zoomed and zoom_config() or side_config()
-                pcall(vim.api.nvim_win_set_config, win, config)
+                refit(win)
             end
+        end
+    end,
+})
+
+-- Hide the global statusline while a sidekick float has focus, and let the float grow
+-- into its row. 'ruler' goes too: without a statusline Neovim draws it in the cmdline.
+-- WinLeave also fires when the focused float is hidden/closed.
+local saved_laststatus, saved_ruler
+vim.api.nvim_create_autocmd("WinEnter", {
+    group = refit_group,
+    callback = function()
+        local win = vim.api.nvim_get_current_win()
+        if sidekick_util.is_cli_win(win) and vim.o.laststatus ~= 0 then
+            saved_laststatus, saved_ruler = vim.o.laststatus, vim.o.ruler
+            vim.o.laststatus, vim.o.ruler = 0, false
+            refit(win)
+        end
+    end,
+})
+vim.api.nvim_create_autocmd("WinLeave", {
+    group = refit_group,
+    callback = function()
+        local win = vim.api.nvim_get_current_win()
+        if sidekick_util.is_cli_win(win) and saved_laststatus then
+            vim.o.laststatus, vim.o.ruler = saved_laststatus, saved_ruler
+            saved_laststatus, saved_ruler = nil, nil
+            refit(win)
         end
     end,
 })

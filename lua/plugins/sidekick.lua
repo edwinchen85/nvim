@@ -267,11 +267,20 @@ return {
                     -- disable sidekick default: <C-z> -> blur (jumps to previous window),
                     -- which shadows our global <C-z> zoom toggle in the terminal buffer.
                     hide_ctrl_z = false,
-                    -- disable sidekick defaults: normal-mode <C-q> and q -> hide. <C-q> in the
-                    -- terminal already means stopinsert, so a double press hid the float; a stray
-                    -- q after it did the same. <C-t> hides it instead.
-                    hide_ctrl_q = false,
+                    -- disable sidekick default: normal-mode q -> hide; a stray q after <C-q>
+                    -- hid the float. <C-t> hides it instead.
                     hide_n = false,
+                    -- sidekick's terminal-mode <C-q> is stopinsert; make normal-mode <C-q> the
+                    -- way back (its default hid the float on a double press), so <C-q> toggles.
+                    -- Mapped either way: unmapped, Vim's <C-q> is <C-v> (visual block).
+                    hide_ctrl_q = {
+                        "<c-q>",
+                        function()
+                            vim.cmd.startinsert()
+                        end,
+                        mode = "n",
+                        desc = "back to terminal mode",
+                    },
                     -- disable sidekick default <C-b> -> buffer picker; conflicts with
                     -- claude-code's <C-b> shortcut inside the CLI session.
                     buffers = false,

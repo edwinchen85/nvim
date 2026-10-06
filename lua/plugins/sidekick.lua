@@ -1,14 +1,5 @@
-local send_no_newline = require("util.sidekick").send_no_newline
-
--- Find the sidekick CLI window in current tabpage (marked via vim.w[win].sidekick_cli).
-local function find_sidekick_win()
-    for _, win in ipairs(vim.api.nvim_tabpage_list_wins(0)) do
-        if vim.api.nvim_win_is_valid(win) and vim.w[win].sidekick_cli ~= nil then
-            return win
-        end
-    end
-    return nil
-end
+local sidekick_util = require("util.sidekick")
+local send_no_newline = sidekick_util.send_no_newline
 
 -- Full-screen float config, leaving the cmdline and global statusline visible.
 local function zoom_config()
@@ -21,49 +12,71 @@ local function zoom_config()
     }
 end
 
--- Floats don't reflow like splits, so refit a zoomed sidekick when the terminal resizes.
+-- Right-half float, same look as the zoomed one: full height, flush with the right edge.
+-- `width` excludes the 2 border columns. `title = ""` drops sidekick's " Sidekick " title.
+local function half_config()
+    local width = math.floor(vim.o.columns / 2)
+    return {
+        relative = "editor",
+        row = 0,
+        col = vim.o.columns - width,
+        width = width - 2,
+        height = vim.o.lines - vim.o.cmdheight - 1,
+        title = "",
+    }
+end
+
+-- Sidekick sizes its float once, from static opts: sidekick/cli/terminal.lua `Terminal:open_win`
+-- reads `cli.win.float` and opens the window into `self.win`, returning early (nothing
+-- returned) when `self:is_open()`. Refit it to the right half every time it opens, so a
+-- re-shown window follows the current terminal size.
+local function patch_open_win()
+    local Terminal = require("sidekick.cli.terminal")
+    local open_win = Terminal.open_win
+    Terminal.open_win = function(self)
+        local was_open = self:is_open()
+        open_win(self)
+        if not was_open and self.win and vim.api.nvim_win_is_valid(self.win) then
+            pcall(vim.api.nvim_win_set_config, self.win, half_config())
+        end
+    end
+end
+
+-- Floats don't reflow like splits, so refit sidekick floats when the terminal resizes.
 vim.api.nvim_create_autocmd("VimResized", {
-    group = vim.api.nvim_create_augroup("sidekick_zoom_refit", { clear = true }),
+    group = vim.api.nvim_create_augroup("sidekick_float_refit", { clear = true }),
     callback = function()
         for _, win in ipairs(vim.api.nvim_list_wins()) do
-            if vim.w[win]._sk_zoomed then
-                pcall(vim.api.nvim_win_set_config, win, zoom_config())
+            if sidekick_util.is_cli_win(win) then
+                local config = vim.w[win]._sk_zoomed and zoom_config() or half_config()
+                pcall(vim.api.nvim_win_set_config, win, config)
             end
         end
     end,
 })
 
--- Toggle sidekick window between zoomed and its original right split.
--- Zoom turns the split into a full-screen float, so it is the only window on screen
--- (no 1-column slivers of the others). Same window id both ways, so sidekick keeps
--- tracking it, and the other windows' layout stays intact underneath.
+-- Toggle sidekick window between full-screen and right-half float.
+-- Same window id both ways, so sidekick keeps tracking it.
 -- Works regardless of which window currently holds focus.
-local function toggle_sidekick_width()
-    local win = find_sidekick_win()
+local function toggle_sidekick_zoom()
+    local win = sidekick_util.find_cli_win()
     if not win then
         return false
     end
-    if vim.w[win]._sk_zoomed then
-        local orig = vim.w[win]._sk_orig_w or math.floor(vim.o.columns / 2)
-        pcall(vim.api.nvim_win_set_config, win, { split = "right", win = -1, width = orig })
-        vim.w[win]._sk_zoomed = false
-        vim.w[win]._sk_orig_w = nil
-    else
-        vim.w[win]._sk_orig_w = vim.api.nvim_win_get_width(win)
-        pcall(vim.api.nvim_win_set_config, win, zoom_config())
-        vim.w[win]._sk_zoomed = true
-    end
+    local zoomed = not vim.w[win]._sk_zoomed
+    pcall(vim.api.nvim_win_set_config, win, zoomed and zoom_config() or half_config())
+    vim.w[win]._sk_zoomed = zoomed
     vim.cmd("redraw")
     return true
 end
 
 vim.keymap.set({ "n", "t", "i" }, "<C-z>", function()
-    if not toggle_sidekick_width() then
+    if not toggle_sidekick_zoom() then
         -- No sidekick window: fall back to vim default (suspend).
         vim.cmd("stopinsert")
         vim.cmd("suspend")
     end
-end, { desc = "Toggle sidekick full width (fallback: suspend)" })
+end, { desc = "Toggle sidekick full-screen zoom (fallback: suspend)" })
 
 -- `nes` is disabled below, so the Copilot LSP is unused -- but sidekick's health check
 -- reports its absence as an ERROR unconditionally, with no config gate. health.lua binds
@@ -86,13 +99,15 @@ return {
     event = "VeryLazy",
     config = function(_, opts)
         require("sidekick").setup(opts)
+        patch_open_win()
         silence_copilot_health()
     end,
     opts = {
         nes = { enabled = false },
         cli = {
             win = {
-                layout = "right",
+                -- Right-half float (see half_config) instead of a split.
+                layout = "float",
                 keys = {
                     -- disable sidekick default: <C-z> -> blur (jumps to previous window),
                     -- which shadows our global <C-z> zoom toggle in the terminal buffer.
@@ -100,6 +115,16 @@ return {
                     -- disable sidekick default <C-b> -> buffer picker; conflicts with
                     -- claude-code's <C-b> shortcut inside the CLI session.
                     buffers = false,
+                    -- sidekick passes <c-h> through to the CLI in a float; jump back to
+                    -- the previous window instead, like <c-h> did out of the split.
+                    -- `expr = false` overrides the default's deep-merged `expr = true`:
+                    -- expr maps run under textlock, where switching windows is E565.
+                    nav_left = {
+                        "<c-h>",
+                        sidekick_util.leave_cli_win,
+                        expr = false,
+                        desc = "go back to the previous window",
+                    },
                 },
             },
             tools = {

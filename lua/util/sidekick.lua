@@ -1,5 +1,52 @@
 local M = {}
 
+-- sidekick marks its CLI windows with vim.w[win].sidekick_cli (cli/terminal.lua `Terminal:open_win`).
+function M.is_cli_win(win)
+    return vim.api.nvim_win_is_valid(win) and vim.w[win].sidekick_cli ~= nil
+end
+
+-- First sidekick CLI window in the current tabpage.
+-- SIMPLIFIED: first match wins, track the last-focused session if running several at once
+function M.find_cli_win()
+    for _, win in ipairs(vim.api.nvim_tabpage_list_wins(0)) do
+        if M.is_cli_win(win) then
+            return win
+        end
+    end
+end
+
+-- Jump into the CLI float (it sits outside the split layout, so `wincmd l` never reaches it).
+-- Returns false when there is no CLI window or it already has focus.
+function M.focus_cli_win()
+    local win = M.find_cli_win()
+    if not win or win == vim.api.nvim_get_current_win() then
+        return false
+    end
+    vim.api.nvim_set_current_win(win)
+    vim.cmd.startinsert()
+    return true
+end
+
+-- Leave the CLI float for the previous window, like sidekick's `blur` (`wincmd p`), but fall
+-- back to the first non-float window when there is no previous one to go to.
+function M.leave_cli_win()
+    local cur = vim.api.nvim_get_current_win()
+    local prev = vim.fn.winnr("#") > 0 and vim.fn.win_getid(vim.fn.winnr("#")) or 0
+    if prev == 0 or prev == cur then
+        prev = 0
+        for _, win in ipairs(vim.api.nvim_tabpage_list_wins(0)) do
+            if vim.api.nvim_win_get_config(win).relative == "" then
+                prev = win
+                break
+            end
+        end
+    end
+    if prev ~= 0 then
+        vim.api.nvim_set_current_win(prev)
+        vim.cmd.stopinsert()
+    end
+end
+
 -- workaround for upstream bug: cli.send hardcodes `msg .. "\n"`, and tmux's
 -- paste-buffer -r passes the LF raw to claude which renders it as a stray `j`.
 -- send the message without trailing newline; rely on submit=true for actual Enter.

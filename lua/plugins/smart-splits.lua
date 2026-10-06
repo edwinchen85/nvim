@@ -29,6 +29,10 @@ return {
             nav("k", "-U")
         end, { desc = "Nav up" })
         vim.keymap.set("n", "<C-l>", function()
+            -- The sidekick CLI is a right-half float, outside the split layout.
+            if require("util.sidekick").focus_cli_win() then
+                return
+            end
             nav("l", "-R")
         end, { desc = "Nav right" })
     end,

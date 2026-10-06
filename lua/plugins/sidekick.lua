@@ -40,9 +40,15 @@ end
 -- it leaves stale rows behind (a duplicate prompt line, footer text drawn over the
 -- statusline). Send it <C-l> (full redraw) once the resizes settle. Debounced because
 -- one refit can fire several times in a row (open_win, then WinEnter hiding the statusline).
+-- Skipped when no job runs yet: `Terminal:start` opens the window before `jobstart`, so the
+-- pty spawns at the final size anyway, and a <C-l> sent while Claude still loads (tty not
+-- yet raw, e.g. `--continue` reading the session) is echoed as a literal `^L`.
 local redraw_timer = assert(vim.uv.new_timer())
 local function redraw_cli(win)
     local buf = vim.api.nvim_win_get_buf(win)
+    if vim.bo[buf].channel == 0 then
+        return
+    end
     redraw_timer:stop()
     redraw_timer:start(
         100,

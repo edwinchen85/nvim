@@ -16,21 +16,18 @@ local function run(lines, seed)
 end
 
 -- full SFC: tag lines are html, content takes the block's language, lang= wins
-assert(
-    run({
-        '<script setup lang="ts">',
-        "const a = 1",
-        "</script>",
-        "",
-        "<template>",
-        "  <div/>",
-        "</template>",
-        '<style lang="scss">',
-        ".a {}",
-        "</style>",
-    }) == "html typescript html nil html html html html scss html",
-    "full sfc"
-)
+assert(run({
+    '<script setup lang="ts">',
+    "const a = 1",
+    "</script>",
+    "",
+    "<template>",
+    "  <div/>",
+    "</template>",
+    '<style lang="scss">',
+    ".a {}",
+    "</style>",
+}) == "html typescript html nil html html html html scss html", "full sfc")
 -- bare <script> defaults to typescript, tag with trailing content still counts
 assert(run({ "<script>const x = 1", "let y" }) == "html typescript", "bare script default")
 -- unknown block: sniff by shape

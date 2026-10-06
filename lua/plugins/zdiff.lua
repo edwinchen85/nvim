@@ -15,7 +15,7 @@ local function vue_blocks(code)
         local lang
         lang, block = vue.step(block, line)
         local prev = blocks[#blocks]
-        if not lang then
+        if not lang then -- luacheck: ignore 542
             -- outside any block: nothing to highlight
         elseif prev and prev.lang == lang and prev.line_offset + #prev.lines == i - 1 then
             table.insert(prev.lines, line)

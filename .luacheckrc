@@ -3,6 +3,10 @@ globals = {
     "vim", -- Neovim global
 }
 
+read_globals = {
+    "Snacks", -- set by snacks.nvim's setup
+}
+
 -- Ignore line length warnings
 max_line_length = false
 
@@ -11,11 +15,6 @@ ignore = {
     "631", -- Line too long
     "212", -- Unused argument
     "213", -- Unused loop variable
-}
-
--- Read-only globals
-read_globals = {
-    "vim",
 }
 
 -- Specific rules for test files

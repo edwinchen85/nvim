@@ -76,7 +76,10 @@ return {
 
         require("nvim-tree").setup({
             disable_netrw = false,
-            hijack_netrw = true,
+            -- netrw is never loaded (config/options.lua), so there is no FileExplorer
+            -- augroup to clear; `true` only ran `silent! autocmd! FileExplorer *`, which
+            -- left a stale E216 in v:errmsg.
+            hijack_netrw = false,
             hijack_cursor = false,
             sync_root_with_cwd = true,
             respect_buf_cwd = true,

@@ -2,13 +2,15 @@ return {
     "mrjones2014/smart-splits.nvim",
     lazy = false,
     init = function()
-        vim.g.smart_splits_multiplexer_integration = "tmux"
+        -- Outside tmux (headless checks, a bare terminal) the integration only warns
+        -- "could not detect pane ID".
+        vim.g.smart_splits_multiplexer_integration = vim.env.TMUX and "tmux" or false
     end,
     config = function()
         require("smart-splits").setup({
             ignored_buftypes = { "nofile", "quickfix", "prompt" },
             ignored_filetypes = { "NvimTree" },
-            multiplexer_integration = "tmux",
+            multiplexer_integration = vim.g.smart_splits_multiplexer_integration,
         })
 
         local function nav(wincmd, tmux_flag)

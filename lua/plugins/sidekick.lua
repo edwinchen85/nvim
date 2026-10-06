@@ -18,30 +18,90 @@ local function zoom_config()
     }
 end
 
--- Right-side float, same look as the zoomed one: full height, flush with the right edge.
+-- Side/center float, same look as the zoomed one: full height, flush with the right edge,
+-- or horizontally centered when `centered`.
 -- Width is `cli.win.float.width` as a fraction of the screen (re-read on every refit).
 -- `width` excludes the 2 border columns. `title = ""` drops sidekick's " Sidekick " title.
-local function side_config()
+local function side_config(centered)
     local width = math.floor(vim.o.columns * require("sidekick.config").cli.win.float.width)
     return {
         relative = "editor",
         row = 0,
-        col = vim.o.columns - width,
+        col = centered and math.floor((vim.o.columns - width) / 2) or vim.o.columns - width,
         width = width - 2,
         height = float_height(),
         title = "",
     }
 end
 
--- Step the side float's width by `delta` (a fraction of the screen), kept in 0.1..1 on a 5% grid.
+local function refit(win)
+    local config = vim.w[win]._sk_zoomed and zoom_config() or side_config(vim.w[win]._sk_centered)
+    pcall(vim.api.nvim_win_set_config, win, config)
+end
+
+-- Backdrop behind a focused, centered float: an empty full-screen float one zindex below
+-- sidekick's (default 50), drawn with Normal so it hides the editor. Raise the blend
+-- (e.g. 60) to dim the editor instead of hiding it.
+local BACKDROP_BLEND = 0
+local backdrop_win
+
+local function hide_backdrop()
+    if backdrop_win and vim.api.nvim_win_is_valid(backdrop_win) then
+        pcall(vim.api.nvim_win_close, backdrop_win, true)
+    end
+    backdrop_win = nil
+end
+
+local function sync_backdrop()
+    local win = vim.api.nvim_get_current_win()
+    if not (sidekick_util.is_cli_win(win) and vim.w[win]._sk_centered and not vim.w[win]._sk_zoomed) then
+        return hide_backdrop()
+    end
+    local config = {
+        relative = "editor",
+        row = 0,
+        col = 0,
+        width = vim.o.columns,
+        height = vim.o.lines - vim.o.cmdheight,
+        zindex = vim.api.nvim_win_get_config(win).zindex - 1,
+        focusable = false,
+        style = "minimal",
+        border = "none",
+    }
+    if backdrop_win and vim.api.nvim_win_is_valid(backdrop_win) then
+        pcall(vim.api.nvim_win_set_config, backdrop_win, config)
+        return
+    end
+    local buf = vim.api.nvim_create_buf(false, true)
+    vim.bo[buf].bufhidden = "wipe"
+    config.noautocmd = true
+    backdrop_win = vim.api.nvim_open_win(buf, false, config)
+    vim.wo[backdrop_win].winhighlight = "Normal:Normal"
+    vim.wo[backdrop_win].winblend = BACKDROP_BLEND
+end
+
+-- Step the float's width by `delta` (a fraction of the screen), kept in 0.1..1 on a 5% grid.
 -- Writes `cli.win.float.width` itself, so the new width sticks for re-shows and resizes.
 -- A zoomed window keeps its zoom and picks the new width up when it unzooms.
 local function resize_side_float(terminal, delta)
     local float = require("sidekick.config").cli.win.float
     float.width = math.min(1, math.max(0.1, math.floor((float.width + delta) * 20 + 0.5) / 20))
-    if terminal.win and vim.api.nvim_win_is_valid(terminal.win) and not vim.w[terminal.win]._sk_zoomed then
-        pcall(vim.api.nvim_win_set_config, terminal.win, side_config())
+    if terminal.win and vim.api.nvim_win_is_valid(terminal.win) then
+        refit(terminal.win)
     end
+end
+
+-- Toggle the float between the right side and the screen center (with a backdrop).
+-- Unzooms first, so the move is visible. Window-local: a re-shown float opens on the side.
+local function toggle_center(terminal)
+    local win = terminal.win
+    if not (win and vim.api.nvim_win_is_valid(win)) then
+        return
+    end
+    vim.w[win]._sk_centered = not vim.w[win]._sk_centered
+    vim.w[win]._sk_zoomed = false
+    refit(win)
+    sync_backdrop()
 end
 
 -- Sidekick sizes its float once, from static opts: sidekick/cli/terminal.lua `Terminal:open_win`
@@ -60,10 +120,6 @@ local function patch_open_win()
     end
 end
 
-local function refit(win)
-    pcall(vim.api.nvim_win_set_config, win, vim.w[win]._sk_zoomed and zoom_config() or side_config())
-end
-
 local refit_group = vim.api.nvim_create_augroup("sidekick_float_refit", { clear = true })
 
 -- Floats don't reflow like splits, so refit sidekick floats when the terminal resizes.
@@ -75,37 +131,47 @@ vim.api.nvim_create_autocmd("VimResized", {
                 refit(win)
             end
         end
+        sync_backdrop()
     end,
 })
 
 -- Hide the global statusline while a sidekick float has focus, and let the float grow
 -- into its row. 'ruler' goes too: without a statusline Neovim draws it in the cmdline.
--- WinLeave also fires when the focused float is hidden/closed.
+-- The center backdrop only shows while the float has focus, so it never covers the
+-- window you jump to. WinLeave also fires when the focused float is hidden/closed.
 local saved_laststatus, saved_ruler
 vim.api.nvim_create_autocmd("WinEnter", {
     group = refit_group,
     callback = function()
         local win = vim.api.nvim_get_current_win()
-        if sidekick_util.is_cli_win(win) and vim.o.laststatus ~= 0 then
+        if not sidekick_util.is_cli_win(win) then
+            return
+        end
+        if vim.o.laststatus ~= 0 then
             saved_laststatus, saved_ruler = vim.o.laststatus, vim.o.ruler
             vim.o.laststatus, vim.o.ruler = 0, false
             refit(win)
         end
+        sync_backdrop()
     end,
 })
 vim.api.nvim_create_autocmd("WinLeave", {
     group = refit_group,
     callback = function()
         local win = vim.api.nvim_get_current_win()
-        if sidekick_util.is_cli_win(win) and saved_laststatus then
+        if not sidekick_util.is_cli_win(win) then
+            return
+        end
+        if saved_laststatus then
             vim.o.laststatus, vim.o.ruler = saved_laststatus, saved_ruler
             saved_laststatus, saved_ruler = nil, nil
             refit(win)
         end
+        hide_backdrop()
     end,
 })
 
--- Toggle sidekick window between full-screen and right-side float.
+-- Toggle sidekick window between full-screen and its side/center float.
 -- Same window id both ways, so sidekick keeps tracking it.
 -- Works regardless of which window currently holds focus.
 local function toggle_sidekick_zoom()
@@ -113,9 +179,9 @@ local function toggle_sidekick_zoom()
     if not win then
         return false
     end
-    local zoomed = not vim.w[win]._sk_zoomed
-    pcall(vim.api.nvim_win_set_config, win, zoomed and zoom_config() or side_config())
-    vim.w[win]._sk_zoomed = zoomed
+    vim.w[win]._sk_zoomed = not vim.w[win]._sk_zoomed
+    refit(win)
+    sync_backdrop()
     vim.cmd("redraw")
     return true
 end
@@ -187,6 +253,12 @@ return {
                         end,
                         mode = "nt",
                         desc = "widen the CLI float by 5%",
+                    },
+                    float_center = {
+                        "<M-m>",
+                        toggle_center,
+                        mode = "nt",
+                        desc = "toggle the CLI float between the right side and the center",
                     },
                     nav_left = {
                         "<c-h>",

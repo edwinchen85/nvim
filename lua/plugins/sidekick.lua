@@ -1,10 +1,12 @@
 local sidekick_util = require("util.sidekick")
 local send_no_newline = sidekick_util.send_no_newline
 
--- Float height: everything above the cmdline, plus the global statusline's row while it
--- is hidden (see the WinEnter/WinLeave autocmds below).
+-- Float height: everything above the cmdline and the global statusline's row. Constant
+-- across focus changes even though the statusline hides while the float has focus:
+-- growing into that row resized the pty on every enter/leave, and Claude's diffing
+-- renderer, caught mid-output, left rows duplicated one line apart.
 local function float_height()
-    return vim.o.lines - vim.o.cmdheight - (vim.o.laststatus == 0 and 0 or 1)
+    return vim.o.lines - vim.o.cmdheight - 1
 end
 
 -- Full-screen float config, leaving the cmdline visible.
@@ -167,8 +169,8 @@ vim.api.nvim_create_autocmd("VimResized", {
     end,
 })
 
--- Hide the global statusline while a sidekick float has focus, and let the float grow
--- into its row. 'ruler' goes too: without a statusline Neovim draws it in the cmdline.
+-- Hide the global statusline while a sidekick float has focus (its row stays empty, see
+-- float_height). 'ruler' goes too: without a statusline Neovim draws it in the cmdline.
 -- The center backdrop only shows while the float has focus, so it never covers the
 -- window you jump to. WinLeave also fires when the focused float is hidden/closed.
 local saved_laststatus, saved_ruler
@@ -182,7 +184,6 @@ vim.api.nvim_create_autocmd("WinEnter", {
         if vim.o.laststatus ~= 0 then
             saved_laststatus, saved_ruler = vim.o.laststatus, vim.o.ruler
             vim.o.laststatus, vim.o.ruler = 0, false
-            refit(win)
         end
         sync_backdrop()
     end,
@@ -197,7 +198,6 @@ vim.api.nvim_create_autocmd("WinLeave", {
         if saved_laststatus then
             vim.o.laststatus, vim.o.ruler = saved_laststatus, saved_ruler
             saved_laststatus, saved_ruler = nil, nil
-            refit(win)
         end
         hide_backdrop()
     end,

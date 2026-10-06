@@ -80,15 +80,19 @@ local function sync_backdrop()
     vim.wo[backdrop_win].winblend = BACKDROP_BLEND
 end
 
--- Step the float's width by `delta` (a fraction of the screen), kept in 0.1..1 on a 5% grid.
+-- Set the float's width to `width` (a fraction of the screen), kept in 0.1..1 on a 5% grid.
 -- Writes `cli.win.float.width` itself, so the new width sticks for re-shows and resizes.
 -- A zoomed window keeps its zoom and picks the new width up when it unzooms.
-local function resize_side_float(terminal, delta)
-    local float = require("sidekick.config").cli.win.float
-    float.width = math.min(1, math.max(0.1, math.floor((float.width + delta) * 20 + 0.5) / 20))
+local function set_float_width(terminal, width)
+    require("sidekick.config").cli.win.float.width = math.min(1, math.max(0.1, math.floor(width * 20 + 0.5) / 20))
     if terminal.win and vim.api.nvim_win_is_valid(terminal.win) then
         refit(terminal.win)
     end
+end
+
+-- Step the float's width by `delta`.
+local function resize_side_float(terminal, delta)
+    set_float_width(terminal, require("sidekick.config").cli.win.float.width + delta)
 end
 
 -- Toggle the float between the right side and the screen center (with a backdrop).
@@ -253,6 +257,14 @@ return {
                         end,
                         mode = "nt",
                         desc = "widen the CLI float by 5%",
+                    },
+                    float_half = {
+                        "<M-=>",
+                        function(t)
+                            set_float_width(t, 0.5)
+                        end,
+                        mode = "nt",
+                        desc = "reset the CLI float to 50% of the screen",
                     },
                     float_center = {
                         "<M-m>",

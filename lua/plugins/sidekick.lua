@@ -27,6 +27,17 @@ local function side_config()
     }
 end
 
+-- Step the side float's width by `delta` (a fraction of the screen), kept in 0.1..0.9 on a 5% grid.
+-- Writes `cli.win.float.width` itself, so the new width sticks for re-shows and resizes.
+-- A zoomed window keeps its zoom and picks the new width up when it unzooms.
+local function resize_side_float(terminal, delta)
+    local float = require("sidekick.config").cli.win.float
+    float.width = math.min(0.9, math.max(0.1, math.floor((float.width + delta) * 20 + 0.5) / 20))
+    if terminal.win and vim.api.nvim_win_is_valid(terminal.win) and not vim.w[terminal.win]._sk_zoomed then
+        pcall(vim.api.nvim_win_set_config, terminal.win, side_config())
+    end
+end
+
 -- Sidekick sizes its float once, from static opts: sidekick/cli/terminal.lua `Terminal:open_win`
 -- reads `cli.win.float` and opens the window into `self.win`, returning early (nothing
 -- returned) when `self:is_open()`. Refit it to the right side every time it opens, so a
@@ -121,6 +132,24 @@ return {
                     -- the previous window instead, like <c-h> did out of the split.
                     -- `expr = false` overrides the default's deep-merged `expr = true`:
                     -- expr maps run under textlock, where switching windows is E565.
+                    -- The float hangs off the right edge: <M-,> ("<") pushes its left edge left
+                    -- (wider), <M-.> (">") pulls it right (narrower), by 5% of the screen.
+                    float_narrower = {
+                        "<M-.>",
+                        function(t)
+                            resize_side_float(t, -0.05)
+                        end,
+                        mode = "nt",
+                        desc = "narrow the CLI float by 5%",
+                    },
+                    float_wider = {
+                        "<M-,>",
+                        function(t)
+                            resize_side_float(t, 0.05)
+                        end,
+                        mode = "nt",
+                        desc = "widen the CLI float by 5%",
+                    },
                     nav_left = {
                         "<c-h>",
                         sidekick_util.leave_cli_win,

@@ -3,7 +3,8 @@
 # Runs as the pre-commit hook (.githooks/pre-commit, wired by `git config core.hooksPath .githooks`).
 cd "$(dirname "$0")/.." || exit 1
 MASON="$HOME/.local/share/nvim/mason"
-SRC="init.lua lua after ftplugin"
+# Every tracked or new (non-ignored) Lua file, so adding or removing a dir needs no edit here.
+SRC=$(git ls-files --cached --others --exclude-standard '*.lua')
 status=0
 fail() {
     echo "FAIL: $1"
@@ -11,7 +12,7 @@ fail() {
 }
 
 # shellcheck disable=SC2086
-"$MASON/bin/stylua" --check $SRC >/dev/null || fail "stylua (run: $MASON/bin/stylua $SRC)"
+"$MASON/bin/stylua" --check $SRC >/dev/null || fail "stylua (run: $MASON/bin/stylua \$(git ls-files '*.lua'))"
 
 # Mason's luacheck wrapper hardcodes Homebrew's `lua` formula, which moved to 5.5; its
 # rocks (and lfs.so) are built for 5.4, so run it on keg-only lua@5.4 directly.

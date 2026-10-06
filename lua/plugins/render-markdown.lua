@@ -11,8 +11,10 @@ local M = {
         -- borders and they fight over `concealcursor`. See `plugins/pipetable.lua`.
         pipe_table = { enabled = false },
         win_options = { concealcursor = { rendered = "nvic" } },
-        -- one space inside the inline code box; colour in `plugins/tokyonight.lua`
-        code = { inline_pad = 1 },
+        -- Code blocks: a box only as wide as the code (`min_width` keeps short
+        -- ones from looking like a stray chip), one space inside it on each side.
+        -- Inline code: one space inside its box; colour in `plugins/tokyonight.lua`.
+        code = { width = "block", left_pad = 1, right_pad = 1, min_width = 40, inline_pad = 1 },
         overrides = {
             buftype = {
                 -- LSP floats are buftype=nofile, filetype=markdown, so they land
@@ -23,7 +25,18 @@ local M = {
                 -- up flush left while the code under it was indented by one.
                 -- `language_pad` puts it back in line. Scoped to nofile so real
                 -- markdown buffers, which get no content padding, stay aligned.
-                nofile = { code = { language_pad = 1 } },
+                -- The float group hides the block's box (see `plugins/tokyonight.lua`);
+                -- the language bar too, since RenderMarkdownCodeBorder links to the
+                -- block group. `left_pad = 0` keeps that existing one-space content
+                -- padding the only indent.
+                nofile = {
+                    code = {
+                        language_pad = 1,
+                        left_pad = 0,
+                        highlight = "RenderMarkdownCodeFloat",
+                        highlight_border = "RenderMarkdownCodeFloat",
+                    },
+                },
             },
         },
     },

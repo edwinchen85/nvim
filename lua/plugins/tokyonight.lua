@@ -71,25 +71,21 @@ return {
 
                 -- render-markdown draws the fenced code block inside LSP hover
                 -- (hover buffers are filetype=markdown) with an `hl_eol` extmark,
-                -- so it paints the whole content rectangle. tokyonight backs that
-                -- group with `bg_dark`, not `bg_float`, so `styles.floats =
-                -- "transparent"` never reaches it.
+                -- so it paints the whole content rectangle. tokyonight backs
+                -- RenderMarkdownCode with `bg_dark`, not `bg_float`, so `styles.floats
+                -- = "transparent"` never reaches it. Hover buffers are buftype=nofile,
+                -- and `plugins/render-markdown.lua` points their code blocks at this
+                -- group instead; real markdown files keep the `bg_dark` box.
                 --
-                -- Must be `c.bg`, NOT `c.none`: render-markdown registers its own
-                -- groups as `{ link = "ColorColumn", default = true }`, and
-                -- `default` only defers to an *existing* definition. `{ bg =
-                -- "NONE" }` alone is an empty definition, which nvim treats as
-                -- undefined -- so the ColorColumn link (#15161e) won once
-                -- render-markdown lazy-loaded on the hover buffer. `c.bg` is a
-                -- real definition and matches both the editor and ghostty's
-                -- `background = 1a1b26`, so the block disappears into the float.
-                -- If ghostty ever gets `background-opacity`, revisit: this stays
-                -- opaque while the float around it would go translucent.
-                hl.RenderMarkdownCode = { bg = c.bg }
+                -- `c.bg` matches both the editor and ghostty's `background =
+                -- 1a1b26`, so the block disappears into the float. If ghostty ever
+                -- gets `background-opacity`, revisit: this stays opaque while the
+                -- float around it would go translucent.
+                hl.RenderMarkdownCodeFloat = { bg = c.bg }
 
-                -- Inline code links to RenderMarkdownCode, so the line above left it
-                -- with no visible box. Give it its own subtle one; bg only, so the
-                -- `@markup.raw` fg underneath shows through. Padding is in
+                -- tokyonight links inline code to `@markup.raw.markdown_inline`, whose
+                -- `terminal_black` bg reads as a heavy block. A subtler bg instead; bg
+                -- only, so that group's blue fg still shows through. Padding is in
                 -- `plugins/render-markdown.lua` (`code.inline_pad`).
                 hl.RenderMarkdownCodeInline = { bg = c.bg_highlight }
 

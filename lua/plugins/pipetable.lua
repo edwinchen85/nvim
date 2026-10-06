@@ -9,7 +9,10 @@ local M = {
     -- `format_on_edit` repads the table source on commit; without it the raw
     -- text stays ragged even though the overlay renders aligned, which shows up
     -- in diffs and anywhere the file is read outside Neovim.
-    opts = { format_on_edit = true },
+    -- `max_width` (default 40) caps every column and cuts the rest with `…`, even
+    -- with room to spare. A table wider than the window scrolls sideways (‹/›,
+    -- h/l) instead, so cap high. Display only: format.lua measures the file form.
+    opts = { format_on_edit = true, column = { max_width = 120 } },
 }
 
 function M.config(_, opts)

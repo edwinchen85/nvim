@@ -23,6 +23,7 @@ Personal Neovim config in Lua, plugins via **lazy.nvim**. Targets web developmen
 - Git/diff helpers, required from `settings.lua`, each expose `setup()` plus a
   pure core with a check under `lua/config/checks/`: `config/fugitive.lua`
   (status buffer; `fugitive_word_diff.lua`), `config/noeol.lua`,
+  `config/hunk_yank.lua` (marker-free `Vy` of hunk lines),
   `config/conflict_markers.lua`, `config/vue_blocks.lua` (shared by
   `config/diff_lang.lua` and the zdiff patch).
 

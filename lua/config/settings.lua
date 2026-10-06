@@ -272,9 +272,10 @@ vim.api.nvim_create_autocmd("BufWritePre", {
     end,
 })
 
--- Fugitive status buffer behaviours and missing-final-newline marks.
+-- Fugitive status buffer behaviours, missing-final-newline marks, marker-free hunk yanks.
 require("config.fugitive").setup()
 require("config.noeol").setup()
+require("config.hunk_yank").setup()
 require("config.signcolumn").setup()
 
 -- auto capitalize in markdown file

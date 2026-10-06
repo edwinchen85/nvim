@@ -1,167 +1,71 @@
 # CLAUDE.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with
-code in this repository.
+Personal Neovim config in Lua, plugins via **lazy.nvim**. Targets web development
+(TypeScript, Vue, React).
 
-## Overview
+- Reviewers: `CODING_STANDARDS.md`. Domain terms (hunk, Vue SFC block, conflict
+  marker): `CONTEXT.md`. Decisions: `docs/adr/`.
+- **Checks**: `scripts/check.sh` runs stylua, luacheck and every
+  `lua/config/checks/*.lua`; it is the pre-commit hook (`.githooks/`). Run it
+  before reporting work as done.
 
-Personal Neovim configuration written in Lua, using **lazy.nvim** as the plugin
-manager. Targets modern web development (TypeScript, Vue, React) with extensive
-LSP support, Git integration, and AI assistance.
+## Layout
 
-## Code Style
+`init.lua` loads `config.options` → `core.lazy` → `core.lsp` → `config.commands`
+→ `config.keymaps` → `config.settings`, then `pcall(require, "config.theme")`
+(the theme lives in a separate repo, so it may be absent).
 
-Lua formatting governed by `stylua.toml`:
+- `lua/plugins/*.lua` each return a lazy.nvim spec; `lua/plugins/lsp/` is a
+  second import group.
+- `lua/config/utils.lua` is loaded by commands/keymaps, not `init.lua`; it only
+  holds `map()`, the `nmap`/`xmap` shorthands (which add `silent = true`) and a
+  global `inspect()`.
+- Git/diff helpers, required from `settings.lua`, each expose `setup()` plus a
+  pure core with a check under `lua/config/checks/`: `config/fugitive.lua`
+  (status buffer; `fugitive_word_diff.lua`), `config/noeol.lua`,
+  `config/conflict_markers.lua`, `config/vue_blocks.lua` (shared by
+  `config/diff_lang.lua` and the zdiff patch).
 
-- Column width: 120
-- Indentation: 4 spaces
-- Line endings: Unix
-- Quote style: auto
+## Sidekick CLI float
 
-Formatting on save is wired up via **conform.nvim**
-(`lua/plugins/formatting.lua`) with `lsp_format = "fallback"` — conform runs the
-configured formatter (prettier, stylua, etc.) and falls back to LSP formatting
-if none is mapped for the filetype.
+sidekick.nvim (`lua/plugins/sidekick.lua`) runs Claude in a float, not a split:
+right side at `cli.win.float.width`, `<C-z>` zoom, `<M-m>` center with a
+backdrop, `<M-,>`/`<M-.>`/`<M-=>` width. State is window-local
+(`vim.w._sk_zoomed`, `_sk_centered`). Spread across:
 
-## Architecture
+- `lua/util/sidekick.lua`: find/focus/leave the CLI window.
+- `lua/plugins/smart-splits.lua`: `<C-l>` jumps into the float (floats sit
+  outside the split layout).
+- `lua/config/fugitive.lua`: leaving any terminal refreshes fugitive status.
+- `lua/config/checks/sidekick_float.lua`: drives all of the above headless.
 
-### Entry Point & Loading Order
+## LSP
 
-`init.lua` requires modules in this order:
+`vim.lsp.config(name, ...)` + mason-lspconfig; servers in
+`lua/plugins/lsp/lsp.lua`, installs in `lua/plugins/lsp/mason.lua`, attach
+keymaps in `lua/core/lsp.lua`. Vue/TS split (see comments in `lsp.lua`):
 
-1. `lua/config/options.lua` — editor options (`vim.opt`, `vim.g.loaded_*`
-   disables)
-2. `lua/core/lazy.lua` — bootstraps lazy.nvim, imports `plugins` and
-   `plugins.lsp`
-3. `lua/core/lsp.lua` — global `LspAttach` autocmd (keymaps), diagnostic config,
-   notify filter
-4. `lua/config/commands.lua` — custom `:` commands
-5. `lua/config/keymaps.lua` — global keybindings
-6. `lua/config/settings.lua` — autocmds, filetype behaviors, extra commands
-7. `pcall(require, "config.theme")` — optional theme module kept in a separate
-   repo
+- `ts_ls` handles `.ts`/`.js`/`.tsx`/`.jsx` only, pinned to its bundled
+  tsserver (TS 5.7.2 bug with vue re-exports).
+- `vtsls` handles `.vue` with `@vue/typescript-plugin` from mason's
+  `vue-language-server`; `vue_ls` bridges to vtsls via the tsserver request
+  channel.
 
-Git/diff helpers required from `settings.lua`, each exposing `setup()` and a
-pure core with a check under `lua/config/checks/` (run with `nvim -l <file>`):
+Virtual text and inlay hints are off by default (`:ToggleVirtualText`,
+`:ToggleInlayHint`); the `inlayHints` server settings only pick which hints
+arrive once enabled.
 
-- `lua/config/fugitive.lua` — status-buffer behaviours: conflict warnings
-  (`conflicts()` pure), which-key detach, `q` maps, and
-  `lua/config/fugitive_word_diff.lua` (word-level diff highlights)
-- `lua/config/noeol.lua` — "No newline at end of file" marks, plain and inside
-  conflict blocks
-- `lua/config/conflict_markers.lua` — `marker(line)` classifier
-- `lua/config/vue_blocks.lua` — Vue SFC block tracking shared by
-  `lua/config/diff_lang.lua` (treesitter diff injections) and the zdiff patch
+## Completion
 
-`lua/config/utils.lua` is **not** required directly from `init.lua`; it is
-loaded by `commands.lua`/`keymaps.lua`. It only holds `map()` and the
-`nmap`/`xmap`/... shorthands (which add `silent = true`) plus a global
-`inspect()`. Commands use `vim.api.nvim_create_user_command` directly.
+**blink.cmp** (`lua/plugins/blink.lua`), `version = "1.*"` so the prebuilt fuzzy
+binary downloads instead of building with cargo. It registers LSP capabilities
+itself, so `lsp.lua` has none.
 
-### Plugin Structure
-
-All plugin specs live in `lua/plugins/`. Each file returns a lazy.nvim spec
-table (or list of tables). LSP-related specs live in `lua/plugins/lsp/` and are
-imported as a second import group (`{ import = "plugins.lsp" }`) by
-`lua/core/lazy.lua`.
-
-### LSP Configuration
-
-LSP is configured with the modern `vim.lsp.config(name, ...)` / mason-lspconfig
-flow — there is **no** `lua/lsp/` directory.
-
-- `lua/core/lsp.lua` — `LspAttach` keymaps, diagnostic signs/float, notify
-  filter that suppresses noisy lspconfig warnings, horizontal padding for LSP
-  floats
-- `lua/plugins/lsp/lsp.lua` — `vim.lsp.config(...)` blocks per server: `ts_ls`,
-  `vtsls`, `vue_ls`, `jsonls`, `emmet_language_server`, `eslint`, `cssls`,
-  `lua_ls`, `tailwindcss`
-- `lua/plugins/lsp/mason.lua` — `mason-lspconfig` `ensure_installed` list (adds
-  `html`, `svelte`, `graphql`, `prismals`, `pyright`, `gopls`) and
-  `mason-tool-installer` for `prettier`, `stylua`, `shellcheck`, `shfmt`
-
-Vue/TS split (important context, see comments in `lsp.lua`):
-
-- `ts_ls` handles `.ts`/`.js`/`.tsx`/`.jsx` only and is pinned to its bundled
-  tsserver (workaround for a TS 5.7.2 bug with vue re-exports).
-- `vtsls` handles `.vue` files and loads `@vue/typescript-plugin` from mason's
-  `vue-language-server` package; `vue_ls` bridges to vtsls via the tsserver
-  request channel.
-
-Diagnostic virtual text is off by default — toggle via `:ToggleVirtualText`.
-Inlay hints are also off by default — toggle per buffer via `:ToggleInlayHint`
-(`<leader><tab>i`). The `inlayHints` settings on `ts_ls`/`vtsls` control which
-hints arrive once enabled, not whether they show.
-
-### Core LSP Keybindings (set on `LspAttach`)
-
-`gr`=references, `gd`=definition, `gD`=declaration, `gi`=implementation,
-`gt`=type definition, `ga`=code actions, `gR`=rename, `gl`=line diagnostics,
-`K`=hover, `[d`/`]d`=prev/next diagnostic, `<leader>rs`=`:LspRestart`
-
-### Completion
-
-**blink.cmp** (`lua/plugins/blink.lua`) drives completion; `version = "1.*"` so
-the prebuilt fuzzy binary is downloaded instead of built with cargo. It
-registers its own LSP client capabilities via `vim.lsp.config("*")`, so
-`lua/plugins/lsp/lsp.lua` carries no completion-related capability wiring.
-
-- sources: `lsp`, `path`, `snippets`, `buffer`, `ripgrep` (blink-ripgrep.nvim,
-  `prefix_min_len = 3`, gitgrep-or-ripgrep backend)
-- keymap preset is `none` — every key is spelled out, carried over from the old
-  cmp config: `<C-k>`/`<C-j>` select, `<C-b>`/`<C-f>` scroll docs, `<C-c>` show,
-  `<C-e>` hide, `<CR>` accept. `<Tab>`/`<S-Tab>`, `<C-p>`/`<C-n>` and
-  `<Up>`/`<Down>` are left unmapped in both modes. The cmdline keymap is the
-  same minus the docs scroll, with `<C-e>` = `cancel` and `<CR>` =
-  `accept_and_enter` (insert the selection _and_ execute). Note this diverges
-  from blink's own `cmdline` preset, whose `<Tab>`/`<S-Tab>` open the menu and
-  insert the first/last item — that would defeat the noselect setup below.
-- selection is `preselect = false, auto_insert = false` in both the insert and
-  cmdline menus (cmp's `noinsert,noselect`): nothing is highlighted until you
-  move with `<C-j>`/`<C-k>`, and moving does not write into the buffer. Since
-  `accept`/`accept_and_enter` bail when nothing is selected, `<CR>` falls
-  through to a plain `<CR>` until you have moved into the menu.
-- snippets come from **LuaSnip** (`lua/plugins/luasnip.lua`) plus
-  friendly-snippets, loaded with
-  `require("luasnip.loaders.from_vscode").lazy_load()`.
-
-`lua/plugins/cmp.lua` (nvim-cmp) is kept but `enabled = false` for rollback —
-flip that flag and disable blink to swap back. Its long comments describe cmp's
-float-padding internals and do not apply to blink.
-
-### AI Plugins
-
-- **sidekick.nvim** (`lua/plugins/sidekick.lua`) — primary AI sidebar / CLI
-  integration (Folke) (`supermaven-nvim`, `avante.nvim`, `codeium.nvim`, and
-  GitHub Copilot have been removed.)
-
-## Key Custom Commands
-
-Defined across `lua/config/commands.lua` and `lua/config/settings.lua`.
-
-| Command               | Purpose                            |
-| --------------------- | ---------------------------------- |
-| `:LspRestart`         | Restart LSP server (buffer-scoped) |
-| `:ToggleVirtualText`  | Toggle LSP diagnostic virtual text |
-| `:ToggleDiagnostics`  | Toggle diagnostics on/off          |
-| `:ToggleInlayHint`    | Toggle inlay hints                 |
-| `:ToggleTailwindFold` | Toggle Tailwind class folding      |
-| `:ToggleLocList`      | Toggle location list               |
-| `:ToggleQuickFix`     | Toggle quickfix list               |
-| `:ToggleSpell`        | Toggle spell check                 |
-| `:WipeReg`            | Wipe all registers                 |
-| `:Help`               | `:help` for word under cursor      |
-| `:R`                  | `w \| :e` — save + reload buffer   |
-| `:S`                  | `syntax sync clear`                |
-| `:RotateWindows`      | Rotate window layout               |
-
-## Directory Conventions
-
-- `lua/plugins/*.lua` — each returns a lazy.nvim spec table
-- `lua/plugins/lsp/` — LSP plugin specs (imported as separate group)
-- `after/` — `after/ftplugin/`, `after/queries/`, `after/syntax/`, plus
-  root-level overrides loaded after their counterparts
-- `ftplugin/` — filetype-specific buffer settings loaded automatically by Neovim
-- `plugin/ft.lua` — early filetype detection overrides
-- `queries/` — custom treesitter queries
-- `spell/` — spellfile additions
+- Keymap preset `none`, every key spelled out. The cmdline keymap deliberately
+  skips blink's `cmdline` preset, whose `<Tab>` inserts the first item and
+  defeats noselect.
+- `preselect = false, auto_insert = false` in insert and cmdline (cmp's
+  `noinsert,noselect`): `<CR>` falls through to a plain `<CR>` until you move
+  into the menu.
+- `lua/plugins/cmp.lua` is kept with `enabled = false` for rollback; its
+  float-padding comments describe cmp, not blink.

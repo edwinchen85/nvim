@@ -34,9 +34,37 @@ local function side_config(centered)
     }
 end
 
-local function refit(win)
-    local config = vim.w[win]._sk_zoomed and zoom_config() or side_config(vim.w[win]._sk_centered)
+-- Claude's renderer only repaints the cells it thinks changed, so after the pty is resized
+-- it leaves stale rows behind (a duplicate prompt line, footer text drawn over the
+-- statusline). Send it <C-l> (full redraw) once the resizes settle. Debounced because
+-- one refit can fire several times in a row (open_win, then WinEnter hiding the statusline).
+local redraw_timer = assert(vim.uv.new_timer())
+local function redraw_cli(win)
+    local buf = vim.api.nvim_win_get_buf(win)
+    redraw_timer:stop()
+    redraw_timer:start(
+        100,
+        0,
+        vim.schedule_wrap(function()
+            local chan = vim.api.nvim_buf_is_valid(buf) and vim.bo[buf].channel or 0
+            if chan > 0 then
+                pcall(vim.api.nvim_chan_send, chan, "\12")
+            end
+        end)
+    )
+end
+
+-- Apply a float config; force a CLI redraw if the size actually changed.
+local function set_config(win, config)
+    local w, h = vim.api.nvim_win_get_width(win), vim.api.nvim_win_get_height(win)
     pcall(vim.api.nvim_win_set_config, win, config)
+    if vim.api.nvim_win_get_width(win) ~= w or vim.api.nvim_win_get_height(win) ~= h then
+        redraw_cli(win)
+    end
+end
+
+local function refit(win)
+    set_config(win, vim.w[win]._sk_zoomed and zoom_config() or side_config(vim.w[win]._sk_centered))
 end
 
 -- Backdrop behind a focused, centered float: an empty full-screen float one zindex below
@@ -119,7 +147,7 @@ local function patch_open_win()
         local was_open = self:is_open()
         open_win(self)
         if not was_open and self.win and vim.api.nvim_win_is_valid(self.win) then
-            pcall(vim.api.nvim_win_set_config, self.win, side_config())
+            set_config(self.win, side_config())
         end
     end
 end

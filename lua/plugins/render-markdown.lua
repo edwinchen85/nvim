@@ -11,6 +11,8 @@ local M = {
         -- borders and they fight over `concealcursor`. See `plugins/pipetable.lua`.
         pipe_table = { enabled = false },
         win_options = { concealcursor = { rendered = "nvic" } },
+        -- one space inside the inline code box; colour in `plugins/tokyonight.lua`
+        code = { inline_pad = 1 },
         overrides = {
             buftype = {
                 -- LSP floats are buftype=nofile, filetype=markdown, so they land

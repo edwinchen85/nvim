@@ -87,6 +87,12 @@ return {
                 -- opaque while the float around it would go translucent.
                 hl.RenderMarkdownCode = { bg = c.bg }
 
+                -- Inline code links to RenderMarkdownCode, so the line above left it
+                -- with no visible box. Give it its own subtle one; bg only, so the
+                -- `@markup.raw` fg underneath shows through. Padding is in
+                -- `plugins/render-markdown.lua` (`code.inline_pad`).
+                hl.RenderMarkdownCodeInline = { bg = c.bg_highlight }
+
                 -- Unused code (LSP DiagnosticTag.Unnecessary, e.g. ts 6133).
                 --
                 -- VS Code dims these by lowering opacity, so each token keeps its

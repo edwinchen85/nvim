@@ -118,7 +118,8 @@ return {
             },
             on_attach = on_attach,
             view = {
-                width = 40,
+                -- fit the longest visible line, capped at the old fixed 40 columns
+                width = { min = 20, max = 40 },
                 side = "left",
             },
             renderer = {

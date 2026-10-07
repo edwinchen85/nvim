@@ -347,6 +347,11 @@ return {
                     cmd = { "claude", "--resume" },
                     is_proc = "\\<claude\\>",
                 },
+                claude_chrome = {
+                    env = { TMUX = false, WORKMUX_BACKEND = "tmux" },
+                    cmd = { "claude", "--chrome" },
+                    is_proc = "\\<claude\\>",
+                },
             },
         },
     },
@@ -420,6 +425,13 @@ return {
                 require("sidekick.cli").toggle({ name = "claude_resume", focus = true })
             end,
             desc = "Claude --resume",
+        },
+        {
+            "<leader>ab",
+            function()
+                require("sidekick.cli").toggle({ name = "claude_chrome", focus = true })
+            end,
+            desc = "Claude --chrome",
         },
         {
             "<C-t>",

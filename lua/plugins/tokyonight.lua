@@ -69,6 +69,11 @@ return {
                 -- for a subtle grey divider instead.
                 hl.WinSeparator = { fg = c.comment }
 
+                -- nvim-tree draws its bottom separator as upper half blocks (see
+                -- plugins/nvimtree.lua): the top half in the tree's bg, the bottom
+                -- half in the editor's, so the pane ends level with the grey line.
+                hl.NvimTreeWinSeparator = { fg = c.bg_sidebar, bg = c.bg }
+
                 -- render-markdown draws the fenced code block inside LSP hover
                 -- (hover buffers are filetype=markdown) with an `hl_eol` extmark,
                 -- so it paints the whole content rectangle. tokyonight backs

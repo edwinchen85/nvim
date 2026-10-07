@@ -80,6 +80,91 @@ return {
         })
     end,
     config = function()
+        -- With laststatus=3, nvim draws each corner where separators meet (┴, ├) with
+        -- the highlight of the window drawn last, i.e. the one right of the tree. So a
+        -- grey tick in the editor's bg pokes into the tree's otherwise invisible
+        -- separator. No per-cell highlight exists, so cover the tree's separator
+        -- column with a blank float in the tree's bg. The separator row under the tree
+        -- and its corner are drawn as upper half blocks in NvimTreeWinSeparator (see
+        -- plugins/tokyonight.lua), so the tree's bg ends level with the grey line.
+        -- SIMPLIFIED: one cover for the current tab, rebuilt on TabEnter; per-tab covers if trees in several tabs matter
+        local cover
+        local ns = vim.api.nvim_create_namespace("nvim_tree_sep_cover")
+        local function update_cover()
+            local tree
+            for _, win in ipairs(vim.api.nvim_tabpage_list_wins(0)) do
+                if vim.bo[vim.api.nvim_win_get_buf(win)].filetype == "NvimTree" then
+                    tree = win
+                end
+            end
+            if
+                cover
+                and vim.api.nvim_win_is_valid(cover)
+                and vim.api.nvim_win_get_tabpage(cover) ~= vim.api.nvim_get_current_tabpage()
+            then
+                vim.api.nvim_win_close(cover, true)
+            end
+            local row, col, height, corner
+            if tree and vim.api.nvim_win_get_config(tree).relative == "" then
+                local pos = vim.api.nvim_win_get_position(tree)
+                row, col = pos[1], pos[2] + vim.api.nvim_win_get_width(tree)
+                height = vim.api.nvim_win_get_height(tree)
+                -- below the tree is another window's row, not the global statusline
+                corner = row + height < vim.o.lines - vim.o.cmdheight - 1
+                if corner then
+                    height = height + 1
+                    if not vim.wo[tree].fillchars:find("horiz:▀", 1, true) then
+                        vim.wo[tree].fillchars = vim.go.fillchars .. ",horiz:▀"
+                    end
+                end
+            end
+            if not row or col >= vim.o.columns then
+                if cover and vim.api.nvim_win_is_valid(cover) then
+                    vim.api.nvim_win_close(cover, true)
+                end
+                cover = nil
+                return
+            end
+            local cfg = {
+                relative = "editor",
+                row = row,
+                col = col,
+                width = 1,
+                height = height,
+                focusable = false,
+                mouse = false, -- clicks/drags reach the separator underneath
+                zindex = 1,
+                style = "minimal",
+                border = "none", -- overrides the global winborder
+                noautocmd = true,
+            }
+            if cover and vim.api.nvim_win_is_valid(cover) then
+                cfg.noautocmd = nil
+                vim.api.nvim_win_set_config(cover, cfg)
+            else
+                cover = vim.api.nvim_open_win(vim.api.nvim_create_buf(false, true), false, cfg)
+                vim.wo[cover].winhighlight = "Normal:NvimTreeNormal,EndOfBuffer:NvimTreeEndOfBuffer"
+            end
+            local buf = vim.api.nvim_win_get_buf(cover)
+            vim.api.nvim_buf_set_lines(buf, 0, -1, false, vim.fn["repeat"]({ " " }, height))
+            if corner then
+                vim.api.nvim_buf_set_lines(buf, -2, -1, false, { "▀" })
+                vim.api.nvim_buf_set_extmark(
+                    buf,
+                    ns,
+                    height - 1,
+                    0,
+                    { end_col = #"▀", hl_group = "NvimTreeWinSeparator" }
+                )
+            end
+        end
+        vim.api.nvim_create_autocmd({ "WinResized", "WinNew", "WinClosed", "BufWinEnter", "VimResized", "TabEnter" }, {
+            desc = "Keep nvim-tree's separator cover in place",
+            callback = function()
+                vim.schedule(update_cover)
+            end,
+        })
+
         local function on_attach(bufnr)
             local api = require("nvim-tree.api")
 

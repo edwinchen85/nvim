@@ -3,8 +3,8 @@
 Personal Neovim config in Lua, plugins via **lazy.nvim**. Targets web development
 (TypeScript, Vue, React).
 
-- Reviewers: `CODING_STANDARDS.md`. Domain terms (hunk, Vue SFC block, conflict
-  marker): `CONTEXT.md`. Decisions: `docs/adr/`.
+- Writing or reviewing code: `CODING_STANDARDS.md`. Domain terms (hunk, Vue SFC
+  block, conflict marker): `CONTEXT.md`. Decisions: `docs/adr/`.
 - **Checks**: `scripts/check.sh` runs stylua, luacheck and every
   `lua/config/checks/*.lua`; it is the pre-commit hook (`.githooks/`). Run it
   before reporting work as done.
@@ -13,28 +13,24 @@ Personal Neovim config in Lua, plugins via **lazy.nvim**. Targets web developmen
 
 ## Layout
 
-`init.lua` loads `config.options` → `core.lazy` → `core.lsp` → `config.commands`
-→ `config.keymaps` → `config.settings`, then `pcall(require, "config.theme")`
-(the theme lives in a separate repo, so it may be absent).
+`init.lua` loads the config; `config.theme` lives in a separate repo, so it may
+be absent.
 
 - `lua/plugins/*.lua` each return a lazy.nvim spec; `lua/plugins/lsp/` is a
   second import group.
-- `lua/config/utils.lua` is loaded by commands/keymaps, not `init.lua`; it only
-  holds `map()`, the `nmap`/`xmap` shorthands (which add `silent = true`) and a
-  global `inspect()`.
-- Git/diff helpers, required from `settings.lua`, each expose `setup()` plus a
-  pure core with a check under `lua/config/checks/`: `config/fugitive.lua`
-  (status buffer; `fugitive_word_diff.lua`), `config/noeol.lua`,
-  `config/hunk_yank.lua` (marker-free `Vy` of hunk lines),
-  `config/conflict_markers.lua`, `config/vue_blocks.lua` (shared by
-  `config/diff_lang.lua` and the zdiff patch).
+- Helpers required from `settings.lua` each expose `setup()` plus a pure core
+  with a check under `lua/config/checks/`: `config/fugitive.lua` (status buffer;
+  `fugitive_word_diff.lua`), `config/noeol.lua`, `config/hunk_yank.lua`
+  (marker-free `Vy` of hunk lines), `config/conflict_markers.lua`,
+  `config/vue_blocks.lua` (shared by `config/diff_lang.lua` and the zdiff patch),
+  `config/signcolumn.lua` (1 cell, 2 while diagnostic and git signs share a line).
+- Floats inherit the global `winborder = "rounded"`; one that must be borderless
+  needs `border = "none"`.
 
 ## Sidekick CLI float
 
-sidekick.nvim (`lua/plugins/sidekick.lua`) runs Claude in a float, not a split:
-right side at `cli.win.float.width`, `<C-z>` zoom, `<M-m>` center with a
-backdrop, `<M-,>`/`<M-.>`/`<M-=>` width. State is window-local
-(`vim.w._sk_zoomed`, `_sk_centered`). Spread across:
+sidekick.nvim (`lua/plugins/sidekick.lua`) runs Claude in a right-side float,
+not a split; its keys and window-local state are in that file. Spread across:
 
 - `lua/util/sidekick.lua`: find/focus/leave the CLI window.
 - `lua/plugins/smart-splits.lua`: `<C-l>` takes the split to the right unless

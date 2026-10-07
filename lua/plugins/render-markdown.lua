@@ -5,9 +5,7 @@ local M = {
     ---@module 'render-markdown'
     ---@type render.md.UserConfig
     opts = {
-        -- `t` keeps markdown rendered while focus is in a terminal (the sidekick
-        -- float): render modes follow the global mode, not the window.
-        render_modes = { "n", "c", "t" },
+        render_modes = { "n", "c" },
         anti_conceal = { enabled = false },
         -- pipetable owns table rendering; leaving both on stacks two sets of
         -- borders and they fight over `concealcursor`. See `plugins/pipetable.lua`.
@@ -46,6 +44,21 @@ local M = {
 
 function M.config(_, opts)
     require("render-markdown").setup(opts)
+
+    -- render_modes is checked against the global mode, so focusing a picker
+    -- (fff opens in insert) or the sidekick terminal unrenders every markdown
+    -- window on screen. Only the focused markdown window's mode should count;
+    -- anywhere else, report normal. `env.mode.get` is the plugin's single mode
+    -- read, see `core/ui.lua:97`.
+    local mode = require("render-markdown.lib.env").mode
+    local get = mode.get
+
+    mode.get = function()
+        if vim.bo.filetype ~= "markdown" then
+            return "n"
+        end
+        return get()
+    end
 
     -- pipetable conceals each table line to zero width and redraws it as inline
     -- virt_text at the line end, so a link icon anchored to a byte offset inside

@@ -5,7 +5,9 @@ local M = {
     ---@module 'render-markdown'
     ---@type render.md.UserConfig
     opts = {
-        render_modes = { "n", "c" },
+        -- `t` keeps markdown rendered while focus is in a terminal (the sidekick
+        -- float): render modes follow the global mode, not the window.
+        render_modes = { "n", "c", "t" },
         anti_conceal = { enabled = false },
         -- pipetable owns table rendering; leaving both on stacks two sets of
         -- borders and they fight over `concealcursor`. See `plugins/pipetable.lua`.

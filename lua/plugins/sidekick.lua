@@ -393,21 +393,21 @@ return {
             function()
                 require("sidekick.cli").toggle({ name = "claude_continue", focus = true })
             end,
-            desc = "Claude --continue",
+            desc = "Claude Continue Last Session",
         },
         {
             "<leader>ar",
             function()
                 require("sidekick.cli").toggle({ name = "claude_resume", focus = true })
             end,
-            desc = "Claude --resume",
+            desc = "Claude Resume a Session",
         },
         {
             "<leader>ab",
             function()
                 require("sidekick.cli").toggle({ name = "claude_chrome", focus = true })
             end,
-            desc = "Claude --chrome",
+            desc = "Claude with Browser",
         },
         {
             "<C-t>",

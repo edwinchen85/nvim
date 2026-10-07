@@ -43,6 +43,41 @@ return {
                 warm()
             end
         end, 1000)
+
+        -- `:mksession` (nvim 0.12's `:restart`) saves the tree window as `enew | file
+        -- NvimTree_1`, so it comes back as an empty pane. Here, not in config: the
+        -- plugin is cmd-loaded and may not be loaded when the session restores.
+        vim.api.nvim_create_autocmd("SessionLoadPost", {
+            desc = "Replace restored empty nvim-tree panes with a real tree",
+            callback = function()
+                local stale, tabs = {}, {}
+                for _, win in ipairs(vim.api.nvim_list_wins()) do
+                    local buf = vim.api.nvim_win_get_buf(win)
+                    local name = vim.fs.basename(vim.api.nvim_buf_get_name(buf))
+                    if name:match("^NvimTree_%d+$") and vim.bo[buf].filetype ~= "NvimTree" then
+                        stale[buf] = true
+                        tabs[vim.api.nvim_win_get_tabpage(win)] = true
+                    end
+                end
+                if next(stale) == nil then
+                    return
+                end
+                for buf in pairs(stale) do
+                    pcall(vim.api.nvim_buf_delete, buf, { force = true })
+                end
+                local cur_tab, cur_win = vim.api.nvim_get_current_tabpage(), vim.api.nvim_get_current_win()
+                for tab in pairs(tabs) do
+                    if vim.api.nvim_tabpage_is_valid(tab) then
+                        vim.api.nvim_set_current_tabpage(tab)
+                        require("nvim-tree.api").tree.open()
+                    end
+                end
+                vim.api.nvim_set_current_tabpage(cur_tab)
+                if vim.api.nvim_win_is_valid(cur_win) then
+                    vim.api.nvim_set_current_win(cur_win)
+                end
+            end,
+        })
     end,
     config = function()
         local function on_attach(bufnr)

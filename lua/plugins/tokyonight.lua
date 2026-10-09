@@ -94,6 +94,11 @@ return {
                 -- `plugins/render-markdown.lua` (`code.inline_pad`).
                 hl.RenderMarkdownCodeInline = { bg = c.bg_highlight }
 
+                -- pipetable's focused cell (see `plugins/pipetable.lua`). `fg_gutter`
+                -- sits one step above the row tint (CursorLine, `bg_highlight`) and
+                -- apart from the multi-cell selection (Visual, `bg_visual`).
+                hl.PipetableCursorCellSoft = { bg = c.fg_gutter, bold = true }
+
                 -- Unused code (LSP DiagnosticTag.Unnecessary, e.g. ts 6133).
                 --
                 -- VS Code dims these by lowering opacity, so each token keeps its

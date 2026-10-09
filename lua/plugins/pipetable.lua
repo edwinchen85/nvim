@@ -12,7 +12,13 @@ local M = {
     -- `max_width` (default 40) caps every column and cuts the rest with `…`, even
     -- with room to spare. A table wider than the window scrolls sideways (‹/›,
     -- h/l) instead, so cap high. Display only: format.lua measures the file form.
-    opts = { format_on_edit = true, column = { max_width = 120 } },
+    -- `cursor_cell` defaults to `reverse`, a white block on a dark theme; link to
+    -- a soft tokyonight bg instead (defined in `plugins/tokyonight.lua`).
+    opts = {
+        format_on_edit = true,
+        column = { max_width = 120 },
+        highlights = { cursor_cell = "PipetableCursorCellSoft" },
+    },
 }
 
 function M.config(_, opts)

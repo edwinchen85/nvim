@@ -15,11 +15,12 @@ local M = {
     -- `cursor_cell` defaults to `reverse`, a white block on a dark theme; link to
     -- a soft tokyonight bg instead (defined in `plugins/tokyonight.lua`).
     -- `edit` (cell editor and the NAV/VIS/EDIT badge) defaults to IncSearch, an
-    -- orange block; plain Normal text instead.
+    -- orange block. The badge gets a soft accent; the editor float is set back to
+    -- plain Normal in `edit.open` below.
     opts = {
         format_on_edit = true,
         column = { max_width = 120 },
-        highlights = { cursor_cell = "PipetableCursorCellSoft", edit = "Normal" },
+        highlights = { cursor_cell = "PipetableCursorCellSoft", edit = "PipetableBadge" },
     },
 }
 
@@ -83,6 +84,7 @@ function M.config(_, opts)
         local e = state.get(buf).edit
         if e then
             vim.bo[e.ebuf].filetype = "pipetable_cell"
+            vim.wo[e.ewin].winhighlight = "Normal:Normal"
             manager.refresh(buf)
         end
     end

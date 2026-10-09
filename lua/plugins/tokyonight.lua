@@ -98,6 +98,9 @@ return {
                 -- sits one step above the row tint (CursorLine, `bg_highlight`) and
                 -- apart from the multi-cell selection (Visual, `bg_visual`).
                 hl.PipetableCursorCellSoft = { bg = c.fg_gutter, bold = true }
+                -- Its NAV/VIS/EDIT mode badge: the cell's bg plus a blue accent, so
+                -- it reads as UI chrome rather than table text.
+                hl.PipetableBadge = { fg = c.blue, bg = c.fg_gutter, bold = true }
 
                 -- Unused code (LSP DiagnosticTag.Unnecessary, e.g. ts 6133).
                 --

@@ -63,25 +63,33 @@ function M.config(_, opts)
     -- pipetable conceals each table line to zero width and redraws it as inline
     -- virt_text at the line end, so a link icon anchored to a byte offset inside
     -- that line collapses onto column 0 and surfaces in the left margin. It also
-    -- draws its own icon in the cell, so ours would be a duplicate anyway. Skip
-    -- link rendering on the lines pipetable owns and leave prose untouched --
-    -- `setup()` returning false is render-markdown's own skip signal, see
-    -- `render/inline/link.lua:16`.
-    local link = require("render-markdown.render.inline.link")
-    local setup = link.setup
-
-    link.setup = function(self)
+    -- draws its own icon in the cell, so ours would be a duplicate anyway.
+    -- Inline code is worse: its `inline_pad` spaces are inline virt_text that
+    -- survive the conceal, so every code span in a row pushes that row right
+    -- and the table goes ragged. Skip both on the lines pipetable owns and leave
+    -- prose untouched -- `setup()` returning false is render-markdown's own skip
+    -- signal, see `render/inline/link.lua:16`.
+    local function in_pipetable(buf, row)
         local ok, state = pcall(require, "pipetable.state")
-        local st = ok and state.peek(self.context.buf) or nil
-        local row = self.node.start_row
+        local st = ok and state.peek(buf) or nil
 
         for _, tbl in ipairs(st and st.tables or {}) do
             if row >= tbl.range[1] and row <= tbl.range[2] then
-                return false
+                return true
             end
         end
+        return false
+    end
 
-        return setup(self)
+    for _, name in ipairs({ "link", "code" }) do
+        local render = require("render-markdown.render.inline." .. name)
+        local inline_setup = render.setup
+        render.setup = function(self)
+            if in_pipetable(self.context.buf, self.node.start_row) then
+                return false
+            end
+            return inline_setup(self)
+        end
     end
 
     -- Git conflict markers parse as markdown: `>>>>>>> branch` is seven nested

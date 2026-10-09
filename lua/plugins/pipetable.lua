@@ -44,15 +44,17 @@ function M.config(_, opts)
     end
 
     -- pipetable prints cell text verbatim, so a link shows as `[label](url)`
-    -- while prose a few lines down renders it as `󰌹 label`, and inline code keeps
-    -- its backticks. Rewrite both for display only: `width.fit` is the sole
-    -- display-side consumer of cell text (layout.lua:118), while `format.lua`
-    -- rewrites the buffer through `width.align`, so this can never reach the file.
-    -- fit() still pads to the column width, so columns stay aligned. Inline code
-    -- gets no box: a cell is one virt_text chunk with one highlight.
+    -- while prose a few lines down renders it as `󰌹 label`, inline code keeps
+    -- its backticks and bold keeps its `**`. Rewrite them for display only:
+    -- `width.fit` is the sole display-side consumer of cell text (layout.lua:118),
+    -- while `format.lua` rewrites the buffer through `width.align`, so this can
+    -- never reach the file. fit() still pads to the column width, so columns stay
+    -- aligned. Inline code gets no box and bold no weight: a cell is one
+    -- virt_text chunk with one highlight.
     -- SIMPLIFIED: plain patterns, no nested brackets, escaped `\]` or ``double``
-    -- backtick spans; icons are render-markdown's defaults, restated because it
-    -- exposes no accessor.
+    -- backtick spans; single-`*` italics and `__bold__` stay as typed (`__`
+    -- collides with identifiers like `__init__`); icons are render-markdown's
+    -- defaults, restated because it exposes no accessor.
     local width = require("pipetable.width")
     local fit = width.fit
     local ICON = { link = "󰌹 ", image = "󰥶 " }
@@ -64,6 +66,9 @@ function M.config(_, opts)
         end
         if type(s) == "string" and s:find("`", 1, true) then
             s = s:gsub("`([^`]+)`", "%1")
+        end
+        if type(s) == "string" and s:find("**", 1, true) then
+            s = s:gsub("%*%*(.-)%*%*", "%1")
         end
 
         return fit(s, n, side, ellipsis)

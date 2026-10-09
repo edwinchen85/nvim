@@ -72,12 +72,17 @@ function M.config(_, opts)
 
     -- edit.open paints nothing after opening the editor, so repaint to drop the
     -- bg. commit/cancel already repaint after clearing `st.edit`.
+    -- The editor's scratch buffer has no filetype, which lualine's
+    -- `disabled_filetypes` blanks; name it so lualine's `ignore_focus` keeps
+    -- showing the markdown window underneath (see `plugins/lualine.lua`).
     local edit = require("pipetable.edit")
     local open = edit.open
 
     edit.open = function(buf, start_insert)
         open(buf, start_insert)
-        if state.get(buf).edit then
+        local e = state.get(buf).edit
+        if e then
+            vim.bo[e.ebuf].filetype = "pipetable_cell"
             manager.refresh(buf)
         end
     end

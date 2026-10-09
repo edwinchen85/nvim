@@ -97,6 +97,9 @@ return {
                     statusline = { "alpha", "dashboard", "snacks_dashboard", "NvimTree", "" },
                     winbar = { "alpha", "dashboard", "snacks_dashboard", "NvimTree", "" },
                 },
+                -- pipetable's cell editor float (see `plugins/pipetable.lua`): keep
+                -- the markdown window's statusline while typing in a cell.
+                ignore_focus = { "pipetable_cell" },
             },
             sections = {
                 lualine_a = { mode },

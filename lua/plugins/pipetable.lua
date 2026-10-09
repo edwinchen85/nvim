@@ -87,6 +87,36 @@ function M.config(_, opts)
         end
     end
 
+    -- Upstream bug: commit writes the cell back (and `format_on_edit` rewrites
+    -- the whole table) even when the text is unchanged, so leaving a cell marks
+    -- the buffer modified and adds an undo step. Leave an untouched cell the way
+    -- `q` (cancel) does; for <Tab>, advance as commit would. Same trim/join as
+    -- commit's own read of the editor buffer.
+    local navigate = require("pipetable.navigate")
+    local commit = edit.commit
+
+    edit.commit = function(buf, move_next)
+        local st = state.get(buf)
+        local e = st.edit
+        if not e or not vim.api.nvim_buf_is_valid(e.ebuf) then
+            return commit(buf, move_next)
+        end
+        local value = vim.trim(table.concat(vim.api.nvim_buf_get_lines(e.ebuf, 0, -1, false), " "))
+        if value ~= vim.trim(e.orig) then
+            return commit(buf, move_next)
+        end
+
+        edit.cancel(buf)
+        local tbl = st.tables[st.active.ti]
+        local win = manager.win_for(buf)
+        if move_next and tbl and st.active.col < tbl.ncols and win then
+            st.active.col = st.active.col + 1
+            navigate.ensure_visible(buf, tbl, manager.usable_width(win))
+            manager.refresh(buf)
+            edit.open(buf, true)
+        end
+    end
+
     -- pipetable prints cell text verbatim, so a link shows as `[label](url)`
     -- while prose a few lines down renders it as `󰌹 label`, inline code keeps
     -- its backticks and bold keeps its `**`. Rewrite them for display only:

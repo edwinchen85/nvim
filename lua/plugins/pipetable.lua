@@ -76,6 +76,23 @@ function M.config(_, opts)
     -- The editor's scratch buffer has no filetype, which lualine's
     -- `disabled_filetypes` blanks; name it so lualine's `ignore_focus` keeps
     -- showing the markdown window underneath (see `plugins/lualine.lua`).
+    -- Upstream's ModeChanged handler flips `st.mode` between in-cell and
+    -- in-cell-edit without repainting, so the badge keeps the old label until
+    -- something else redraws. Ours is registered after it, so it repaints with
+    -- the new mode.
+    -- lualine has the same lag: with globalstatus it refreshes only non-float
+    -- windows on events, while laststatus=3 draws the focused float's own
+    -- 'statusline', a copy made at open that only lualine's 1s timer updates.
+    -- Force a refresh and copy the markdown window's line into the float.
+    local function sync_statusline(buf, ewin)
+        local win = manager.win_for(buf)
+        local ok, lualine = pcall(require, "lualine")
+        if ok and win and vim.api.nvim_win_is_valid(ewin) then
+            lualine.refresh({ place = { "statusline" }, force = true })
+            vim.wo[ewin].statusline = vim.wo[win].statusline
+        end
+    end
+
     local edit = require("pipetable.edit")
     local open = edit.open
 
@@ -85,6 +102,16 @@ function M.config(_, opts)
         if e then
             vim.bo[e.ebuf].filetype = "pipetable_cell"
             vim.wo[e.ewin].winhighlight = "Normal:Normal"
+            vim.api.nvim_create_autocmd("ModeChanged", {
+                buffer = e.ebuf,
+                callback = function()
+                    local cur = state.get(buf).edit
+                    if cur then
+                        manager.refresh(buf)
+                        sync_statusline(buf, cur.ewin)
+                    end
+                end,
+            })
             manager.refresh(buf)
         end
     end

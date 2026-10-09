@@ -14,10 +14,12 @@ local M = {
     -- h/l) instead, so cap high. Display only: format.lua measures the file form.
     -- `cursor_cell` defaults to `reverse`, a white block on a dark theme; link to
     -- a soft tokyonight bg instead (defined in `plugins/tokyonight.lua`).
+    -- `edit` (cell editor and the NAV/VIS/EDIT badge) defaults to IncSearch, an
+    -- orange block; plain Normal text instead.
     opts = {
         format_on_edit = true,
         column = { max_width = 120 },
-        highlights = { cursor_cell = "PipetableCursorCellSoft" },
+        highlights = { cursor_cell = "PipetableCursorCellSoft", edit = "Normal" },
     },
 }
 
@@ -47,6 +49,37 @@ function M.config(_, opts)
         end
 
         return on_cursor(buf)
+    end
+
+    -- The cell editor float covers only the cell text, so the focused cell's
+    -- padding still shows PipetableCursorCell's bg on both sides of it. Paint the
+    -- focused cell plain while the editor is open, and drop the row tint too.
+    -- The tint is stacked on each chunk's own group (`{ border, cursor_row }`),
+    -- so it swaps to an empty group rather than `cell`, whose fg would recolour
+    -- the borders. manager calls `render.paint_table` by field lookup, so
+    -- replacing the field is enough.
+    local render = require("pipetable.render")
+    local paint_table = render.paint_table
+    vim.api.nvim_set_hl(0, "PipetableEditRow", {})
+
+    render.paint_table = function(buf, tbl, W, scroll, active, sel, popts, hl, skip)
+        if active and state.get(buf).edit then
+            hl = vim.tbl_extend("force", hl, { cursor_cell = hl.cell, cursor_row = "PipetableEditRow" })
+        end
+
+        return paint_table(buf, tbl, W, scroll, active, sel, popts, hl, skip)
+    end
+
+    -- edit.open paints nothing after opening the editor, so repaint to drop the
+    -- bg. commit/cancel already repaint after clearing `st.edit`.
+    local edit = require("pipetable.edit")
+    local open = edit.open
+
+    edit.open = function(buf, start_insert)
+        open(buf, start_insert)
+        if state.get(buf).edit then
+            manager.refresh(buf)
+        end
     end
 
     -- pipetable prints cell text verbatim, so a link shows as `[label](url)`

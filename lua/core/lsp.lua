@@ -75,6 +75,25 @@ vim.diagnostic.config({
     },
 })
 
+-- Reloading a buffer (`:e!`, or autoread when a file changes on disk) detaches
+-- its LSP clients, and the reset fires DiagnosticChanged, whose built-in
+-- handler (diagnostic.lua, group `nvim.diagnostic.status`) calls
+-- `nvim__redraw` on the spot. That draws the window mid-reload, after
+-- treesitter has detached but before it reattaches -- so markdown links flash
+-- their raw `[text](url)` for a frame. Same redraw, deferred until the reload
+-- is done.
+vim.api.nvim_create_autocmd("DiagnosticChanged", {
+    group = vim.api.nvim_create_augroup("nvim.diagnostic.status", { clear = true }),
+    callback = function(ev)
+        vim.schedule(function()
+            if vim.api.nvim_buf_is_loaded(ev.buf) then
+                vim.api.nvim__redraw({ buf = ev.buf, statusline = true })
+            end
+        end)
+    end,
+    desc = "diagnostics component for the statusline, redrawn after reloads",
+})
+
 -- servers are chatty at the default WARN level; the log is otherwise unbounded
 vim.lsp.log.set_level(vim.log.levels.ERROR)
 

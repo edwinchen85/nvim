@@ -52,6 +52,32 @@ function M.config(_, opts)
         return on_cursor(buf)
     end
 
+    -- refresh writes conceallevel=2 and, outside table mode, concealcursor=""
+    -- on every repaint (cursor moves, BufWinEnter), and render-markdown writes
+    -- its own 3/"nvic" back on its next debounced render. In between the
+    -- screen draws with the cursor line unconcealed, so a link under the cursor
+    -- flashes its raw `[text](url)`. Hand render-markdown's values back in the
+    -- same tick, while it renders (its `render_modes`); the cursor row of an
+    -- inactive table is skipped by paint_table anyway, so it still shows raw.
+    -- SIMPLIFIED: values restated from `plugins/render-markdown.lua`
+    -- (conceallevel is its default `rendered`); read its config if they diverge.
+    local refresh = manager.refresh
+
+    manager.refresh = function(buf)
+        refresh(buf)
+        buf = buf or vim.api.nvim_get_current_buf()
+        local win = vim.api.nvim_buf_is_valid(buf) and manager.win_for(buf)
+        local mode = vim.api.nvim_get_mode().mode:sub(1, 1)
+        if win and (mode == "n" or mode == "c") then
+            if vim.wo[win].conceallevel ~= 3 then
+                vim.wo[win].conceallevel = 3
+            end
+            if vim.wo[win].concealcursor ~= "nvic" then
+                vim.wo[win].concealcursor = "nvic"
+            end
+        end
+    end
+
     -- The cell editor float covers only the cell text, so the focused cell's
     -- padding still shows PipetableCursorCell's bg on both sides of it. Paint the
     -- focused cell plain while the editor is open, and drop the row tint too.

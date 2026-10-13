@@ -18,12 +18,13 @@ be absent.
 
 - `lua/plugins/*.lua` each return a lazy.nvim spec; `lua/plugins/lsp/` is a
   second import group.
-- Helpers required from `settings.lua` each expose `setup()` plus a pure core
-  with a check under `lua/config/checks/`: `config/fugitive.lua` (status buffer;
-  `fugitive_word_diff.lua`), `config/noeol.lua`, `config/hunk_yank.lua`
-  (marker-free `Vy` of hunk lines), `config/conflict_markers.lua`,
-  `config/vue_blocks.lua` (shared by `config/diff_lang.lua` and the zdiff patch),
-  `config/signcolumn.lua` (1 cell, 2 while diagnostic and git signs share a line).
+- `lua/config/settings.lua` calls `setup()` on `config/fugitive.lua` (status
+  buffer; `fugitive_word_diff.lua`), `config/noeol.lua`, `config/hunk_yank.lua`
+  (marker-free `Vy` of hunk lines) and `config/signcolumn.lua` (1 cell, 2 while
+  diagnostic and git signs share a line); `lua/plugins/treesitter.lua` sets up
+  `config/diff_lang.lua`. `config/conflict_markers.lua` and `config/vue_blocks.lua`
+  are shared libraries (the latter also used by the zdiff patch). Checks live in
+  `lua/config/checks/`; `noeol` has none.
 - Floats inherit the global `winborder = "rounded"`; one that must be borderless
   needs `border = "none"`.
 

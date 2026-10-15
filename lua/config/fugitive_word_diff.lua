@@ -2,6 +2,8 @@
 -- Adjacent `-`/`+` line pairs get word-token diffed via vim.diff; changed
 -- ranges painted with extmarks so only differing words stand out (GitHub style).
 
+local hl_util = require("util.hl")
+
 local M = {}
 
 local NS = vim.api.nvim_create_namespace("fugitive_word_diff")
@@ -128,11 +130,14 @@ function M.highlight_buf(buf)
 end
 
 local function set_default_hl()
-    -- Tokyonight night palette: rose #f7768e, green #9ece6a; line bg ~#37222c/#20303b.
-    -- Pick mid-saturation bg clearly brighter than fugitive's line bg, no fg override
-    -- so original syntax colors stay readable.
-    vim.api.nvim_set_hl(0, "FugitiveWordDelete", { bg = "#6b1e1e", default = true })
-    vim.api.nvim_set_hl(0, "FugitiveWordAdd", { bg = "#11351d", default = true })
+    -- The changed words get the line's bg (diffRemoved/diffAdded) pushed a third of
+    -- the way to that group's own fg: same hue, one step stronger in dark and light
+    -- themes alike. No fg override so original syntax colors stay readable.
+    local function word_bg(group)
+        return hl_util.blend(hl_util.get(group, "fg"), hl_util.get(group, "bg"), 0.35)
+    end
+    vim.api.nvim_set_hl(0, "FugitiveWordDelete", { bg = word_bg("diffRemoved"), default = true })
+    vim.api.nvim_set_hl(0, "FugitiveWordAdd", { bg = word_bg("diffAdded"), default = true })
 end
 
 local function schedule_highlight(buf)

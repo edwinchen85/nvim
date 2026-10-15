@@ -1,63 +1,51 @@
 return {
     "nvim-lualine/lualine.nvim",
-    dependencies = { "echasnovski/mini.icons", "folke/tokyonight.nvim" },
+    dependencies = { "echasnovski/mini.icons" },
     config = function()
         local lualine = require("lualine")
         local lazy_status = require("lazy.status") -- to configure lazy pending updates count
-        local tokyonight_colors = require("tokyonight.colors").setup()
+        local hl = require("util.hl")
 
-        local colors = {
-            color0 = "#092236",
-            color1 = "#ff5874",
-            color2 = "#c3ccdc",
-            color3 = tokyonight_colors.bg,
-            color6 = "#a1aab8",
-            color7 = "#828697",
-            color8 = "#ae81ff",
-            color9 = tokyonight_colors.yellow,
-            color10 = tokyonight_colors.green,
-            color11 = tokyonight_colors.orange,
-        }
-        local my_lualine_theme = {
-            replace = {
-                a = { fg = colors.color0, bg = colors.color1, gui = "bold" },
-                b = { fg = colors.color2, bg = colors.color3 },
-            },
-            inactive = {
-                a = { fg = colors.color6, bg = colors.color3, gui = "bold" },
-                b = { fg = colors.color6, bg = colors.color3 },
-                c = { fg = colors.color6, bg = colors.color3 },
-            },
-            normal = {
-                a = { fg = colors.color0, bg = colors.color7, gui = "bold" },
-                b = { fg = colors.color2, bg = colors.color3 },
-                c = { fg = colors.color2, bg = colors.color3 },
-            },
-            visual = {
-                a = { fg = colors.color0, bg = colors.color8, gui = "bold" },
-                b = { fg = colors.color2, bg = colors.color3 },
-            },
-            insert = {
-                a = { fg = colors.color0, bg = colors.color2, gui = "bold" },
-                b = { fg = colors.color2, bg = colors.color3 },
-            },
-            -- lualine renders select mode with the `visual` theme and has no
-            -- `select` key of its own; these three exist for the statusline
-            -- (command, terminal) and for modicator, which reads `a.bg` per mode
-            -- and otherwise falls back to `normal`'s grey for all three.
-            command = {
-                a = { fg = colors.color0, bg = colors.color9, gui = "bold" },
-                b = { fg = colors.color2, bg = colors.color3 },
-            },
-            terminal = {
-                a = { fg = colors.color0, bg = colors.color10, gui = "bold" },
-                b = { fg = colors.color2, bg = colors.color3 },
-            },
-            select = {
-                a = { fg = colors.color0, bg = colors.color11, gui = "bold" },
-                b = { fg = colors.color2, bg = colors.color3 },
-            },
-        }
+        -- Colours come from standard highlight groups, not hex codes, so the bar
+        -- follows any colorscheme. A function theme is re-run by lualine's own
+        -- ColorScheme / OptionSet background autocmds (`lualine.lua` `setup_theme`).
+        local function my_lualine_theme()
+            local bg = hl.get("Normal", "bg")
+            local fg = hl.get("Normal", "fg")
+            local badge = function(accent)
+                return {
+                    a = { fg = bg, bg = accent, gui = "bold" },
+                    b = { fg = fg, bg = bg },
+                    c = { fg = fg, bg = bg },
+                }
+            end
+            local dim = hl.get("StatusLine", "fg")
+            return {
+                normal = badge(hl.blend(fg, bg, 0.5)),
+                replace = badge(hl.get("DiagnosticError", "fg")),
+                visual = badge(hl.get("Statement", "fg")),
+                insert = badge(fg),
+                -- lualine renders select mode with the `visual` theme and has no
+                -- `select` key of its own; these three exist for the statusline
+                -- (command, terminal) and for modicator, which reads `a.bg` per mode
+                -- and otherwise falls back to `normal`'s grey for all three.
+                command = badge(hl.get("DiagnosticWarn", "fg")),
+                terminal = badge(hl.get("String", "fg")),
+                select = badge(hl.get("Constant", "fg")),
+                inactive = {
+                    a = { fg = dim, bg = bg, gui = "bold" },
+                    b = { fg = dim, bg = bg },
+                    c = { fg = dim, bg = bg },
+                },
+            }
+        end
+
+        -- Component colours as functions so they too re-read after a theme change.
+        local function fg_of(group)
+            return function()
+                return { fg = hl.get(group, "fg") }
+            end
+        end
 
         local mode = {
             "mode",
@@ -85,7 +73,7 @@ return {
             end,
         }
 
-        local branch = { "branch", icon = { "", color = { fg = "#A6D4DE" } }, "|" }
+        local branch = { "branch", icon = { "", color = fg_of("Special") }, "|" }
 
         lualine.setup({
             icons_enabled = true,
@@ -109,7 +97,7 @@ return {
                     {
                         lazy_status.updates,
                         cond = lazy_status.has_updates,
-                        color = { fg = "#ff9e64" },
+                        color = fg_of("DiagnosticWarn"),
                     },
                     {
                         function()
@@ -118,7 +106,7 @@ return {
                         cond = function()
                             return not vim.bo.endofline and vim.bo.buftype == ""
                         end,
-                        color = { fg = "#ff9e64" },
+                        color = fg_of("DiagnosticWarn"),
                     },
                     { "filetype" },
                 },

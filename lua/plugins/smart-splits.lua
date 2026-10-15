@@ -1,16 +1,16 @@
 return {
     "mrjones2014/smart-splits.nvim",
     lazy = false,
-    init = function()
-        -- Outside tmux (headless checks, a bare terminal) the integration only warns
-        -- "could not detect pane ID".
-        vim.g.smart_splits_multiplexer_integration = vim.env.TMUX and "tmux" or false
-    end,
+    -- v3 ships no backends; tmux support is this separate plugin.
+    dependencies = {
+        { "smart-splits-nvim/backend-tmux", main = "smart-splits-backend-tmux" },
+    },
     config = function()
         require("smart-splits").setup({
             ignored_buftypes = { "nofile", "quickfix", "prompt" },
             ignored_filetypes = { "NvimTree" },
-            multiplexer_integration = vim.g.smart_splits_multiplexer_integration,
+            -- Outside tmux (headless checks, a bare terminal) no backend, else it warns.
+            mux = { backend = vim.env.TMUX and "smart-splits-backend-tmux" or nil },
         })
 
         local function nav(wincmd, tmux_flag)

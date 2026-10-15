@@ -288,10 +288,10 @@ return {
                     -- the previous window instead, like <c-h> did out of the split.
                     -- `expr = false` overrides the default's deep-merged `expr = true`:
                     -- expr maps run under textlock, where switching windows is E565.
-                    -- The float hangs off the right edge: <M-,> ("<") pushes its left edge left
-                    -- (wider), <M-.> (">") pulls it right (narrower), by 5% of the screen.
+                    -- Read ">" as more, "<" as less: <M-.> (the ">" key) widens the float by moving its
+                    -- left edge left, <M-,> (the "<" key) narrows it, by 5% of the screen.
                     float_narrower = {
-                        "<M-.>",
+                        "<M-,>",
                         function(t)
                             resize_side_float(t, -0.05)
                         end,
@@ -299,7 +299,7 @@ return {
                         desc = "narrow the CLI float by 5%",
                     },
                     float_wider = {
-                        "<M-,>",
+                        "<M-.>",
                         function(t)
                             resize_side_float(t, 0.05)
                         end,

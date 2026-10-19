@@ -257,7 +257,8 @@ vim.api.nvim_create_autocmd({ "QuickFixCmdPost", "BufWinEnter", "BufWinLeave" },
 })
 
 -- quicker.nvim: clears modified flag AFTER setqflist() — fire when saved
-vim.api.nvim_create_autocmd("BufModifiedSet", {
+vim.api.nvim_create_autocmd("OptionSet", {
+    pattern = "modified",
     callback = function(ev)
         if vim.bo[ev.buf].buftype == "quickfix" and not vim.bo[ev.buf].modified then
             refresh_lualine()

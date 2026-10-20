@@ -110,6 +110,20 @@ M src/components/Bar.vue
 assert(caps(vue, 5, 3):match("typescript:@"), "vue script hunk with no <script> tag: " .. caps(vue, 5, 3))
 assert(caps(vue, 9, 3):match("html:@"), "vue template hunk: " .. caps(vue, 9, 3))
 
+-- json hunk lines parse as bare strings split by ERROR nodes, not `pair`s, so the stock
+-- json highlights match nothing; after/queries/json/highlights.scm covers them.
+local json = attach([[
+Unstaged (1)
+M src/en.json
+@@ -1,3 +1,4 @@
+     "a.b": "Bridge",
++    "e.f": "Insufficient {unit}",
+     "g.h": "From",]])
+
+assert(caps(json, 3, 8):match("json:@property"), "json key: " .. caps(json, 3, 8))
+assert(caps(json, 4, 16):match("json:@string"), "json value: " .. caps(json, 4, 16))
+assert(not caps(json, 4, 16):match("@property"), "json value coloured as a key: " .. caps(json, 4, 16))
+
 -- Resolving the language per hunk line used to walk to the file line every time,
 -- calling vim.filetype.match at each step: ~1900ms for the buffer below. Anything
 -- near that means the row cache or the boundary stop is gone.

@@ -149,6 +149,28 @@ function M.setup()
         end,
     })
 
+    -- nvim nightly collapses `//` to `/` in <amatch> (not <afile>) when cwd is the repo root,
+    -- so fugitive's BufReadCmd sees `.git/` and answers "Invalid Fugitive URL". Re-register it
+    -- reading <afile>. fugitive's plugin/ file runs after this setup(), hence VimEnter.
+    -- SIMPLIFIED: copies fugitive's autocmd body, drop once nightly/fugitive fix <amatch>
+    vim.api.nvim_create_autocmd("VimEnter", {
+        group = group,
+        once = true,
+        callback = function()
+            if vim.fn.exists("#fugitive#BufReadCmd#fugitive://*") == 0 then
+                return
+            end
+            vim.api.nvim_clear_autocmds({ group = "fugitive", event = "BufReadCmd", pattern = "fugitive://*" })
+            vim.api.nvim_create_autocmd("BufReadCmd", {
+                group = "fugitive",
+                pattern = "fugitive://*",
+                nested = true,
+                command = [[exe fugitive#BufReadCmd(expand('<afile>')) | if &path =~# '^\.\%(,\|$\)' | ]]
+                    .. [[let &l:path = substitute(&path, '^\.,\=', '', '') | endif]],
+            })
+        end,
+    })
+
     require("config.fugitive_word_diff").attach()
 end
 

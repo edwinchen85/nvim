@@ -20,7 +20,10 @@ return {
             style = "night", -- The theme comes in four styles, `storm`, `moon`, a darker variant `night` and `day`
             light_style = "day", -- The theme is used when the background is set to light
             transparent = false, -- Enable this to disable setting the background color
-            terminal_colors = true, -- Configure the colors used when opening a `:terminal` in Neovim
+            -- Off: nvim reads g:terminal_color_N once at TermOpen, so a :terminal (e.g. the
+            -- sidekick Claude) kept the old light/dark palette after a theme switch. Unset, it
+            -- forwards ANSI indexes to Ghostty, which recolours live (same Tokyo Night palette).
+            terminal_colors = false,
             styles = {
                 -- Style to be applied to different syntax groups
                 -- Value is any valid attr-list value for `:help nvim_set_hl`

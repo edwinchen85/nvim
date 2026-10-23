@@ -7,7 +7,17 @@ local M = {}
 ---@param attr "fg"|"bg"|"sp"
 ---@return string? hex `#rrggbb`, nil when the group leaves it unset
 function M.get(name, attr)
-    local v = vim.api.nvim_get_hl(0, { name = name, link = false })[attr]
+    -- Not `link = false`: that path resolves through the current window's
+    -- 'winhighlight', so inside e.g. the sidekick terminal `Normal` reads as its
+    -- remap target (SidekickChat, fg only) and the bg comes back nil. Follow links by hand.
+    local v = vim.api.nvim_get_hl(0, { name = name })
+    for _ = 1, 10 do
+        if not v.link then
+            break
+        end
+        v = vim.api.nvim_get_hl(0, { name = v.link })
+    end
+    v = v[attr]
     return v and ("#%06x"):format(v)
 end
 

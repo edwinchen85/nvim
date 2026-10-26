@@ -2,6 +2,10 @@ return {
     "folke/todo-comments.nvim",
     event = { "BufReadPost", "BufNewFile" },
     opts = {
+        -- `TODO(PM):` / `FIXME(any text):`: an optional `(...)` tag between keyword and colon.
+        highlight = {
+            pattern = [[.*<((KEYWORDS)%(\(.{-1,}\))?):]],
+        },
         search = {
             command = "rg",
             args = {
@@ -12,7 +16,7 @@ return {
                 "--column",
                 "--hidden",
             },
-            pattern = [[\b(KEYWORDS):]],
+            pattern = [[\b(KEYWORDS)(\([^)]*\))?:]],
         },
     },
     keys = {

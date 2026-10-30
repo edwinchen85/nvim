@@ -20,10 +20,23 @@ local function p(r) return function() return s[r] or { {}, "v" } end end
 vim.g.clipboard = { name = "drive", copy = { ["+"] = c("+"), ["*"] = c("*") },
   paste = { ["+"] = p("+"), ["*"] = p("*") } }'
 
+# Quit politely, then kill whatever still listens on $SOCK. A bare `rm` of the
+# socket used to orphan nvims whose :qa! never ran (busy, or socket already gone),
+# each keeping its LSP servers alive.
+stop() {
+    [ -S "$SOCK" ] && nvim --server "$SOCK" --remote-send '<C-\><C-n>:qa!<CR>' 2>/dev/null
+    i=0
+    while pgrep -f -- "--listen $SOCK" >/dev/null && [ $i -lt 10 ]; do
+        sleep 0.1
+        i=$((i + 1))
+    done
+    pkill -f -- "--listen $SOCK"
+    rm -f "$SOCK"
+}
+
 case "$1" in
 start)
-    [ -S "$SOCK" ] && nvim --server "$SOCK" --remote-send '<C-\><C-n>:qa!<CR>' 2>/dev/null
-    rm -f "$SOCK"
+    stop
     if [ -n "$DRIVE_REAL_CLIPBOARD" ]; then
         env -u TMUX -u TMUX_PANE nvim --headless --listen "$SOCK" ${2:+"$2"} >/dev/null 2>&1 &
     else
@@ -39,10 +52,7 @@ start)
 keys) nvim --server "$SOCK" --remote-send "$2" ;;
 expr) nvim --server "$SOCK" --remote-expr "$2" && echo ;;
 lua) nvim --server "$SOCK" --remote-expr "luaeval('(function() $2 end)()')" && echo ;;
-stop)
-    nvim --server "$SOCK" --remote-send '<C-\><C-n>:qa!<CR>' 2>/dev/null
-    rm -f "$SOCK"
-    ;;
+stop) stop ;;
 *)
     sed -n '2,13p' "$0" | sed 's/^# \{0,1\}//'
     exit 1

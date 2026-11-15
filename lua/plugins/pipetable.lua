@@ -119,6 +119,28 @@ function M.config(_, opts)
         end
     end
 
+    -- Upstream sizes the editor to the whole value (edit.lua:66), so a long cell
+    -- spills over its neighbours, and past the window edge nvim shifts the float
+    -- left over the line numbers. Clamp it to the cell's column width; the float
+    -- is nowrap, so the rest scrolls sideways. Same plan call as upstream's.
+    local layout = require("pipetable.layout")
+    local config = require("pipetable.config")
+
+    local function cell_width(buf)
+        local st = state.get(buf)
+        local win = manager.win_for(buf)
+        local tbl = st.active and st.tables[st.active.ti]
+        if not (win and tbl) then
+            return nil
+        end
+        local plan = layout.plan(tbl, manager.usable_width(win), st.scroll.col_off, config.get())
+        for _, c in ipairs(plan.columns) do
+            if c.idx == st.active.col then
+                return c.width
+            end
+        end
+    end
+
     local edit = require("pipetable.edit")
     local open = edit.open
 
@@ -126,6 +148,12 @@ function M.config(_, opts)
         open(buf, start_insert)
         local e = state.get(buf).edit
         if e then
+            local cw = cell_width(buf)
+            if cw and cw > 0 and cw < vim.api.nvim_win_get_width(e.ewin) then
+                vim.api.nvim_win_set_config(e.ewin, { width = cw })
+                -- global sidescrolloff (8) would eat a narrow cell
+                vim.wo[e.ewin].sidescrolloff = math.min(vim.o.sidescrolloff, math.floor(cw / 4))
+            end
             vim.bo[e.ebuf].filetype = "pipetable_cell"
             vim.wo[e.ewin].winhighlight = "Normal:Normal"
             vim.api.nvim_create_autocmd("ModeChanged", {

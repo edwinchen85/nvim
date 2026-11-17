@@ -1,3 +1,11 @@
+-- snacks.image renders ```mermaid blocks with `mmdc`, whose puppeteer wants its
+-- own Chrome download; npm's allow-scripts blocks that, so point it at the
+-- installed Chrome instead. An explicit env var still wins.
+local chrome = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
+if not vim.env.PUPPETEER_EXECUTABLE_PATH and vim.uv.fs_stat(chrome) then
+    vim.env.PUPPETEER_EXECUTABLE_PATH = chrome
+end
+
 return {
     "folke/snacks.nvim",
     priority = 1000,

@@ -17,6 +17,7 @@ All keys start with `<leader>R`. They work in any buffer.
 | `<leader>Rs`  | Send the request under the cursor (or selection) |
 | `<leader>Ra`  | Send every request in the file (or selection)    |
 | `<leader>Rr`  | Send the last request again                      |
+| `<leader>Ro`  | Reopen the response window (after `q`), no re-send |
 | `<leader>Re`  | Pick an environment (`dev`, `prod`, ...)         |
 | `<leader>Ri`  | Show the request with variables filled in        |
 | `<leader>Rb`  | Open the scratchpad (a throwaway `.http` buffer) |

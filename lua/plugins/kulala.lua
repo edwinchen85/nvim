@@ -41,6 +41,15 @@ return {
                 desc = "Replay Last Request",
             },
             {
+                -- Reopens the response window (closed with `q`) on the last
+                -- response, without re-sending.
+                "<leader>Ro",
+                function()
+                    require("kulala").open()
+                end,
+                desc = "Open Last Response",
+            },
+            {
                 "<leader>Re",
                 function()
                     require("kulala").set_selected_env()

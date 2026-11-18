@@ -1,0 +1,97 @@
+### Plain GET (no auth)
+GET https://dummyjson.com/products/1
+
+### Basic auth (kulala base64-encodes user:pass for you)
+GET https://httpbin.org/basic-auth/alice/s3cret
+Authorization: Basic alice:s3cret
+
+### Bearer header check (httpbin accepts any token)
+GET https://httpbin.org/bearer
+Authorization: Bearer hello-kulala
+
+### DummyJSON login
+POST {{DUMMY_URL}}/auth/login
+Content-Type: application/json
+
+{
+  "username": "{{DUMMY_USER}}",
+  "password": "{{DUMMY_PASS}}",
+  "expiresInMins": 30
+}
+
+> {%
+  client.global.set("access_token", response.body.accessToken);
+  client.global.set("refresh_token", response.body.refreshToken);
+  client.test("login works", function () {
+    client.assert(response.status === 200, "status is 200");
+    client.assert(response.body.username === "emilys", "right user");
+  });
+%}
+
+### Who am I
+GET {{DUMMY_URL}}/auth/me
+Authorization: Bearer {{access_token}}
+
+### Protected list
+GET {{DUMMY_URL}}/auth/products?limit=2&select=title,price
+Authorization: Bearer {{access_token}}
+
+> {%
+  client.test("got 2 products", function () {
+    client.assert(response.body.products.length === 2, "2 products");
+  });
+%}
+
+### No token -> 401
+GET https://httpbin.org/bearer
+
+> {%
+  client.test("blocked without token", function () {
+    client.assert(response.status === 401, "status is 401");
+  });
+%}
+
+### Refresh the tokens
+POST {{DUMMY_URL}}/auth/refresh
+Content-Type: application/json
+
+{
+  "refreshToken": "{{refresh_token}}",
+  "expiresInMins": 30
+}
+
+> {%
+  client.global.set("access_token", response.body.accessToken);
+  client.global.set("refresh_token", response.body.refreshToken);
+%}
+
+### Restful-booker login
+POST https://restful-booker.herokuapp.com/auth
+Content-Type: application/json
+
+{ "username": "admin", "password": "password123" }
+
+> {%
+  client.global.set("booker_token", response.body.token);
+%}
+
+### Restful-booker: token goes in a Cookie
+PATCH https://restful-booker.herokuapp.com/booking/1
+Content-Type: application/json
+Cookie: token={{booker_token}}
+
+{ "additionalneeds": "Breakfast" }
+
+### OAuth2 client credentials (config "duende" lives in the env files)
+GET https://demo.duendesoftware.com/api/test
+Authorization: Bearer {{$auth.token("duende")}}
+
+### jq filter: keep only what you want
+# @jq { title: .title, price: .price }
+GET https://dummyjson.com/products/1
+
+### Magic variables
+POST https://httpbin.org/post
+Content-Type: application/json
+
+{ "id": "{{$uuid}}", "ts": "{{$timestamp}}", "date": "{{$date}}", "n": "{{$randomInt}}" }

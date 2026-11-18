@@ -127,9 +127,13 @@ buggy on purpose and resets now and then.
 
 ## 5. Ready-to-run playground
 
-Make a folder (e.g. `~/kulala-playground`) and put these three files in it.
-Open `auth-playground.http` and press `<leader>Ra` to run it all. Every
-request should pass.
+These three files live in `kulala-playground/` in this repo. Open
+`kulala-playground/auth-playground.http` and press `<leader>Ra` to run it all.
+Every request should pass.
+
+`http-client.private.env.json` is git-ignored: kulala writes the OAuth2 token
+it fetches (`auth_data`) back into it. On a fresh clone, create it from the
+copy below.
 
 `http-client.env.json`:
 

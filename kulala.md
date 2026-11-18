@@ -36,10 +36,17 @@ Inside the response window:
 | `R`       | Report (test results)             |
 | `F`       | Filter the body with a jq query   |
 | `[` / `]` | Older / newer response            |
-| `<CR>`    | Jump to the request that made it  |
+| `<CR>`    | Jump to its request (off a table) |
 | `X`       | Clear the response history        |
 | `?`       | Help                              |
 | `q`       | Close                             |
+
+The report (`R`) and headers (`H`) views are tables drawn by pipetable
+(`lua/plugins/pipetable.lua`). Long values get cut with `…`. Move onto a
+table and you're in table mode: `h`/`j`/`k`/`l` move cell by cell (a wide
+table scrolls sideways), `<CR>` pops up the full text of a cut (`…`) cell,
+`yy` copies the row, `v`/`<C-v>` select cells or columns, `<Esc>` leaves.
+Kulala's own keys (`q`, `V`, `H`, `B`, ...) still work there.
 
 Commands with no key: `:lua require("kulala").open_cookies_jar()`,
 `:lua require("kulala").scripts_clear_global()` (forget saved tokens),

@@ -1,6 +1,8 @@
 local M = {
     "dominic-righthere/markdown-pipetable.nvim",
-    ft = { "markdown" },
+    -- kulala_ui: kulala's response window draws its report (R) and headers (H)
+    -- views as markdown pipe tables; see the kulala_ui section of `config`.
+    ft = { "markdown", "kulala_ui" },
     cmd = { "Pipetable" },
     -- Repo name doesn't match the module name, so lazy can't infer it for `opts`.
     main = "pipetable",
@@ -18,6 +20,7 @@ local M = {
     -- orange block. The badge gets a soft accent; the editor float is set back to
     -- plain Normal in `edit.open` below.
     opts = {
+        filetypes = { "markdown", "kulala_ui" },
         format_on_edit = true,
         column = { max_width = 120 },
         highlights = { cursor_cell = "PipetableCursorCellSoft", edit = "PipetableBadge" },
@@ -52,6 +55,140 @@ function M.config(_, opts)
         return on_cursor(buf)
     end
 
+    -- kulala_ui is read-only, and its own buffer-local keys (q close, V
+    -- verbose) must win; <CR> (kulala: jump to request) is the exception,
+    -- taken over by the cell peek below while in table mode. Table modes there keep only moving,
+    -- yanking and selecting; the rest of `keymaps.lua` install_navigate /
+    -- install_visual (cell editor, row/column ops, undo) would edit the buffer
+    -- or shadow a kulala key. keymaps.install is called by field lookup.
+    local function is_kulala(buf)
+        return vim.api.nvim_buf_is_valid(buf) and vim.bo[buf].filetype == "kulala_ui"
+    end
+
+    local keymaps = require("pipetable.keymaps")
+    local install = keymaps.install
+
+    local function kulala_drop()
+        local keys = require("pipetable.config").get().keys
+        local drop = { u = true, ["<C-r>"] = true }
+        local function add(lhs)
+            for _, k in ipairs(type(lhs) == "table" and lhs or { lhs }) do
+                if type(k) == "string" then
+                    drop[k] = true
+                end
+            end
+        end
+        for _, name in ipairs({
+            "quit",
+            "into_cell",
+            "edit",
+            "edit_append",
+            "new_row_below",
+            "new_row_above",
+            "delete_row",
+            "paste_below",
+            "paste_above",
+            "visual_row",
+        }) do
+            add(keys.nav[name])
+        end
+        add(keys.visual.delete)
+        add(keys.visual.clear)
+        add(keys.visual.switch_row)
+        return drop, keys.leader
+    end
+
+    -- With the cell editor gone, a cell cut by `max_width` (`…`) has no way to
+    -- show its full text. <CR> opens it read-only in a wrapped float (q/<Esc>
+    -- close; focus it with <C-w>w to scroll or yank). Table moves (h/l) shift
+    -- only the painted cursor, not the real one, so CursorMoved can't close it:
+    -- every table key closes it first instead (see keymaps.install below).
+    local peek_win
+
+    local function close_peek()
+        if peek_win and vim.api.nvim_win_is_valid(peek_win) then
+            vim.api.nvim_win_close(peek_win, true)
+        end
+        peek_win = nil
+    end
+
+    local function peek_cell(buf)
+        local st = state.get(buf)
+        local a = st.active
+        local tbl = a and st.tables[a.ti]
+        local row = tbl and tbl.rows[a.row]
+        local cell = row and row.cells[a.col]
+        if not cell then
+            return
+        end
+        local text = require("pipetable.width").unescape_pipe(cell.text or "")
+        -- JSON objects/arrays (common in kulala headers) get pretty-printed.
+        local ok, decoded = pcall(vim.json.decode, text)
+        local lines = ok and type(decoded) == "table" and vim.split(vim.json.encode(decoded, { indent = "  " }), "\n")
+            or { text }
+        local ft = #lines > 1 and "json" or ""
+        local width = math.min(math.max(vim.fn.strdisplaywidth(text), 20), math.floor(vim.o.columns * 0.6))
+        close_peek()
+        _, peek_win = vim.lsp.util.open_floating_preview(lines, ft, {
+            max_width = width,
+            wrap = true,
+            focus_id = "pipetable_kulala_peek",
+            close_events = { "CursorMoved", "BufLeave", "WinScrolled" },
+        })
+    end
+
+    keymaps.install = function(buf, mode_name, maps)
+        if is_kulala(buf) then
+            local drop, leader = kulala_drop()
+            maps = vim.tbl_filter(function(m)
+                local lhs = m[1]
+                return type(lhs) ~= "string" or not (drop[lhs] or (leader and vim.startswith(lhs, leader)))
+            end, maps)
+            maps = vim.tbl_map(function(m)
+                local fn = m[2]
+                return {
+                    m[1],
+                    function(...)
+                        close_peek()
+                        return fn(...)
+                    end,
+                    m[3],
+                }
+            end, maps)
+            if mode_name == "table-navigate" then
+                table.insert(maps, {
+                    "<CR>",
+                    function()
+                        peek_cell(buf)
+                    end,
+                    "pipetable: show full cell",
+                })
+            end
+        end
+
+        return install(buf, mode_name, maps)
+    end
+
+    -- kulala rewrites the whole buffer on every view switch or new response,
+    -- usually while focus is in the .http window, so TextChanged never fires
+    -- there. It re-sets filetype after each write (`kulala/ui/init.lua`
+    -- set_buffer_contents), which re-fires FileType: leave table mode (its
+    -- active table is gone) and repaint.
+    local pt_mode = require("pipetable.mode")
+
+    vim.api.nvim_create_autocmd("FileType", {
+        group = vim.api.nvim_create_augroup("pipetable_kulala", { clear = true }),
+        pattern = "kulala_ui",
+        callback = function(ev)
+            local st = state.get(ev.buf)
+            if st.mode ~= "inactive" then
+                pt_mode.exit(ev.buf)
+            end
+            st.dirty = true
+            manager.request_redraw(ev.buf)
+        end,
+    })
+
     -- refresh writes conceallevel=2 and, outside table mode, concealcursor=""
     -- on every repaint (cursor moves, BufWinEnter), and render-markdown writes
     -- its own 3/"nvic" back on its next debounced render. In between the
@@ -68,6 +205,12 @@ function M.config(_, opts)
         buf = buf or vim.api.nvim_get_current_buf()
         local win = vim.api.nvim_buf_is_valid(buf) and manager.win_for(buf)
         local mode = vim.api.nvim_get_mode().mode:sub(1, 1)
+        -- No render-markdown in kulala_ui. Its tables are painted on the cursor
+        -- row too (paint_table below), so keep that row concealed as well.
+        if win and is_kulala(buf) then
+            vim.wo[win].concealcursor = "nvic"
+            return
+        end
         if win and (mode == "n" or mode == "c") then
             if vim.wo[win].conceallevel ~= 3 then
                 vim.wo[win].conceallevel = 3
@@ -92,6 +235,11 @@ function M.config(_, opts)
     render.paint_table = function(buf, tbl, W, scroll, active, sel, popts, hl, skip)
         if active and state.get(buf).edit then
             hl = vim.tbl_extend("force", hl, { cursor_cell = hl.cell, cursor_row = "PipetableEditRow" })
+        end
+        -- manager.refresh leaves the cursor row of an inactive table raw so it
+        -- can be edited (manager.lua `skip`); kulala_ui is never edited.
+        if is_kulala(buf) then
+            skip = nil
         end
 
         return paint_table(buf, tbl, W, scroll, active, sel, popts, hl, skip)

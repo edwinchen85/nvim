@@ -1,12 +1,17 @@
 return {
     "mistweaverco/kulala.nvim",
-    -- Temporarily off: not using the HTTP client for now. `cond` (not `enabled`)
-    -- keeps it installed and pinned in lazy-lock.json, so re-enabling is just
-    -- deleting this line -- no re-download, no `:Lazy clean` prompt.
-    cond = false,
+    -- Pinned: v6.23.0 is the last release whose kulala-core backend (0.30.0)
+    -- runs without a license token. Later releases need a newer core, and
+    -- core.kulala.app only serves those with a token (401 otherwise). The
+    -- repo moved to dont-be-evil-company; GitHub redirects the old name.
+    -- Usage guide: kulala.md.
+    tag = "v6.23.0",
     event = "VeryLazy",
     opts = {
         global_keymaps = false,
+        -- Kulala's docs and env-file examples use "dev"; the built-in default
+        -- is "default", which matches no env and leaves {{VARS}} empty.
+        default_env = "dev",
     },
     config = function(_, opts)
         require("kulala").setup(opts)

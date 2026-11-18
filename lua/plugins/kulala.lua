@@ -6,6 +6,10 @@ return {
     -- repo moved to dont-be-evil-company; GitHub redirects the old name.
     -- Usage guide: kulala.md.
     tag = "v6.23.0",
+    -- Off: not using the HTTP client much. `cond` (not `enabled`) keeps it
+    -- installed and pinned in lazy-lock.json, so re-enabling is just deleting
+    -- this line -- no re-download, no `:Lazy clean` prompt.
+    cond = false,
     event = "VeryLazy",
     opts = {
         global_keymaps = false,

@@ -165,15 +165,6 @@ request should pass.
           "Client Secret": "secret"
         }
       }
-    },
-    "auth_data": {
-      "duende": {
-        "access_token": "eyJhbGciOiJSUzI1NiIsImtpZCI6IjM3RTlERDIwMjc1MDZGRUVERThGRDFDODY5NjgwMTM1IiwieDV0IjoiY0NyR0pVNjJVS2FOci1yQXRpS3JKcXlKT2VFIiwidHlwIjoiYXQrand0In0.eyJpc3MiOiJodHRwczovL2RlbW8uZHVlbmRlc29mdHdhcmUuY29tIiwibmJmIjoxNzk1MDA2MTgyLCJpYXQiOjE3OTUwMDYxODIsImV4cCI6MTc5NTAwOTc4MiwiYXVkIjoiYXBpIiwic2NvcGUiOlsiYXBpIl0sImNsaWVudF9pZCI6Im0ybSIsImp0aSI6IkNBOEJGQzQyMkI5MDk4NDVEMTJBNzg1RDQyRDhDQUI4In0.GV7TkhCHBGcw4O51VWMxL5e7bs-VWrwguoCKln8MBgmN4NcPgVX1JT98fIqHpE5lD9h9HEdGJ5q3pKyUTDP_-UnS8pTjrb_H7i4iSRTwl6rp92reh4CDVE1XxzQF8_NZCQM5nCDpN_VhdrPdblmaYEjIBNBmH8LmCqLCGNuDPhKCK1WHY_uqwOURzETCBTuc9uElYYZ4xdgLlVuMAIhTx6zkf-GTTmZLLelrdmMQ3JSN6_9hI_K-iBKMFA_P0GULmE6N9ykNZSNLKnNtenA5rNi7OiJkURLurwqDiPTX3b8_0eB9x1OU6wBdb5agPVzdpoVMCL--vIksOPGuRt6XCg",
-        "expires_in": 3600,
-        "token_type": "Bearer",
-        "scope": "api",
-        "expires_at": 1795009782
-      }
     }
   }
 }

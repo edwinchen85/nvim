@@ -10,11 +10,32 @@ local M = {
         -- pipetable owns table rendering; leaving both on stacks two sets of
         -- borders and they fight over `concealcursor`. See `plugins/pipetable.lua`.
         pipe_table = { enabled = false },
-        win_options = { concealcursor = { rendered = "nvic" } },
+        -- Reading view: line numbers go away while rendered, come back when
+        -- editing (insert/visual unrender, see `render_modes`). relativenumber,
+        -- colorcolumn and the full cursorline are already off globally.
+        win_options = {
+            concealcursor = { rendered = "nvic" },
+            number = { default = vim.o.number, rendered = false },
+        },
+        -- Headings as coloured tags: text on a block of the level's colour, then
+        -- one slanted powerline stripe per level. `#`s concealed, no sign.
+        -- Colours (`RenderMarkdownH{n}` / `H{n}Bg`) in `plugins/tokyonight.lua`.
+        heading = {
+            sign = false,
+            width = "block",
+            left_pad = 1,
+            right_pad = 0,
+            position = "right",
+            icons = function(ctx)
+                return ("\u{e0be}\u{e0b8}"):rep(ctx.level) .. "\u{e0be}"
+            end,
+        },
         -- Code blocks: a box only as wide as the code (`min_width` keeps short
         -- ones from looking like a stray chip), one space inside it on each side.
         -- Inline code: one space inside its box; colour in `plugins/tokyonight.lua`.
-        code = { width = "block", left_pad = 1, right_pad = 1, min_width = 40, inline_pad = 1 },
+        -- `sign = false`: no language icon in the sign column; the one on the
+        -- language bar is enough.
+        code = { sign = false, width = "block", left_pad = 1, right_pad = 1, min_width = 40, inline_pad = 1 },
         overrides = {
             buftype = {
                 -- LSP floats are buftype=nofile, filetype=markdown, so they land

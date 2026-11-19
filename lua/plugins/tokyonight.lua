@@ -97,6 +97,16 @@ return {
                 -- `plugins/render-markdown.lua` (`code.inline_pad`).
                 hl.RenderMarkdownCodeInline = { bg = c.bg_highlight }
 
+                -- Headings as coloured tags (see `plugins/render-markdown.lua`):
+                -- `H{n}` colours the stripes after the text, `H{n}Bg` reverses it
+                -- so the heading text sits dark on a solid block of the colour.
+                -- tokyonight's own groups are a faint `H{n}Bg` tint plus `H{n}Fg`,
+                -- which render-markdown never reads.
+                for i, color in ipairs(c.rainbow) do
+                    hl["RenderMarkdownH" .. i] = { fg = color, bold = true }
+                    hl["RenderMarkdownH" .. i .. "Bg"] = { fg = color, bold = true, reverse = true }
+                end
+
                 -- pipetable's focused cell (see `plugins/pipetable.lua`). `fg_gutter`
                 -- sits one step above the row tint (CursorLine, `bg_highlight`) and
                 -- apart from the multi-cell selection (Visual, `bg_visual`).

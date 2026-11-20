@@ -364,19 +364,59 @@ function M.config(_, opts)
     local fit = width.fit
     local ICON = { link = "󰌹 ", image = "󰥶 " }
 
-    width.fit = function(s, n, side, ellipsis)
-        if type(s) == "string" and s:find("](", 1, true) then
+    local function display(s)
+        if s:find("](", 1, true) then
             s = s:gsub("!%[([^%]]*)%]%([^%)]*%)", ICON.image .. "%1")
             s = s:gsub("%[([^%]]*)%]%([^%)]*%)", ICON.link .. "%1")
         end
-        if type(s) == "string" and s:find("`", 1, true) then
+        if s:find("`", 1, true) then
             s = s:gsub("`([^`]+)`", "%1")
         end
-        if type(s) == "string" and s:find("**", 1, true) then
+        if s:find("**", 1, true) then
             s = s:gsub("%*%*(.-)%*%*", "%1")
+        end
+        return s
+    end
+
+    width.fit = function(s, n, side, ellipsis)
+        if type(s) == "string" then
+            s = display(s)
         end
 
         return fit(s, n, side, ellipsis)
+    end
+
+    -- The parser sizes columns on the file form, so a link's hidden URL still
+    -- widens its column and the shortened label sits in a wall of padding.
+    -- Re-measure on the display form. `cell.width` and `tbl.widths` feed only
+    -- layout (display); format.lua measures the file form itself, so the file
+    -- stays aligned. parse_buffer calls `M.build_table` by field lookup.
+    local parser = require("pipetable.parser")
+    local build_table = parser.build_table
+
+    parser.build_table = function(...)
+        local tbl = build_table(...)
+        if not tbl then
+            return tbl
+        end
+        local cfg = require("pipetable.config").get().column
+        for c = 1, tbl.ncols do
+            tbl.widths[c] = 0
+        end
+        for _, row in ipairs(tbl.rows) do
+            for c = 1, tbl.ncols do
+                local cell = row.cells[c]
+                if cell then
+                    cell.width = width.width(display(width.unescape_pipe(cell.text)))
+                    tbl.widths[c] = math.max(tbl.widths[c], cell.width)
+                end
+            end
+        end
+        for c = 1, tbl.ncols do
+            tbl.widths[c] = math.max(cfg.min_width, math.min(cfg.max_width, tbl.widths[c]))
+        end
+
+        return tbl
     end
 end
 

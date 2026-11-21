@@ -29,6 +29,8 @@ be absent.
   needs `border = "none"`.
 - Debugging: `lua/plugins/dap.lua` (nvim-dap, keys under `<leader>d`; adapters
   from mason: `js-debug-adapter`, `delve`).
+- Database client: `lua/plugins/dadbod-grip.lua` (`<leader>D`; the query pad
+  runs SQL with `<C-e>`, not upstream's `<C-CR>`). Usage guide: `db.md`.
 
 ## Sidekick CLI float
 

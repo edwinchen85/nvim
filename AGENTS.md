@@ -27,6 +27,8 @@ be absent.
   `lua/config/checks/`; `noeol` has none.
 - Floats inherit the global `winborder = "rounded"`; one that must be borderless
   needs `border = "none"`.
+- Debugging: `lua/plugins/dap.lua` (nvim-dap, keys under `<leader>d`; adapters
+  from mason: `js-debug-adapter`, `delve`).
 
 ## Sidekick CLI float
 

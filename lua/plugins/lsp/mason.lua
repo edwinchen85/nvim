@@ -46,6 +46,10 @@ return {
                 "stylua",
                 "shellcheck",
                 "shfmt",
+                -- nvim-dap: JS / TS / Chrome (lua/plugins/dap.lua)
+                "js-debug-adapter",
+                -- nvim-dap-go (already installed; listed so a fresh machine gets it)
+                "delve",
             },
         },
         dependencies = {

@@ -70,6 +70,7 @@ return {
         },
         spec = {
             { "<leader>a", group = "AI" },
+            { "<leader>d", group = "Debug" },
             { "<leader>f", group = "Find" },
             { "<leader><tab>", group = "Toggle" },
         },

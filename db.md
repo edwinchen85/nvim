@@ -172,7 +172,7 @@ or a dot (`customers.`). It is Grip's own popup; blink is off in the pad.
 The result of a query you typed is read-only. Press `gO` in the grid to
 reopen it as an editable table.
 
-Starter queries for the playground (§14):
+Example queries (the table names are made up):
 
 ```sql
 SELECT * FROM orders WHERE status = 'pending';
@@ -216,7 +216,8 @@ Decide per project whether `.grip/` belongs in git or in `.gitignore`.
 | `6` `7` `8` `9`                  | Columns, foreign keys, indexes, constraints |
 | `4` or `gG`                      | Diagram of how tables link together         |
 
-**Dropping a table is forever.** Practise on the playground first.
+**Dropping a table is forever.** Practise on the demo database first
+(`:GripStart`).
 
 Anything the commands do not cover (add a column, add an index) is plain SQL
 in the query pad:
@@ -265,31 +266,7 @@ input must match the table's column names exactly.
 Upstream docs and the `?` help of other panes may still say `<C-CR>`. Read
 it as `<C-e>`.
 
-## 14. The playground
-
-A throwaway SQLite database for practice. It is not part of this repo.
-
-```
-cd ~/chat/grip-playground
-nvim
-:GripConnect sqlite:shop.db
-```
-
-| Table       | What it is                          |
-| ----------- | ----------------------------------- |
-| `customers` | 8 people                            |
-| `products`  | 7 things for sale                   |
-| `orders`    | 12 orders; links to both tables above |
-| `scratch`   | junk table, made for `:GripDrop`    |
-
-Reset it to the starting state:
-
-```
-cd ~/chat/grip-playground
-rm shop.db && sqlite3 shop.db < seed.sql
-```
-
-## 15. Cheat sheet
+## 14. Cheat sheet
 
 ```
 <leader>D   connect            go   pick table        q    query pad

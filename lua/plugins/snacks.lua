@@ -67,4 +67,18 @@ return {
         statuscolumn = { enabled = false },
         words = { enabled = false },
     },
+    config = function(_, opts)
+        -- Image previews only in prose files. snacks attaches to every language with a
+        -- queries/<lang>/images.scm (snacks/image/init.lua `M.langs`), which includes
+        -- html, css, js/tsx, vue and svelte: an `<img src>` under the cursor there opens a float.
+        local docs = { markdown = true, markdown_inline = true, norg = true, latex = true, typst = true }
+        local image = require("snacks.image")
+        local langs = image.langs
+        image.langs = function(...)
+            return vim.tbl_filter(function(lang)
+                return docs[lang]
+            end, langs(...))
+        end
+        require("snacks").setup(opts)
+    end,
 }

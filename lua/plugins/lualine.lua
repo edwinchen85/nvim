@@ -63,16 +63,6 @@ return {
             -- cond = hide_in_width,
         }
 
-        local filename = {
-            "filename",
-            file_status = true,
-            path = 1,
-            -- these buffer names are just URIs (nvim:// job + command, fugitive:///.git//)
-            cond = function()
-                return vim.bo.filetype ~= "sidekick_terminal" and vim.bo.filetype ~= "fugitive"
-            end,
-        }
-
         local branch = { "branch", icon = { "", color = fg_of("Special") }, "|" }
 
         lualine.setup({
@@ -80,7 +70,7 @@ return {
             options = {
                 theme = my_lualine_theme,
                 component_separators = { left = "|", right = "" },
-                section_separators = { left = "|", right = "" },
+                section_separators = { left = "", right = "" },
                 disabled_filetypes = {
                     statusline = { "alpha", "dashboard", "snacks_dashboard", "NvimTree", "" },
                     winbar = { "alpha", "dashboard", "snacks_dashboard", "NvimTree", "" },
@@ -92,7 +82,8 @@ return {
             sections = {
                 lualine_a = { mode },
                 lualine_b = { branch },
-                lualine_c = { diff, filename },
+                -- No filename: the winbar breadcrumbs already show the path (config/breadcrumbs.lua).
+                lualine_c = { diff },
                 lualine_x = {
                     {
                         lazy_status.updates,

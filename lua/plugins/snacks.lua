@@ -79,6 +79,37 @@ return {
                 return docs[lang]
             end, langs(...))
         end
+        -- Herdr reports the pane's rows/cols but 0 pixels (TIOCGWINSZ xpixel/ypixel), and
+        -- snacks only falls back to its 9x18 guess when rows/cols are 0. A 0-pixel cell
+        -- makes every image `nan` cells wide, so nothing is drawn: use the guess then too.
+        local terminal = require("snacks.image.terminal")
+        local size = terminal.size
+        terminal.size = function()
+            local s = size()
+            if s.cell_width > 0 and s.cell_height > 0 then
+                return s
+            end
+            local dw, dh = 9, 18 -- snacks' own fallback cell size
+            return {
+                width = s.columns * dw,
+                height = s.rows * dh,
+                columns = s.columns,
+                rows = s.rows,
+                cell_width = dw,
+                cell_height = dh,
+                scale = dw / 8,
+            }
+        end
+        -- Under Herdr, send the image bytes (kitty `t=d`, snacks' remote path) instead of
+        -- a file path for the terminal to read (`t=f`), which Herdr doesn't display.
+        if vim.env.HC_TERMINAL_ID then
+            local env = terminal.env
+            terminal.env = function()
+                local e = env()
+                e.remote = true
+                return e
+            end
+        end
         require("snacks").setup(opts)
     end,
 }

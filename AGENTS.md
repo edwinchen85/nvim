@@ -44,6 +44,13 @@ not a split; its keys and window-local state are in that file. Spread across:
 - `lua/config/fugitive.lua`: leaving any terminal refreshes fugitive status.
 - `lua/config/checks/sidekick_float.lua`: drives all of the above headless.
 
+## Breadcrumbs
+
+The winbar copies Zed's breadcrumbs (`path › function Name( )`). dropbar.nvim
+(`lua/plugins/dropbar.lua`) only hosts the bar; `lua/config/breadcrumbs.lua`
+builds the trail and its colours from `queries/<lang>/outline.scm` (js, ts, tsx,
+lua). A language without that query falls back to dropbar's own symbol names.
+
 ## LSP and completion
 
 - Servers: `lua/plugins/lsp/lsp.lua`; its comments explain the `.vue` split

@@ -15,6 +15,7 @@
 
 return {
     "nvim-treesitter/nvim-treesitter-context",
+    enabled = false, -- the winbar breadcrumbs (plugins/dropbar.lua) show the same context
     commit = "b0c45cefe2c8f7b55fc46f34e563bc428ef99636", -- pinned: upstream fix needed for nvim 0.12 async parse nil node
     event = "VeryLazy",
     opts = {

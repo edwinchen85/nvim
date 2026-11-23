@@ -42,17 +42,103 @@ function M.config(_, opts)
 
     -- The autocmd calls `M.on_cursor(buf)`, a table lookup at call time, so
     -- replacing the field is enough -- no need to touch the plugin's source.
+    -- Mouse clicks inside a table. A click lands the real cursor on a raw
+    -- (concealed) byte far right in the line, so nvim scrolls the window
+    -- sideways and the row shows its raw text. Keys never hit this: table moves
+    -- park the cursor at column 0. Two upstream gaps make it worse:
+    -- * `mode.enter` sets `internal_move` and moves the cursor from inside the
+    --   CursorMoved handler, which fires no second CursorMoved, so the flag
+    --   stays up and swallows the next real move (the click) whole.
+    -- * on_cursor syncs the row on a move inside the table but never the
+    --   column, nor parks the cursor back at column 0.
+    -- So: drop a stale flag (internal moves always park on the active row's
+    -- column 0), and after a click focus the clicked cell and park the cursor
+    -- the way the keys do. `vim.on_key` tells a click from a key move.
+    local LEFT_MOUSE = vim.keycode("<LeftMouse>")
+    local MOUSE_KEYS = {
+        [LEFT_MOUSE] = true,
+        [vim.keycode("<LeftDrag>")] = true,
+        [vim.keycode("<LeftRelease>")] = true,
+    }
+    local clicked = false
+
+    vim.on_key(function(key, typed)
+        local k = (typed and typed ~= "") and typed or key
+        if k == LEFT_MOUSE then
+            clicked = true
+        elseif not MOUSE_KEYS[k] then
+            clicked = false
+        end
+    end, vim.api.nvim_create_namespace("pipetable_mouse"))
+
+    local function active_row(st)
+        local tbl = st.active and st.tables and st.tables[st.active.ti]
+        return tbl, tbl and tbl.rows[st.active.row]
+    end
+
+    -- The logical column under window text column `x` (0-based), per the same
+    -- plan the painter draws: one border cell, then per column
+    -- `padding + width + padding` and a border.
+    local function col_at(tbl, plan, x)
+        local pad = require("pipetable.config").get().column.padding
+        local left = 1
+        for _, c in ipairs(plan.columns) do
+            left = left + pad * 2 + c.width + 1
+            if x < left then
+                return c.idx
+            end
+        end
+        local last = plan.columns[#plan.columns]
+        return last and last.idx or math.min(tbl.ncols, 1)
+    end
+
+    local function park_click(buf)
+        local st = state.get(buf)
+        local win = manager.win_for(buf)
+        local tbl, row = active_row(st)
+        if st.mode ~= "table-navigate" or not (win and row) then
+            return
+        end
+        local mouse = vim.fn.getmousepos()
+        if mouse.winid == win then
+            local x = mouse.wincol - 1 - vim.fn.getwininfo(win)[1].textoff
+            local W = manager.usable_width(win)
+            local plan = require("pipetable.layout").plan(tbl, W, st.scroll.col_off, require("pipetable.config").get())
+            st.active.col = col_at(tbl, plan, x)
+            require("pipetable.navigate").ensure_visible(buf, tbl, W)
+        end
+        -- No internal_move: this runs inside CursorMoved, so no second event
+        -- comes to clear it.
+        vim.api.nvim_win_set_cursor(win, { row.lnum + 1, 0 })
+        manager.refresh(buf)
+    end
+
     manager.on_cursor = function(buf)
-        if vim.api.nvim_buf_is_valid(buf) then
-            local st = state.get(buf)
-            local tick = vim.api.nvim_buf_get_changedtick(buf)
-            if st.seen_changedtick ~= tick then
-                st.seen_changedtick = tick
-                st.dirty = true
+        if not vim.api.nvim_buf_is_valid(buf) then
+            return on_cursor(buf)
+        end
+        local st = state.get(buf)
+        local tick = vim.api.nvim_buf_get_changedtick(buf)
+        if st.seen_changedtick ~= tick then
+            st.seen_changedtick = tick
+            st.dirty = true
+        end
+
+        local win = manager.win_for(buf)
+        if st.internal_move and win then
+            local _, row = active_row(st)
+            local cur = vim.api.nvim_win_get_cursor(win)
+            if not (row and cur[1] == row.lnum + 1 and cur[2] == 0) then
+                st.internal_move = false
             end
         end
 
-        return on_cursor(buf)
+        local was_internal = st.internal_move
+        on_cursor(buf)
+        if clicked and not was_internal then
+            clicked = false
+            park_click(buf)
+        end
     end
 
     -- kulala_ui is read-only, and its own buffer-local keys (q close, V

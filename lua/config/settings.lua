@@ -29,6 +29,33 @@ vim.api.nvim_create_autocmd({ "BufWinEnter" }, {
     end,
 })
 
+-- 'autoread' skips a file created after its buffer opened (W13 warns, no
+-- FileChangedShell fires), so the buffer stays blank. Reload such a buffer
+-- when it is untouched and empty but its file now has content.
+local function reload_if_created(buf)
+    local name = vim.api.nvim_buf_get_name(buf)
+    if
+        name ~= ""
+        and vim.bo[buf].buftype == ""
+        and not vim.bo[buf].modified
+        and vim.api.nvim_buf_line_count(buf) == 1
+        and vim.api.nvim_buf_get_lines(buf, 0, 1, false)[1] == ""
+        and vim.fn.getfsize(name) > 0
+    then
+        vim.api.nvim_buf_call(buf, function()
+            vim.cmd("silent! edit")
+        end)
+    end
+end
+
+vim.api.nvim_create_autocmd({ "BufWinEnter", "FocusGained" }, {
+    callback = function()
+        for _, win in ipairs(vim.api.nvim_tabpage_list_wins(0)) do
+            reload_if_created(vim.api.nvim_win_get_buf(win))
+        end
+    end,
+})
+
 -- the empty [No Name] buffer nvim opens with (shown as "[Scratch]" in snacks'
 -- buffer picker) outlives its usefulness once a real buffer exists; wipe it
 -- rather than let it clutter the buffer list forever. Deleting it while it's

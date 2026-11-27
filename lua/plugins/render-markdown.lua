@@ -90,6 +90,15 @@ function M.config(_, opts)
     -- and the table goes ragged. Skip both on the lines pipetable owns and leave
     -- prose untouched -- `setup()` returning false is render-markdown's own skip
     -- signal, see `render/inline/link.lua:16`.
+    --
+    -- Inline code in an ATX heading: the heading's block (priority 4096) covers
+    -- the code's own bg, but not the `inline_pad` cells, which showed as two dark
+    -- chips inside the coloured tag. Skip it there too.
+    local function in_heading(buf, row)
+        local line = vim.api.nvim_buf_get_lines(buf, row, row + 1, false)[1] or ""
+        return line:match("^%s*#+%s") ~= nil
+    end
+
     local function in_pipetable(buf, row)
         local ok, state = pcall(require, "pipetable.state")
         local st = ok and state.peek(buf) or nil
@@ -106,7 +115,8 @@ function M.config(_, opts)
         local render = require("render-markdown.render.inline." .. name)
         local inline_setup = render.setup
         render.setup = function(self)
-            if in_pipetable(self.context.buf, self.node.start_row) then
+            local buf, row = self.context.buf, self.node.start_row
+            if in_pipetable(buf, row) or (name == "code" and in_heading(buf, row)) then
                 return false
             end
             return inline_setup(self)
